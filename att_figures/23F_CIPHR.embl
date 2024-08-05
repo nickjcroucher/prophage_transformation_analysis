@@ -1,0 +1,423 @@
+ID   23F_CIPHR; SV ; ; ; ; ; 10730 BP.
+FH   Key             Location/Qualifiers
+FH
+FT   CDS             1..1287
+FT                   /D39_orthologue="SPD_0024"
+FT                   /EC_number="6.3.4.4"
+FT                   /GO=" ; GOid=GO:0015949; ; ; ; ; date=20070823"
+FT                   /TIGR4_orthologue="SP_0019"
+FT                   /class="3.3.11"
+FT                   /db_xref="EC:6.3.4.4"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02296.out"
+FT                   /gene="purA"
+FT                   /product="adenylosuccinate synthetase"
+FT                   /status=" ; evidence=ISS; db_xref=suberis:SUB0152;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00230"
+FT                   /colour=4
+FT   CDS             1488..1955
+FT                   /D39_orthologue="SPD_0025"
+FT                   /TIGR4_orthologue="SP_0020"
+FT                   /class="7.0.0"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02297.out"
+FT                   /product="putative deaminase"
+FT                   /status=" ; evidence=ISS; db_xref=ssuis:SSU1838;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00240"
+FT                   /primary_name=""
+FT                   /colour=4
+FT   ncRNA           1996..2163
+FT                   /domain="Rfam:RF00169;SRP_bact;Score=54.64;positions 1 to
+FT                   100"
+FT                   /product="4.5S signal recognition particle RNA"
+FT                   /primary_name=""
+FT                   /colour=8
+FT   CDS             complement(join(2164..2976,2976..3305))
+FT                   /class="5.1.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02298.out"
+FT                   /product="putative phage integrase (pseudogene)"
+FT                   /status=" ; evidence=ISS; db_xref=saureusMRSA252:SAR1562;
+FT                   date=20070823; method=automatic:top fasta hit"
+FT                   /locus_tag="SPN23F00250"
+FT                   /primary_name=""
+FT                   /colour=11
+FT   CDS             complement(3360..4430)
+FT                   /class="5.1.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02300.out"
+FT                   /product="putative type I restriction enzyme related
+FT                   protein"
+FT                   /similarity="fasta; with=UniProt:A3FW61
+FT                   (EMBL:AARW01000010;); Listeria monocytogenes J0161.;
+FT                   Prophage Lp2 protein 6.; length=353; id 51.821%; ungapped
+FT                   id 52.857%; E()=3.1e-66; 357 aa overlap; query 1-355;
+FT                   subject 1-352"
+FT                   /status=" ; evidence=ISS"
+FT                   /locus_tag="SPN23F00270"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             complement(4447..4827)
+FT                   /class="5.1.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02301.out"
+FT                   /product="putative phage protein"
+FT                   /status=" ; evidence=ISS; db_xref=spyogenes:SpyM50633;
+FT                   date=20070823; method=automatic:top fasta hit"
+FT                   /locus_tag="SPN23F00280"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             complement(4840..5103)
+FT                   /class="5.1.3"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02302.out"
+FT                   /product="plasmid stabilisation system protein"
+FT                   /status=" ; evidence=ISS; db_xref=ssuis:SSU1318;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00290"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             complement(5103..5336)
+FT                   /class="0.0.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02303.out"
+FT                   /product="putative uncharacterized protein"
+FT                   /similarity="fasta; with=UniProt:A4VUR4 (EMBL:CP000407;);
+FT                   Streptococcus suis (strain 05ZYH33).; Putative
+FT                   uncharacterized protein.; length=78; id 32.468%; ungapped
+FT                   id 34.722%; E()=0.92; 77 aa overlap; query 5-76; subject
+FT                   1-77"
+FT                   /status=" ; evidence=ISS"
+FT                   /locus_tag="SPN23F00300"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             complement(5336..5704)
+FT                   /class="5.1.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02304.out"
+FT                   /product="putative phage DNA-binding protein"
+FT                   /status=" ; evidence=ISS; db_xref=spyogenes:SpyM51067;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00310"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             6002..6133
+FT                   /class="0.0.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02305.out"
+FT                   /product="putative uncharacterized protein"
+FT                   /similarity="fasta; with=UniProt:A5MWN9
+FT                   (EMBL:ABAG01000012;); Streptococcus pneumoniae SP23-BS72.;
+FT                   Putative uncharacterized protein.; length=66; id 77.143%;
+FT                   ungapped id 77.143%; E()=9e-08; 35 aa overlap; query 1-35;
+FT                   subject 1-35"
+FT                   /status=" ; evidence=ISS"
+FT                   /locus_tag="SPN23F00320"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             6276..6467
+FT                   /class="5.1.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02306.out"
+FT                   /product="putative DNA-binding protein"
+FT                   /status=" ; evidence=ISS; db_xref=spyogenes:SpyM51064;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00330"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             6490..6693
+FT                   /class="0.0.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02307.out"
+FT                   /product="putative uncharacterized protein"
+FT                   /similarity="fasta; with=UniProt:A5MC39
+FT                   (EMBL:ABAD01000037;); Streptococcus pneumoniae SP14-BS69.;
+FT                   Putative uncharacterized protein.; length=41; id 53.731%;
+FT                   ungapped id 87.805%; E()=5.6e-06; 67 aa overlap; query
+FT                   1-67; subject 1-41"
+FT                   /status=" ; evidence=ISS"
+FT                   /locus_tag="SPN23F00340"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             complement(6848..7015)
+FT                   /class="0.0.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02308.out"
+FT                   /product="putative uncharacterized protein"
+FT                   /similarity="fasta; with=UniProt:A5MC41
+FT                   (EMBL:ABAD01000037;); Streptococcus pneumoniae SP14-BS69.;
+FT                   Putative uncharacterized protein.; length=55; id 100.000%;
+FT                   ungapped id 100.000%; E()=4.6e-20; 55 aa overlap; query
+FT                   1-55; subject 1-55"
+FT                   /status=" ; evidence=ISS"
+FT                   /locus_tag="SPN23F00350"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             7035..7400
+FT                   /class="5.1.2"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02309.out"
+FT                   /note="Appears to be truncated"
+FT                   /product="putative peptidoglycan hydrolytic amidase
+FT                   (pseudogene)"
+FT                   /similarity="fasta; with=UniProt:Q8KLP2 (EMBL:AJ490805;);
+FT                   Streptococcus pneumoniae.; lytA; Peptidoglycan hydrolytic
+FT                   amidase.; length=318; id 94.231%; ungapped id 94.231%;
+FT                   E()=6.4e-41; 104 aa overlap; query 1-104; subject 215-318"
+FT                   /similarity="fasta; with=UniProt:P06653 (EMBL:M13812;);
+FT                   Streptococcus pneumoniae.; lytA; Autolysin (EC 3.5.1.28)
+FT                   (N-acetylmuramoyl-L-alanine amidase) (Murein hydrolase)
+FT                   (Mucopeptide aminohydrolase) (Cell wall hydrolase).;
+FT                   length=318; id 94.231%; ungapped id 94.231%; E()=6.4e-41;
+FT                   104 aa overlap; query 1-104; subject 215-318"
+FT                   /status=" ; evidence=ISS"
+FT                   /locus_tag="SPN23F00360"
+FT                   /primary_name=""
+FT                   /colour=11
+FT   CDS             join(7422..7454,7454..7639)
+FT                   /class="4.1.6"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02310.out"
+FT                   /note="Similar to one differently annotated in another
+FT                   pneumo genome"
+FT                   /product="putative membrane protein (pseudogene)"
+FT                   /similarity="fasta; with=UniProt:A5LFQ7
+FT                   (EMBL:AAZZ01000017;); Streptococcus pneumoniae SP3-BS71.;
+FT                   Putative uncharacterized protein.; length=70; id 93.617%;
+FT                   ungapped id 93.617%; E()=6e-16; 47 aa overlap; query 1-47;
+FT                   subject 24-70"
+FT                   /status=" ; evidence=ISS"
+FT                   /locus_tag="SPN23F00370"
+FT                   /primary_name=""
+FT                   /colour=11
+FT   CDS             complement(7620..7799)
+FT                   /class="7.0.0"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02311.out"
+FT                   /product="conserved hypothetical protein"
+FT                   /similarity="fasta; with=UniProt:Q8NX41 (EMBL:BA000033;);
+FT                   Staphylococcus aureus (strain MW2).; Putative
+FT                   uncharacterized protein MW1055.; length=62; id 48.214%;
+FT                   ungapped id 48.214%; E()=9.2e-06; 56 aa overlap; query
+FT                   1-56; subject 1-56"
+FT                   /similarity="fasta; with=UniProt:A5LXU0
+FT                   (EMBL:ABAC01000001;); Streptococcus pneumoniae SP11-BS70.;
+FT                   Putative uncharacterized protein.; length=59; id 96.610%;
+FT                   ungapped id 96.610%; E()=3.2e-19; 59 aa overlap; query
+FT                   1-59; subject 1-59"
+FT                   /status=" ; evidence=ISS; db_xref=saureusMSSA476:SAS1107;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00380"
+FT                   /note="BAGEL prediction: bacteriocin"
+FT                   /primary_name=""
+FT                   /colour=12
+FT   CDS             8395..8838
+FT                   /D39_orthologue="SPD_0027"
+FT                   /EC_number="3.6.1.23"
+FT                   /GO=" ; GOid=GO:0009220; ; ; ; ; date=20070823"
+FT                   /TIGR4_orthologue="SP_0021"
+FT                   /class="3.7.2"
+FT                   /db_xref="EC:3.6.1.23"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02312.out"
+FT                   /product="deoxyuridine 5'-triphosphate
+FT                   nucleotidohydrolase"
+FT                   /status=" ; evidence=ISS; db_xref=ssuis:SSU1823;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00390"
+FT                   /primary_name=""
+FT                   /gene="dut"
+FT                   /colour=4
+FT   CDS             8840..9355
+FT                   /D39_orthologue="SPD_0028"
+FT                   /TIGR4_orthologue="SP_0022"
+FT                   /class="7.0.0"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02313.out"
+FT                   /product="putative phosphoglycerate mutase family protein"
+FT                   /similarity="fasta; with=UniProt:Q04N45 (EMBL:CP000410;);
+FT                   Streptococcus pneumoniae serotype 2 (strain D39/NCTC
+FT                   7466).; Phosphoglycerate mutase family protein.;
+FT                   length=185; id 100.000%; ungapped id 100.000%;
+FT                   E()=2.9e-66; 185 aa overlap; query 1-185; subject 1-185"
+FT                   /status=" ; evidence=ISS; db_xref=ssuis:SSU1822;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00400"
+FT                   /primary_name=""
+FT                   /colour=4
+FT   CDS             9468..10730
+FT                   /D39_orthologue="SPD_0029"
+FT                   /class="2.2.3"
+FT                   /fasta_file="fasta/Spn23F.tab.seq.02314.out"
+FT                   /gene="radA"
+FT                   /product="putative DNA repair protein"
+FT                   /status=" ; evidence=ISS; db_xref=ssuis:SSU1821;
+FT                   date=20070823; method=automatic:reciprocal fasta"
+FT                   /locus_tag="SPN23F00410"
+FT                   /colour=4
+SQ   Sequence 10730 BP; 2978 A; 1820 C; 2389 G; 3543 T; 0 other;
+     atgacttcag ttgttgttgt aggtacccaa tggggtgatg aaggtaaagg gaagattaca        60
+     gacttccttt cagcgaatgc agaagtgatt gcacgttacc aaggtggtga taatgctggt       120
+     cacacgattg tgattgacgg taagaaattt aagttgcact tgattccatc tgggattttc       180
+     ttccctgaaa aaatatctgt cattgggaat ggtatggttg taaatcctaa atctcttgta       240
+     aaagagttga gctatcttca tgaggaaggt gtaacaactg ataacttgcg tatttctgat       300
+     cgtgcgcatg ttattttgcc ttatcatatc gagttggatc gcttgcaaga agaagctaag       360
+     ggcgacaata agattggtac gacaattaag ggaattggtc cagcttatat ggacaaggct       420
+     gctcgtgttg gaattcgtat tgcagatctt ttagataaag atattttccg tgagcgttta       480
+     gaacgtaacc ttgctgaaaa gaatcgtctt tttgaaaaat tgtatgacag taaagcgatt       540
+     gttttcgatg atatttttga agaatattac gaatatggtc aacaaatcaa gaaatacgtg       600
+     atagatacat ctgttatctt gaatgatgcg cttgataatg gcaaacgtgt gctttttgaa       660
+     ggtgcacaag gtgttatgct agatatcgac caaggtactt atccatttgt tacgtcatca       720
+     aaccctgtag ctggtggtgt gacaattggt tctggtgtcg gtccaagcaa gattgacaag       780
+     gttgtaggtg tatgtaaagc ttatacgagt cgtgtaggag atggtccttt cccaactgag       840
+     ttgtttgatg aagtgggaga acgtatccgt gaagtgggtc atgaatatgg tacaacaact       900
+     ggtcgtccac gtcgtgtagg ttggtttgac tcagttgtga tgcgtcatag ccgtcgtgtt       960
+     tctggtatta ctaacctttc tttgaactct attgatgttt tgagcggttt ggatactgtg      1020
+     aaaatctgtg tggcctatga tcttgacggt caacgtattg actactatcc agctagtctt      1080
+     gagcaattga aacgttgcaa gcctatctat gaagagttgc caggttggtc agaagatatt      1140
+     accggagttc gcaatttgga agatcttcct gagaatgcgc gtaactatgt tcgtcgtgtg      1200
+     agtgaattgg ttggcgttcg tatttctact ttctcagtag gtcctggtcg tgaacaaaca      1260
+     aatattttag aaagtgtttg gtcctaagag atttttaaga tttgtttaag ataggtcggg      1320
+     tatactatag acagttacaa gaagacctcc taacttgttg taacaaatat cctaaacttt      1380
+     tctttttcat aataatctcc ctatagagtc accgcattcg gtggcttctt ttgtgttggg      1440
+     attcatgata taataataaa atcgataagt aggaaaagag aaaagagatg tattatacgc      1500
+     ttgaagaaaa agaagtcttt atgagggagg ctttgagaga ggctgagatt gctcttgaac      1560
+     acgatgaaat tccaattggt tgtgtgattg tcaaagatgg ggaaatcatt ggtcgtgggc      1620
+     ataatgcgcg tgaggaatta cagcgagcgg ttatgcatgc ggaaattatg gctatagagg      1680
+     atgcgaactt gagtgaggag agctggcgct tgctggattg cacacttttt gtgaccattg      1740
+     aaccttgtgt catgtgtagt ggggcgattg ggcttgcccg cattccaaat gtggtctatg      1800
+     gggctaaaaa ccagaaattt ggcgctgctg ggagtttgta cgatatcttg acagatgagc      1860
+     gtctcaatca tcgtgtggag gttgaaatag gaattttgga agatgaatgc gcagctatca      1920
+     tgcaggattt ttttagaaat agacggaaaa aataattttg cttttaaaat gaataggaat      1980
+     gtgatataat aaatagtgga gcaacagttc tgcgtgaagc gggtcagggg aggaatccag      2040
+     cagccctaag cgatttgaat tgtgtgctct tttttcgtgc actttaaaaa ccctttaaaa      2100
+     tcaacacttt aaggggtttt tgtttgtctt gtataagaaa aaggggcaga cgaggggcac      2160
+     aatttaaaat tttatcttgt ctaacttgct agatatgtct gataccattt tttgagtaac      2220
+     gtgagaataa atctctagtg tggtctttga gtcactatgc cctactctgt ccatgatggc      2280
+     agtcaaggga atgcccagct cagcaagtag ggatatgtga gaatgtctaa atgtatgtgt      2340
+     agttatgttt ttttctatgc cgattttttg accatgtctt ttcaatgcac aaataaccct      2400
+     ggcatttgtt attggttctc ctagagtatt gatgaaaata aaatctgtat caaatccatt      2460
+     tgtcgcattc tctattattt gctctttgat aatatctaac actttttgag gtgctgttat      2520
+     aaccctatcg gacttgattg tctttggtgt agttctctct ttttgtctga aatcgtatgt      2580
+     atgcttgatg tgaatagtct ttttagaaaa atctatatct tccttgtagt ttaaggctgc      2640
+     cagctctcca tacctcatgc cagtaagaaa aagaacttta gctattcgga tatactttgt      2700
+     aattcgataa tcacataggg cctcgtcttt taaattttgg atgaataact taaactcttt      2760
+     ttggtctaag tattttgtat ttttctttct gagttcgtcg gatgtaatta cttttctagg      2820
+     cgtttcaaca aatagcattt catttgtatc aatataattc attctgatag caaatttcat      2880
+     tatctgattg agcttgaatt tgattttaga aacatagtta tgagatctcc catcttgtaa      2940
+     tagttgatct attacttttt gtaataaacg tctatcaaat ttctaactag gtagtcgccc      3000
+     tctatctgct ttaaaatctc tttttttaca ttctttgaag cgtagacggt tgagtttttt      3060
+     acgccgtgtt tccaattctc ctcaaattct tcatatagtt tttcaaaagt tatattagaa      3120
+     acagaatgtt gtttttctcc taacttttgt tttatctttt cctgaagtaa aatcgcagct      3180
+     tgatttcttg cttggggagt ttttttctcc atcgttactg agactttttt taatttctca      3240
+     gtatatggat ctttgtatct ctcaaaaaat ttatatttgc cgtttggcaa ttcttccatc      3300
+     cacattgatt ttacctcact tttttgataa aatgggtata gtaaagaggg ctttttttat      3360
+     tatgagaatt tcttgattac ttctaaaatt tcattggcat aatttgcgac ttcgagaggg      3420
+     gtagacaccg ggaagatgcc tttatcacgg atttcgatag tgcttttttt tgaatttgaa      3480
+     cgataacgta atacccattt tttgatgtta tcgtcaacca aaacattgaa atagctacgg      3540
+     ttatctctgt aaaatacacg ttctggagaa actacatccc tagcaagcat tttaacaaca      3600
+     gtataaactt ctaattcagc aggagttgtg ataatttcgt cagttacttc gacaatctct      3660
+     tcagcttcag cttcaacttt tggaatatcg gttgttactt tggtttcaac gcttgtatta      3720
+     agtgcagcac ttaatttttc attaactcgc tctgtgatga attgattaaa ccctttcaca      3780
+     ataatgggag aaaatgtcgt taagatattt tgagtaacac gcccttcata gatttcagaa      3840
+     gttagatatc tgaggaagct atctgacggt gtagtgatat tttcagtaag gaacgcttta      3900
+     agattgttga ggtatttcaa ttcagaagct gatgaaacaa tattatcaat atcaaaattc      3960
+     tctttgtgga atttgatgat ttcagtaaat tgattttctt tgatatcagt cacatcgatt      4020
+     gttaagaatg gagttgtgtc cattttattt ggctcatcta aatcagtaaa gaatttatat      4080
+     tctctaccat ttgtcaagat accgaatttt gatttagtag ttacgaaata tctgaatagt      4140
+     tgagagtcgt gcttagtaag gttttctgta attgatttac attcaattag gatttgaggc      4200
+     tcgccatcca aaatgatcgc atagtcgact ttttcgcctt ttttaatgcc cacgtcggca      4260
+     gtaaattccg ggacaaattc aagtggattg aagatatcat atccaagcgc ttggaagaac      4320
+     ggcataatga aggcattctt tgtttgttct tcattcgtaa tgctttggct gaggtctgct      4380
+     acacgtttgc cgacttgttt taaatcggct tttactttat caatttccat attgatactc      4440
+     ctttttttaa tttactaatg ctaaatactc ttctttaacc atgatttcat ttgtcatggt      4500
+     ttttagattg tagtaagaca tgaatttgag gtaatcaaac tctgtggggt cgtctaagtt      4560
+     ttctagagcg tcttttacga gatgatggat catattccta tcagcttcgt tttcacagcg      4620
+     tagacgggcg ttctggtgct ctgagcgtgt gtggtctttg tgtccaagtt cgtgtagggc      4680
+     gacttggatt tgttgttcag gagtcaagtt gtggtcaata gcgagcacgt ttgtgtctgg      4740
+     attgtagaaa ccgctattgt gccagtttga accgtcgaag agacaaagtt ctacttgata      4800
+     ttcttcgcag agtttagcga gtgtcatagt tctccttcgt tatttataga catctctgcg      4860
+     gtgggcgatt tccacggcta ggacgactag tttatcgtct tggatatcac agatgatgcg      4920
+     gtaattctct actctgtatc gccagtaacc tgcaaggttg gcttttagtg cttttccgtg      4980
+     ttgtcgtgga ttggtcgtgt tttcaatgtt tttagcaagc caggatagga tttgttttct      5040
+     ggttggggta tctagttttt taagttgctt gagagctttt ttatcaatat ctagccgata      5100
+     cattaagcaa tatcctctcg agttagtcct agttcatcca agacctcatc catggtataa      5160
+     gtagctgggt cggctaaata ctccatatag gcttggtcgg ctgctcgtgc gtcttcgata      5220
+     tcttccatga gtgccatgaa gtcgtcaaaa tccatggtcg ttgtgtcgat accgtgtttg      5280
+     tttaggtagt ccgtaatgta ggaatttttt tctgtgaagt tgatagtgat agtcattagc      5340
+     gttctccttt gcttttgaag tgggcggata ggacggatgt aatgaagtcg atatcatctt      5400
+     catttagtgg tttcccgtca aataacatgg tgttggctgc tgctttgcgt aagtctatga      5460
+     tttgtccgtt tacttgggca aattcatcac tcccagcgat agcagggtta tctgttcgtc      5520
+     cgagcaggta gtcggtggat acgttgaaat aattagcaat ttctgcgata cgttcagcgt      5580
+     ttggcgtaga attttttatc ttatagagtg tatttctacc ataacctaag tcttcttcta      5640
+     cttgtccaag agcttttcca cgcttttttg ccaattcttt tattttttca aatgtctcaa      5700
+     acattgttaa atcaaccttt ctaagacatc acaaaaaaaa tttaacaaat ttggtgtaaa      5760
+     aaggttgact aattatccca aaaggtgtaa aatgtttttt gtaagtgata aacaactaaa      5820
+     aaaacaacta agaaataaat tataaaaatg ttttggcgaa cggtatttat agatttattg      5880
+     gtgtttttat tatgctttaa ttttagccga tttggtgtaa gttgtcaagt ataatgcaga      5940
+     aaaatagtta catttttagt tgtttcttat ttacaaataa gtaaagagga ggaacgtgct      6000
+     gatggtaagt attcttaaaa atttagaaca agaaaaagac caccttgaaa aagtcattaa      6060
+     ggtagtcagc gctggtggta aatttctgag attgccatat caaaaaagtc acgctcgatt      6120
+     agtgagaatc tgaaattgat ttctcaaaat ctttaccatc atcgtagatg tcgcgtttgc      6180
+     ttgctttgag taaatattct ttaaaagtca taaggttaac tcctttctgc ttatattata      6240
+     gcagaaaaag aagaaagaaa aagaaaggag aaaatatgcc agatatcgca aacggtcgcg      6300
+     aaagagttat tgctttcttg aaagagaaag gcattaaaaa agcaactcta gcggttgctt      6360
+     acggctttaa acgacaggaa gtgacaaaca ttctaagtgg aacgactaaa ggtccacgag      6420
+     cgaacagttt cattcttcag gttattgaag attatgggat tgagtaggaa agatttgagg      6480
+     agtaggaaaa tgagaccaaa acgatatccg tatagtggac aaaaagagtc cacctttgta      6540
+     aaggcagacc ctgagttagt tgaaaaactt ttaagaaaca ctagttttct tgagtgttta      6600
+     caaaaaaagc ctatcaattt tcagatagac tcagaagaat ttaagcgtct tagctatgaa      6660
+     gccattcatg atacttctca agtaactcaa taggaggaag gaataaaatg attcaccatt      6720
+     atataactca ctatgccagc aatgggaaag attacgccga agcatggatt caaattgatt      6780
+     ttttgggaat gtgcttttgt gtatggaaaa agcgtacaac cattgaacga ttgtacgcaa      6840
+     acgaagatta gacttttttc caaccgttgc ctttagcaga tgtcggaggg agccgatcac      6900
+     cttttccgat agttgcggta tgaccattag taacttttcc gccacgaggt cctacctcta      6960
+     catagcgacc aggtttctga ttatctgttc caggttttat tggagtattt gccatactat      7020
+     ctcctccttt ctataagttt gagaaaatca acggtatctg gtattatttc gatggctcag      7080
+     gctatatgct ttcagaccgc tggaagaagc acacagacgg taattggtac tactttgacc      7140
+     aatcaggcga aatggccaca ggctggaaga aaatcgctga caagtggtac tattttgatg      7200
+     tagaaggtgc catgaagaca ggctgggtca agtacaagga cacttggtac tacttagacg      7260
+     ctaaagaagg cgccatggta tcaaatgcct ttatccagtc agcggacgga acaggctggt      7320
+     actacctcaa accagacgga acactggcag acaagccaga gttcacagta gagccagatg      7380
+     gcttgattac agttaaataa atagaaagga aactttctaa attgttcttt caccgcaggc      7440
+     tcaggcttgc ggttttttat ttgctctgat tcttcaaaaa agcgttttct tgaagaatag      7500
+     ggaggaggaa tggcagggta ttattgccaa aaacgccatt ttgttaataa tagctccttt      7560
+     ttattttttg attattgtca aaaacggtgt tttgtcaaaa ataaaaacag tgaccgaaat      7620
+     cactgcttat cagttgtagc aaattcataa agtttttctg ctgtgagaag tgccattttg      7680
+     tccatgcttg tttttccttt tctgaggtca gaaacagtag tccatggaac tccagcacct      7740
+     tgggaaatag cagatgtaga catcgaactg tctaacaatt cttgaataac ttctctcatc      7800
+     ttatttgtcc tttttatttt ttagataaat atatacattg accgcaatta taaaaatagc      7860
+     tattgcacta accattgctt ttcctctttt catttgataa aatagaggtg tgaggggctt      7920
+     tcgccccaac ctcttagcgt tcaccttttt ctttgacggg atttcggttt acgctttttg      7980
+     ttttgccttg cgaccgttat tgcagtcacc agacttgcta tagcagttac cgtttcaggg      8040
+     atattatcta tcgccttttc cagtaaccta agccaatctt ctttgttcaa cttcctcacc      8100
+     tcctttcctt atcttgatta tattatatca cggtaaaccg tgaaagtcaa gcgatttgat      8160
+     gaagtttttt tgaaaaacaa aggggcaaaa aaggggcaaa agtgtcgtaa acctctgtaa      8220
+     aacgatgtaa aaaatcaact ttgccctcgc tttaaagctc taaatttcaa cgtattgtga      8280
+     aacagtgtaa attatcgtat cgcctataat tgttgtgtgc tctttttttc gtgctttttc      8340
+     cgaataaata agatagaata atctagaata aatgataata gaaaagagaa aattatgaaa      8400
+     attcgtggtt ttgaattggt ttcgagtttt acagatgaaa atttattgcc caagcgtgag      8460
+     acagcgcatg cggctggtta cgacttaaag gttgctgtgc gtacagttgt tgcgccagga      8520
+     gagattgtct tggttccgac aggggttaag gcttatatgc agccgactga ggttctctac      8580
+     ctctatgatc gttcttcaaa tcctcgtaag aagggcttgg ttttaattaa ctcagttggg      8640
+     gtcattgatg gggattatta tggaaatcct ggaaatgaag ggcatatttt tgcgcagatg      8700
+     aagaatatca cagatcaaga ggttgttctt gaagttgggg aacgtattgt ccaggctgtt      8760
+     tttgctactt tcttaattgc agatggagat gcagctgatg gcgttcgaac tggtggattt      8820
+     ggatcgacag ggcactagaa tgaagattat ctttgtacgt catggggagc cagattaccg      8880
+     tgagttagag gagcgttctt atataggatt tgggatagat ttggcaccct tgtctgagat      8940
+     gggacggcag caagtccaga aattgagcaa aaatccttta ctctcgtcag ctgaaataat      9000
+     cgtatcttct gcagtcacaa gagctttaga aacggcttcg tatgtggtct gtgctacggg      9060
+     tcttccttta agagtagagc ctttattaca tgaatggcag gtctataaaa caggaataga      9120
+     aaactttgaa acagctagaa gactgttttt agaaaacaag ggggagttgc ttcctaatag      9180
+     tcctattcaa tatgagacag ctacggaaat gaagtctcgg tttctagaat gtatgtctaa      9240
+     gtatcgagaa catcagactg tggtagttgt tgctcatcga atgctcatgc gccagtttgt      9300
+     gccaaatgag aagattgatt tttgccaagt gattgagtgt gagttagaga tatagaaaga      9360
+     ggtttgtcat cgcaaagaaa aaagcgacat ttgtatgtca aaattgtggg tataattccc      9420
+     ctaaatatct gggacgttgc cccaactgtg ggtcttggtc ttcttttgtg gaagaggttg      9480
+     aggttgccga ggtcaagaat gcgcgtgtgt ccttgacagg tgagaaaacc aagcccatga      9540
+     aactagctga ggtgacttcc atcaatgtca atcgaaccaa gacggagatg gaggaattca      9600
+     accgtgtgct tggaggcgga gtggtaccag gaagtctcgt cctcatcggt ggggatcctg      9660
+     ggattgggaa atcaactctt ctcctacaag tctcaaccca gttgtcccaa gtggggacag      9720
+     ttctctatgt cagtggggag gagtctgccc agcagattaa actacgtgca gagcgcttag      9780
+     gtgatattga tagtgagttt tatctctatg cagagaccaa tatgcagagt gttcgtgcag      9840
+     aagtggagcg tatccagcca gactttctca ttattgattc catccagacc atcatgtctc      9900
+     ctgagatttc aggggtgcag gggtctgttt ctcaggtacg tgaagtgacc gctgaactca      9960
+     tgcagttggc caagaccaat aacattgcca tctttatcgt aggtcatgtg accaaagaag     10020
+     gaaccttggc tgggcctcgt atgttggagc atatggtgga tacggtgctt tactttgaag     10080
+     gggagcgtca ccacaccttt cgtattttga gagcggtcaa aaatcgtttt ggttccacta     10140
+     atgagattgg gatttttgag atgcagtcgg gcggcttggt tgaggtactc aatccgagtc     10200
+     aagttttcct agaagagcgt ttggatgggg cgactggttc ctccatcgtt gtaaccatgg     10260
+     aagggacgcg tccgattttg gcggaggttc aggctttggt aacaccgacc atgtttggaa     10320
+     atgccaagcg tactacgaca ggacttgatt ttaaccgtgc tagcttgatt atggctgttt     10380
+     tggaaaaacg ggcagggctt ctcttgcaaa atcaggatgc ctatctcaaa tctgctggtg     10440
+     gtgttaaatt ggatgaacct gccattgact tggctgttgc agttgctatt gcttcgagct     10500
+     acaaagacaa gccaactaat cctcaggaat gttttgtcgg agaactgggc ttgacaggag     10560
+     agattcggcg cgtgaatcgt attgagcaac gcatcaacga agctgctaaa ctgggcttta     10620
+     ctaagattta tgtacctcag aattccttga caggaatcac tctgcctaag gaaattcagg     10680
+     tcattggcgt gacaacgatt caggaagtct tgaaaaaggt ctttgcataa                10730
+//
