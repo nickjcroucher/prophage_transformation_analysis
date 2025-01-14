@@ -1,0 +1,13 @@
+﻿Genotype,Rif number of colonies ,Volume  on rif plate,Rif colonies per 1 microlitres,Kan number of colonies,Volume on kan plate,kan colonies per 1 microlitres,deletions
+RMV8  (prophage::ermB),14,2.5,5.6,43,2.5,17.2,3.071428571
+RMV8  (prophage::ermB),15,2.5,6,64,2.5,25.6,4.266666667
+RMV8  (prophage::ermB),56,2.5,22.4,105,2.5,42,1.875
+RMV8 integrase::Janus (prophage::ermB),129,2.5,51.6,120,2.5,48,0.930232558
+RMV8 integrase::Janus (prophage::ermB),44,2.5,17.6,80,2.5,32,1.818181818
+RMV8 integrase::Janus (prophage::ermB),4,2.5,1.6,27,2.5,10.8,6.75
+RMV8 hybrid zn::cat (prophage::ermB),37,2.5,14.8,113,2.5,45.2,3.054054054
+RMV8 hybrid zn::cat (prophage::ermB),18,2.5,7.2,36,2.5,14.4,2
+RMV8 hybrid zn::cat (prophage::ermB),150,2.5,60,163,2.5,65.2,1.086666667
+RMV8 hybrid zn::cat integrase::Janus(prophage::ermB),16,2.5,6.4,78,2.5,31.2,4.875
+RMV8 hybrid zn::cat integrase::Janus(prophage::ermB),14,2.5,5.6,79,2.5,31.6,5.642857143
+RMV8 hybrid zn::cat integrase::Janus(prophage::ermB),19,2.5,7.6,162,2.5,64.8,8.526315789

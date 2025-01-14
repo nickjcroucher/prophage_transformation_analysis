@@ -1,0 +1,28 @@
+﻿Mutants,Rif colonies,Volume,per_1,Kan_colonies,Volume,per_1,Transformation efficiency
+RMV4 ivr tvrR,334,5,66.8,410,5,82,1.22754491
+RMV4 ivr tvrR,49,5,9.8,115,5,23,2.346938776
+RMV4 ivr tvrR rep::cat,93,5,18.6,182,5,36.4,1.956989247
+RMV4 ivr tvrR lytA::cat,146,5,29.2,248,5,49.6,1.698630137
+RMV4 ivr tvrR int::cat,53,5,10.6,116,5,23.2,2.188679245
+RMV4 ivr tvrR,10,5,2,44,5,8.8,4.4
+RMV4 ivr tvrR,6,5,1.2,23,5,4.6,3.833333333
+RMV4 ivr tvrR int::cat,11,5,2.2,22,5,4.4,2
+RMV4 ivr tvrR int::cat,42,5,8.4,82,5,16.4,1.952380952
+RMV4 ivr tvrR rep::cat,13,5,2.6,52,5,10.4,4
+RMV4 ivr tvrR rep::cat,3,5,0.6,13,5,2.6,4.333333333
+RMV4 ivr tvrR lytA::cat,51,5,10.2,89,5,17.8,1.745098039
+RMV4 ivr tvrR lytA::cat,11,5,2.2,26,5,5.2,2.363636364
+RMV4 ivr tvrR,5,5,1,24,5,4.8,4.8
+RMV4 ivr tvrR rep::cat,5,5,1,62,5,12.4,12.4
+RMV4 ivr tvrR lytA::cat,4,5,0.8,28,5,5.6,7
+RMV4 ivr tvrR int::cat,84,5,16.8,102,5,20.4,1.214285714
+RMV4 ivr tvrR,6,5,1.2,32,5,6.4,5.333333333
+RMV4 ivr tvrR rep::cat,5,5,1,9,5,1.8,1.8
+RMV4 ivr tvrR lytA::cat,228,5,45.6,256,5,51.2,1.122807018
+RMV4 ivr tvrR int::cat,1,5,0.2,3,5,0.6,3
+RMV4 ivr tvrR,158,7.5,21.06666667,265,7.5,35.33333333,1.67721519
+RMV4 ivr tvrR rep::cat,119,7.5,15.86666667,83,7.5,11.06666667,0.697478992
+RMV4 ivr tvrR lytA::cat,74,7.5,9.866666667,105,7.5,14,1.418918919
+RMV4 ivr tvrR int::cat,53,7.5,7.066666667,198,7.5,26.4,3.735849057
+RMV4 ivr tvrR,55,5,11,129,5,25.8,2.345454545
+RMV4 ivr tvrR,35,5,7,102,5,20.4,2.914285714
