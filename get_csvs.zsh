@@ -1,1 +1,0 @@
-for f in $(grep -v '#'  prophage_transformation_analysis.Rmd | grep read.csv); do fn=`echo $f | perl -lane 'if (/\"(.+)\"/) {print $1}'`; if [[  ! -z $fn ]]; then fn=`echo $fn | sed 's/\~/\/Users\/ncrouche/g'`; g=`basename $fn`; cp $fn $g; fi; done 
