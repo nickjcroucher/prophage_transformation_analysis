@@ -715,7 +715,7 @@ phage_blast_threshold <- 5000
 
 # In the 20047 sequences
 phage_hit_lengths.df <-
-  read.csv("longest_phage_hits.csv")
+  read.csv("./sequence_analysis/longest_phage_hits.csv")
 
 phage_hit_length_plot <-
   ggplot(phage_hit_lengths.df,
@@ -833,10 +833,10 @@ We now look at the distribution of MGE insertion sites:
 ``` {r Prophage insertion sites, fig.width = 18, fig.height = 8}
 
 gps.df <-
-  read.csv("gps_info.csv")
+  read.csv("./sequence_analysis/gps_info.csv")
 
 phage_insertions.df <-
-  read.csv(file = "Spn_att.csv") %>%
+  read.csv(file = "./sequence_analysis/Spn_att.csv") %>%
     dplyr::mutate(att = paste0(gsub("att_","italic(attB)[italic(",att),")]")) %>%
     dplyr::mutate(att = dplyr::case_when(
                       att == "italic(attB)[italic(OXC)]" ~ "italic(attB)[OXC]",
@@ -996,7 +996,7 @@ FastTree int_sequences.aln > int_sequences.tree
 ``` {r Plot integrase phylogeny}
 
 int.tree <-
-  ape::read.tree("int_sequences.tree")
+  ape::read.tree("./sequence_analysis/int_sequences.tree")
 
 int.tree <- phytools::midpoint.root(int.tree)
 
@@ -1058,7 +1058,7 @@ FastTree -nt < central_att_sites.aln > central_att_sites.tree
 
 ``` {r Plot att site tree}
 
-att_tree <- read.tree("central_att_sites.tree")
+att_tree <- read.tree("./sequence_analysis/central_att_sites.tree")
 
 att_tree <- phytools::midpoint.root(att_tree)
 
@@ -1081,7 +1081,7 @@ att_sit_tree <-
 ``` {r Distance to BOX elements, fig.height = 11, fig.width = 8}
 
 box.positions <-
-  read.table(file = "R6_BOX_positions.list") %>% dplyr::pull()
+  read.table(file = "./sequence_analysis/R6_BOX_positions.list") %>% dplyr::pull()
 
 box_att_site_distances.df <-
   att_sites.df %>%
@@ -1137,7 +1137,7 @@ regulator_palette <- c(
 )
 
 ma_phage.df <-
-  read.csv("prophage_regulatory_summary.csv") %>%
+  read.csv("./sequence_analysis/prophage_regulatory_summary.csv") %>%
     dplyr::mutate(Regulator =
                     dplyr::case_when(
                       regulator == "None" ~ "No identified\nregulator",
@@ -1218,7 +1218,7 @@ process_hmm_hits<-function(fn) {
 
 # Load the hits with the function
 hmm_hits.df <-
-  process_hmm_hits("gps_phage_domains.tab") %>%
+  process_hmm_hits("./sequence_analysis/gps_phage_domains.tab") %>%
     dplyr::mutate(
       Regulator = dplyr::case_when(
         `query name` == "phage_DUF955" ~ "ImmAR-like",
@@ -1521,7 +1521,7 @@ chisq.test(reg_differences.table)
 # rmv8.granges.list<-gffReadGR("~/Documents/RMS/pv_RNA_seq/RMV8_annotations/SAMEA1463109_ncRNA.gtf",
 #                         splitByTranscript = TRUE,
 #                         identifier = "gene_id")
-r6.granges.list<-gffRead("/Users/ncrouche/Documents/transformationMGE/prophage_deletion/figures/R6.gff",nrows = 2315)
+r6.granges.list<-gffRead("./sequence_analysis/R6.gff",nrows = 2315)
 
 r6.df <-
     data.frame(
@@ -1891,7 +1891,7 @@ par(old.par)
 ``` {r Comparison of scr genes}
 
 scr.df <-
-  read.csv(file = "Modified_scRNA_transformation_final_final_03052024.csv") %>%
+  read.csv(file = "./transformation_data/Modified_scRNA_transformation_final_final_03052024.csv") %>%
     dplyr::filter(mutants != "scRNA_two_SNPs") %>%
     dplyr::mutate(mutants = dplyr::case_when(
           mutants == "R6x" ~ "R6",
@@ -1940,7 +1940,7 @@ ncrna_transformation_changes_plot <-
 ``` {r Fitness effect of disrupting srpRNA, fig.width=6}
 
 att_srpRNA_growth.df <-
-  get_growth_curve_df(read.csv("R6x_growth_repeat_titration.csv"))
+  get_growth_curve_df(read.csv("./growth_curves/R6x_growth_repeat_titration.csv"))
 
 # plot
 r6_scr_growth_plot <-
@@ -1989,11 +1989,11 @@ cat upstream_immAR_region.fa cat.fa downstream_int_region.fa > RMV8_immARcat_lys
 
 phage_mutant_growth.df <-
   dplyr::bind_rows(
-    get_growth_curve_df(read.csv("RMV8_growth_curves.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_growth_curves.csv")) %>%
       dplyr::mutate(phage = "phi*'RMV8'"),
-    get_growth_curve_df(read.csv("2743_growth_curves.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_growth_curves.csv")) %>%
       dplyr::mutate(phage = "phi*'08B02743'"),
-    get_growth_curve_df(read.csv("RMV4_phageKO_normal_growth_curve.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_phageKO_normal_growth_curve.csv")) %>%
       dplyr::mutate(phage = "phi*'RMV4'")
   ) %>%
   dplyr::mutate(phage = factor(phage,
@@ -2046,7 +2046,7 @@ rif_threshold <- 5
 
 deletions.df <-
   dplyr::bind_rows(
-    read.csv("RMV8_rates_deletions.csv") %>%
+    read.csv("./transformation_data/RMV8_rates_deletions.csv") %>%
       dplyr::mutate(phage = "phi*'RMV8'") %>%
       dplyr::rename(Rif.colonies = Rif.colonies,
                     Rif.volume = Volume,
@@ -2055,7 +2055,7 @@ deletions.df <-
                     Kan.volume = Volume.1,
                     Kan.per_1 = per_1.1,
                     Deletion_ratio = Transformation.efficiency),
-    read.csv("2743_rates_deletions_raw.csv") %>%
+    read.csv("./transformation_data/2743_rates_deletions_raw.csv") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::rename(Rif.colonies = Number.of.Rif..colonies,
                     Rif.volume = Volume.of.transformants_Rif,
@@ -2064,7 +2064,7 @@ deletions.df <-
                     Kan.volume = Volume.of.transformants_Kan,
                     Kan.per_1 = per_1.1,
                     Deletion_ratio = Transformat),
-    read.csv("RMV4_rates_deletions_raw.csv") %>%
+    read.csv("./transformation_data/RMV4_rates_deletions_raw.csv") %>%
       dplyr::mutate(phage = "phi*'RMV4'") %>%
       dplyr::rename(Rif.colonies = Rif.colonies,
                     Rif.volume = Volume,
@@ -2073,7 +2073,7 @@ deletions.df <-
                     Kan.volume = Volume.1,
                     Kan.per_1 = per_1.1,
                     Deletion_ratio = Transformation.efficiency),
-    read.csv("RMV8_Hybrid_int_rates_deletions.csv") %>%
+    read.csv("./transformation_data/RMV8_Hybrid_int_rates_deletions.csv") %>%
       dplyr::rename(Mutants = Genotyupe) %>%
       dplyr::mutate(phage = dplyr::if_else(grepl("hybrid",Mutants),
                                            "phi*'RMV8'[italic(immARcat)]",
@@ -2086,7 +2086,7 @@ deletions.df <-
                     Kan.volume = Volume.on.ery.plate,
                     Kan.per_1 = ery.colonies.per.1.microlitres,
                     Deletion_ratio = deletions),
-    read.csv("2743_additional_deletions.csv") %>%
+    read.csv("./transformation_data/2743_additional_deletions.csv") %>%
       dplyr::rename(Mutants = mutants) %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::rename(Rif.colonies = Count_rif,
@@ -2322,7 +2322,7 @@ g <- guide_legend(nrow = 2,
                     title = NULL)
 
 control_growth.df <-
-  get_growth_curve_df(read.csv("RMV8_mutants_pro_ermB_control.csv"))
+  get_growth_curve_df(read.csv("./growth_curves/RMV8_mutants_pro_ermB_control.csv"))
 
 # Growth curve plots over time
 control_growth_curve_plot <-
@@ -2347,7 +2347,7 @@ control_growth_curve_plot <-
 
 
 control_deletions.df <-
-  read.csv("control_prophageKO.csv") %>%
+  read.csv("./transformation_data/control_prophageKO.csv") %>%
     dplyr::filter(Rif.number.of.colonies >= 5) %>%
     dplyr::mutate(Genotype_colour = dplyr::case_when(
         Genotype == "RMV8  (prophage::ermB)" ~ "RMV8_phage_ermB",
@@ -2418,7 +2418,7 @@ cowplot::plot_grid(
 ``` {r Active pvRMS ratios, fig.height = 11, fig.width = 8}
 
 active_pvrms_ratios.df <-
-  read.csv("rates_of_deletion_Ion_Aug_2022.csv") %>%
+  read.csv("./transformation_data/rates_of_deletion_Ion_Aug_2022.csv") %>%
     dplyr::filter(Genotype != "RMV4_2743Φ") %>%
     dplyr::mutate(Genotype = dplyr::if_else(Genotype == "2743","08B02743",Genotype)) %>%
     dplyr::mutate(phage = dplyr::case_when(
@@ -2447,7 +2447,7 @@ active_pvrms_ratios.df <-
 
 pvrms_versions.df <-
   dplyr::bind_rows(
-    read.csv("2743_tvrR_rates_deletions.csv") %>%
+    read.csv("./transformation_data/2743_tvrR_rates_deletions.csv") %>%
       dplyr::mutate(mutant = dplyr::case_when(
           Genotype == "2743 ivr tvrR" ~ "WT",
           Genotype == "2743 ivr tvrR int::cat" ~ "int",
@@ -2495,7 +2495,7 @@ pv_rms_in_rmv.df <-
                                            phage)) %>%
       dplyr::mutate(phage = paste0('""~',phage,'~""')),
     # RMV4 with active pvRMS
-    read.csv("RMV4_Ion_deletion_data.csv") %>%
+    read.csv("./transformation_data/RMV4_Ion_deletion_data.csv") %>%
       dplyr::mutate(mutant = dplyr::case_when(
           Genotype == "WT" ~ "WT",
           Genotype == "∆int" ~ "int",
@@ -2512,7 +2512,7 @@ pv_rms_in_rmv.df <-
       ) %>%
       dplyr::mutate(phage = '""~phi*"RMV4"~italic(ivr)^"+"~Delta*italic(tvrR)~""'),
     # RMV8 with active pvRMS
-    read.csv("RMV8_Ion_deletion_data.csv") %>%
+    read.csv("./transformation_data/RMV8_Ion_deletion_data.csv") %>%
       dplyr::mutate(mutant = dplyr::case_when(
           Genotype == "WT" ~ "WT",
           Genotype == "int::cat" ~ "int",
@@ -2616,7 +2616,7 @@ cowplot::plot_grid(
 ``` {r Prophage insertion, fig.width = 6}
 
 insertion.df <-
-  read.csv("RMV8_prophage_insertion_RAW_DATA.csv") %>%
+  read.csv("./transformation_data/RMV8_prophage_insertion_RAW_DATA.csv") %>%
   dplyr::filter(Recipient != "") %>%
   dplyr::filter(Volume.of.transformants.on.Rif == 5)
 
@@ -2638,7 +2638,7 @@ ggplot(insertion.df,
 
 rmv4_overnight_excision_df <-
   dplyr::bind_rows(
-    read.csv("22072024_Overnight_0.2_20hr_RMV4.csv")
+    read.csv("./qPCR/22072024_Overnight_0.2_20hr_RMV4.csv")
   ) %>%
   dplyr::mutate(Condition = dplyr::case_when(
       grepl("CSP",mutants) ~ "CSP",
@@ -2670,19 +2670,19 @@ ggplot(rmv4_overnight_excision_df,
 
 activation.df <-
   dplyr::bind_rows(
-    read.csv("RMV8_col4_ADbyAB_phage_Hybrid_July_v2.csv") %>%
+    read.csv("./qPCR/RMV8_col4_ADbyAB_phage_Hybrid_July_v2.csv") %>%
       dplyr::rename(ratio = ADbyAB),
-    read.csv("2743_ADAB_overnights.csv"),
-    read.csv("RMV4_ADbyAB_overnights.csv"),
-    read.csv("overnight_ADbyAB.csv") %>%
+    read.csv("./qPCR/2743_ADAB_overnights.csv"),
+    read.csv("./qPCR/RMV4_ADbyAB_overnights.csv"),
+    read.csv("./qPCR/overnight_ADbyAB.csv") %>%
       dplyr::slice_tail(n=-2) %>% # remove first two lines - 3rd technical replicate failed
       dplyr::filter(!(mutants == "2743_immAcat" & ADbyAB > 0.001)) %>% # remove experiments with incorrect mutant
       dplyr::rename(ratio = ADbyAB),
-    read.csv("immA_new_replicate_ADbyAB.csv") %>%
+    read.csv("./qPCR/immA_new_replicate_ADbyAB.csv") %>%
       dplyr::mutate(mutants = dplyr::if_else(grepl("2743_immA",mutants),"2743_immAcat",mutants)) %>%
       dplyr::rename(ratio = ADbyAB),
     # RMV4 spaL and dprA 
-    read.csv("Overnight_CSP_18hr.csv") %>%
+    read.csv("./qPCR/Overnight_CSP_18hr.csv") %>%
       dplyr::filter(!(grepl("CSP",mutants))) %>%
       dplyr::mutate(mutants = dplyr::case_when(
           grepl("_spaL_",mutants) ~ "RMV4_spaLJanus",
@@ -2692,11 +2692,11 @@ activation.df <-
       ) %>%
       dplyr::rename(ratio = ADbyAB),
     # Extra replicates
-    read.csv("Overnight_AdbyAB_extra_July.csv") %>%
+    read.csv("./qPCR/Overnight_AdbyAB_extra_July.csv") %>%
       dplyr::rename(ratio = ADbyAB),
-    read.csv("Overnight_RMV8_ADbyAB.csv") %>%
+    read.csv("./qPCR/Overnight_RMV8_ADbyAB.csv") %>%
       dplyr::rename(ratio = ADbyAB),
-    read.csv("Overnight_extra_ADbyAB_August.csv") %>%
+    read.csv("./qPCR/Overnight_extra_ADbyAB_August.csv") %>%
       dplyr::rename(ratio = ADbyAB)
   ) %>%
   dplyr::rename(Genotype = mutants) %>%
@@ -2896,14 +2896,14 @@ g <- guide_legend(nrow = guide_nrow,
 # RMV8
 phi_rmv8_growth.df <-
   get_growth_curve_df(purrr::map(list(
-                                  "1207_withoutMitomycin_RMV8.csv",
-                                  "1207_withMitomycin_RMV8.csv",
-                                  "1207_withoutMitomycin_RMV8_PhageKO.csv",
-                                  "1207_withMitomycin_RMV8_PhageKO.csv",
-                                  "1807_RMV8_recAKO_without_mitomycin.csv",
-                                  "1807_RMV8_recAKO_with_mitomycin.csv",
-                                  "1807_RMV8_phageKO_recAKO_without_mitomycin.csv",
-                                  "1807_RMV8_phageKO_recAKO_with_mitomycin.csv"
+                                  "./growth_curves/1207_withoutMitomycin_RMV8.csv",
+                                  "./growth_curves/1207_withMitomycin_RMV8.csv",
+                                  "./growth_curves/1207_withoutMitomycin_RMV8_PhageKO.csv",
+                                  "./growth_curves/1207_withMitomycin_RMV8_PhageKO.csv",
+                                  "./growth_curves/1807_RMV8_recAKO_without_mitomycin.csv",
+                                  "./growth_curves/1807_RMV8_recAKO_with_mitomycin.csv",
+                                  "./growth_curves/1807_RMV8_phageKO_recAKO_without_mitomycin.csv",
+                                  "./growth_curves/1807_RMV8_phageKO_recAKO_with_mitomycin.csv"
                                 ),
                                read.csv) %>%
                       purrr::reduce(left_join, by = "OD600"),
@@ -2915,8 +2915,8 @@ phi_rmv8_growth.df <-
 # RMV8 hybrid
 phi_rmv8_hybrid_growth.df <-
   get_growth_curve_df(purrr::map(list(
-                                  "1207_withMitomycin_Hybrid_RMV8.csv",
-                                  "1207_withoutMitomycin_Hybrid_RMV8.csv"
+                                  "./growth_curves/1207_withMitomycin_Hybrid_RMV8.csv",
+                                  "./growth_curves/1207_withoutMitomycin_Hybrid_RMV8.csv"
                                 ),
                                read.csv) %>%
                       purrr::reduce(left_join, by = "OD600"),
@@ -2928,10 +2928,10 @@ phi_rmv8_hybrid_growth.df <-
 
 # 08B02743
 phi_08B02743_hybrid_growth.df <-
-  get_growth_curve_df(dplyr::left_join(read.csv("2743_CSP_Mitomycin_DNA.csv"),
-                                     read.csv("2743_prophageKO_CSP_Mitomycin_DNA.csv"),
+  get_growth_curve_df(dplyr::left_join(read.csv("./growth_curves/2743_CSP_Mitomycin_DNA.csv"),
+                                     read.csv("./growth_curves/2743_prophageKO_CSP_Mitomycin_DNA.csv"),
                                      by = c("OD600")) %>%
-                      dplyr::left_join(read.csv("2743_recAKO_CSP_Mitomycin_DNA.csv")),
+                      dplyr::left_join(read.csv("./growth_curves/2743_recAKO_CSP_Mitomycin_DNA.csv")),
     threshold = 7.5
   ) %>%
   dplyr::mutate(phage = "phi*'08B02743'") %>%
@@ -2939,14 +2939,14 @@ phi_08B02743_hybrid_growth.df <-
 
 # second dataset
 phi_rmv8_and_hybrid_with_mmc.df <-
-  get_growth_curve_df(read.csv("2nd_replicate_RMV8.csv"),
+  get_growth_curve_df(read.csv("./growth_curves/2nd_replicate_RMV8.csv"),
     threshold = 7.5) %>%
     dplyr::mutate(phage = dplyr::if_else(Genotype == "RMV8_Znregcat","phi*RMV8[Zn*italic(reg)*'::'*italic(cat)]","phi*'RMV8'")) %>%
   dplyr::mutate(dataset = 4)
 
 # third dataset
 phi_rmv8_and_hybrid_with_without_mmc.df <-
-  get_growth_curve_df(read.csv("3rd_replicate_RMV8.csv"),
+  get_growth_curve_df(read.csv("./growth_curves/3rd_replicate_RMV8.csv"),
     threshold = 7.5) %>%
   dplyr::mutate(phage = dplyr::case_when(Genotype == "RMV8_Znregcat" ~ "phi*RMV8[Zn*italic(reg)*'::'*italic(cat)]",
                                          Genotype == "RMV8" ~ "phi*'RMV8'",
@@ -2956,7 +2956,7 @@ phi_rmv8_and_hybrid_with_without_mmc.df <-
 
 # RMV4 data
 phi_rmv4_and_hybrid_with_without_mmc.df <-
-  get_growth_curve_df(read.csv("RMV4_mitomycin_CSP_GD_growth.csv"),
+  get_growth_curve_df(read.csv("./growth_curves/RMV4_mitomycin_CSP_GD_growth.csv"),
     threshold = 7.5) %>%
   dplyr::mutate(phage = dplyr::case_when(
                         grepl("RMV4_Zn",Genotype) ~ "phi*RMV4[Zn*italic(reg)*'::'*italic(cat)]",
@@ -2967,7 +2967,7 @@ phi_rmv4_and_hybrid_with_without_mmc.df <-
 
 # Fifth replicate - RMV8 data
 phi_rmv8_and_hybrid_with_without_mmc_replicate_2.df <-
-  get_growth_curve_df(read.csv("growth_fifth_replicate.csv"),
+  get_growth_curve_df(read.csv("./growth_curves/growth_fifth_replicate.csv"),
     threshold = 7.5) %>%
   dplyr::mutate(phage = dplyr::case_when(
                         grepl("RMV8_phageJanus",Genotype) ~ "phi*RMV8",
@@ -2980,7 +2980,7 @@ phi_rmv8_and_hybrid_with_without_mmc_replicate_2.df <-
 # Sixth replicate - 2743, RMV4 and RMV8 data
 additional_exposure_replicates.df <-
   dplyr::bind_rows(
-    get_growth_curve_df(read.csv("2743_two_replicate_MMC_GD.csv") %>% 
+    get_growth_curve_df(read.csv("./growth_curves/2743_two_replicate_MMC_GD.csv") %>% 
       rename_with(~ stringr::str_replace(.x, 
                                          pattern = "control", 
                                          replacement = "X2743"),
@@ -2991,7 +2991,7 @@ additional_exposure_replicates.df <-
                   matches("MMC")),
         threshold = 7.5) %>%
       dplyr::mutate(phage = "phi*'08B02743'"),
-    get_growth_curve_df(read.csv("RMV4_two_replicate_MMC_GD.csv") %>% 
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_two_replicate_MMC_GD.csv") %>% 
       rename_with(~ stringr::str_replace(.x, 
                                          pattern = "control", 
                                          replacement = "RMV4"),
@@ -3002,7 +3002,7 @@ additional_exposure_replicates.df <-
                   matches("MMC")),
         threshold = 7.5) %>%
       dplyr::mutate(phage = "phi*RMV4'"),
-    get_growth_curve_df(read.csv("RMV8_two_replicate_MMC_GD.csv") %>% 
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_two_replicate_MMC_GD.csv") %>% 
       rename_with(~ stringr::str_replace(.x, 
                                          pattern = "control", 
                                          replacement = "RMV8"),
@@ -3013,7 +3013,7 @@ additional_exposure_replicates.df <-
                   matches("MMC")),
         threshold = 7.5) %>%
       dplyr::mutate(phage = "phi*RMV8'"),
-    get_growth_curve_df(read.csv("RMV8_two_replicate_MMC_GD.csv") %>% 
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_two_replicate_MMC_GD.csv") %>% 
       rename_with(~ stringr::str_replace(.x, 
                                          pattern = "control", 
                                          replacement = "RMV8_recAJanus"),
@@ -3176,9 +3176,9 @@ time_threshold <- 8
 
 rmv8_hybrid_iptg_growth.df <-
   dplyr::bind_rows(
-    get_growth_curve_df(read.csv("RMV8_plac_recA_growth_GD_MMC.csv"), threshold = time_threshold) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_plac_recA_growth_GD_MMC.csv"), threshold = time_threshold) %>%
       dplyr::mutate(Genotype = "phi*'RMV8'~italic(recA)[italic(lacI)]"),
-    get_growth_curve_df(read.csv("RMV8_Hybrid_HF_plac_recA_growth_GD_MMC.csv"), threshold = time_threshold) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_Hybrid_HF_plac_recA_growth_GD_MMC.csv"), threshold = time_threshold) %>%
       dplyr::mutate(Genotype = "phi*'RMV8'[italic(immARcat)]~italic(recA)[italic(lacI)]")
   ) %>%
   dplyr::mutate(dataset = 1) %>%
@@ -3340,35 +3340,35 @@ cowplot::plot_grid(
 
 partial_deletions.df <-
   dplyr::bind_rows(
-    read.csv("2743_partial_using_GD_July.csv") %>%
+    read.csv("./transformation_data/2743_partial_using_GD_July.csv") %>%
       dplyr::mutate(phage = "phi*'08B02743'",
                     Genotype = "08B02743",
                     conditions = "gDNA"),
-    read.csv("2743_partial_using_PCR.csv") %>%
+    read.csv("./transformation_data/2743_partial_using_PCR.csv") %>%
       dplyr::mutate(phage = "phi*'08B02743'",
                     Genotype = "08B02743") %>%
       dplyr::rename(conditions = condition),
-    read.csv("RMV8_partial_deletions_usingPCR_July_v3.csv") %>%
+    read.csv("./transformation_data/RMV8_partial_deletions_usingPCR_July_v3.csv") %>%
       dplyr::mutate(phage = "phi*'RMV8'",
                     Genotype = "RMV8"),
-    read.csv("RMV8_deletions_usingGD_July.csv") %>%
+    read.csv("./transformation_data/RMV8_deletions_usingGD_July.csv") %>%
       dplyr::mutate(phage = "phi*'RMV8'",
                     Genotype = "RMV8",
                     conditions = "gDNA"),
-    read.csv("RMV8_hybrid_partial_deletions_usingPCR_July_v3.csv") %>%
+    read.csv("./transformation_data/RMV8_hybrid_partial_deletions_usingPCR_July_v3.csv") %>%
       dplyr::mutate(phage = "phi*'RMV8'[italic(immARcat)]",
                     Genotype = "RMV8_Znregcat"),
-    read.csv("RMV8_hybrid_partial_usingGD_July_v3.csv") %>%
+    read.csv("./transformation_data/RMV8_hybrid_partial_usingGD_July_v3.csv") %>%
       dplyr::mutate(phage = "phi*'RMV8'[italic(immARcat)]",
                     Genotype = "RMV8_Znregcat",
                     conditions = "gDNA"),
     
-        read.csv("RMV4_partial_PCR_Partial_deletions.csv") %>%
+        read.csv("./transformation_data/RMV4_partial_PCR_Partial_deletions.csv") %>%
       dplyr::mutate(phage = "phi*'RMV4'",
                     Genotype = "RMV4") %>%
       dplyr::rename(conditions = condition),
     
-        read.csv("RMV4_partial_deletions_usingGD.csv") %>%
+        read.csv("./transformation_data/RMV4_partial_deletions_usingGD.csv") %>%
       dplyr::mutate(phage = "phi*'RMV4'",
                     Genotype = "RMV4",
                     conditions = "gDNA"),
@@ -3470,9 +3470,9 @@ g <- guide_legend(nrow = guide_nrow,
 
 rmv8_comEA_growth.df <-
   dplyr::bind_rows(
-    get_growth_curve_df(read.csv("RMV8_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_metals.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"RMV8"~""'),
-    get_growth_curve_df(read.csv("RMV8_comEA_metals_senstivity_2_replicates.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_comEA_metals_senstivity_2_replicates.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"RMV8"~italic(comEA)*"::Janus"~""')
   ) %>%
     dplyr::group_by(Genotype,Time) %>%
@@ -3523,23 +3523,23 @@ g <- guide_legend(nrow = guide_nrow,
 competence_mutant_growth.df <-
   dplyr::bind_rows(
     # 2743 immA repeat
-      get_growth_curve_df(read.csv("2743_immA_2nd_repeat_022024.csv")) %>%
+      get_growth_curve_df(read.csv("./growth_curves/2743_immA_2nd_repeat_022024.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(immA)*"::"*italic(cat)~""'),
     # 2743 radA
-      get_growth_curve_df(read.csv("2743_radA_KO_metals.csv")) %>%
+      get_growth_curve_df(read.csv("./growth_curves/2743_radA_KO_metals.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(radA)*"::Janus"~""'),
     # 2743 dprA
-      get_growth_curve_df(read.csv("2743_dprAKO_R1_2604.csv")) %>%
+      get_growth_curve_df(read.csv("./growth_curves/2743_dprAKO_R1_2604.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(dprA)*"::Janus"~""'),
     # 2743 radA immA
       #get_growth_curve_df(read.csv("2743_immA_radAKO_022024.csv")) %>%
-      get_growth_curve_df(read.csv("03052024_2743_immA_radA_KO_repeat.csv")) %>%
+      get_growth_curve_df(read.csv("./growth_curves/03052024_2743_immA_radA_KO_repeat.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(radA)*"::Janus"~italic(immA)*"::"*italic(cat)~""'),
     # 2743 dprA immA
-    get_growth_curve_df(read.csv("2743_immA_dprA_022024.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_immA_dprA_022024.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(dprA)*"::Janus"~italic(immA)*"::"*italic(cat)~""'),
     # 2743 recA cinA double mutant
-      get_growth_curve_df(read.csv("2743_cinArecA_KO_022024.csv")) %>%
+      get_growth_curve_df(read.csv("./growth_curves/2743_cinArecA_KO_022024.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743"~"("*italic(recA)~italic(cinA)*")::Janus"~""')
   ) %>%
     dplyr::group_by(Genotype,Time) %>%
@@ -3578,12 +3578,12 @@ mutant_conditions_growth_plot <-
 
 dprA_comparison.df <-
   dplyr::bind_rows(
-    get_growth_curve_df(read.csv("RMV4_metals_dprAKO.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_metals_dprAKO.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"RMV4"~italic(dprA)*"::Janus"~""'),
-    get_growth_curve_df(read.csv("RMV8_metals_dprAKO.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_metals_dprAKO.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"RMV8"~italic(dprA)*"::Janus"~""'),
         # 2743 dprA
-    get_growth_curve_df(read.csv("2743_dprAKO_R1_2604.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_dprAKO_R1_2604.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(dprA)*"::Janus"~""')
   ) %>%
     dplyr::group_by(Genotype,Time) %>%
@@ -3626,13 +3626,13 @@ dprA_comparison_growth_plot <-
 
 dprA_double_mutants.df <-
   dplyr::bind_rows(
-    get_growth_curve_df(read.csv("2743_dprAKO_R1_2604.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_dprAKO_R1_2604.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(dprA)*"::Janus"~""'),
     #get_growth_curve_df(read.csv("2743_dprAKO_zncat_2_2604.csv")) %>%
-     get_growth_curve_df(read.csv("2743_dprAKO_zncat_2_2604.csv")) %>% 
+     get_growth_curve_df(read.csv("./growth_curves/2743_dprAKO_zncat_2_2604.csv")) %>% 
       dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(szaL)*"::"*italic(cat)~italic(dprA)*"::Janus"~""'),
     # REMOVE
-    get_growth_curve_df(read.csv("2743_prophageJan_dprAcat_2604.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_prophageJan_dprAcat_2604.csv")) %>%
       dplyr::mutate(Genotype = '""~phi*"08B02743::"*italic(cat)~~italic(dprA)*"::Janus"~""')
     # REMOVE
   ) %>%
@@ -3697,7 +3697,7 @@ dprA_double_mutant_comparison_growth_plot <-
 ``` {r Check on 2743 mutant phenotypes}
 
 check_2743.df <-
-  get_growth_curve_df(read.csv("2743_zn_mutants_all_mitomycin_senstivity_repeat.csv")) %>%
+  get_growth_curve_df(read.csv("./growth_curves/2743_zn_mutants_all_mitomycin_senstivity_repeat.csv")) %>%
     dplyr::mutate(Genotype = dplyr::case_when(
                       Genotype == "08B02743" ~ '""~phi*"08B02743"~""',
                       Genotype == "08B02743_Znregcat" ~ '""~phi*"08B02743"~italic(szaL)*"::"*italic(cat)~""',
@@ -3743,47 +3743,47 @@ phage_excision.df <-
   dplyr::bind_rows(
     
     # AD to AB ratio
-    read_excision_file("2743_ADbyAB_1st_2nd_3rd.csv") %>%
+    read_excision_file("./qPCR/2743_ADbyAB_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "08B02743") %>%
       dplyr::rename(ratio = ADbyAB) %>%
       dplyr::mutate(Measurement = "AD to AB ratio"),
-   read_excision_file("ADbyAB_RMV8_1st_2nd_3rd.csv") %>%
+   read_excision_file("./qPCR/ADbyAB_RMV8_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "RMV8") %>%
       dplyr::rename(ratio = ADbyAB) %>%
       dplyr::mutate(Measurement = "AD to AB ratio"),
-   read_excision_file("ADbyAB_RMV8_hybrid_1st_2nd_3rd.csv") %>%
+   read_excision_file("./qPCR/ADbyAB_RMV8_hybrid_1st_2nd_3rd.csv") %>%
       dplyr::rename(ratio = ADbyAB) %>%
       dplyr::mutate(phage = "RMV8_hybrid") %>%
       dplyr::mutate(Measurement = "AD to AB ratio"),
-   read_excision_file("RMV4_ADbyAB_1st_2nd_3rd.csv") %>%
+   read_excision_file("./qPCR/RMV4_ADbyAB_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "RMV4") %>%
       dplyr::mutate(Measurement = "AD to AB ratio"),
    
    # BC to rpoA ratio
-    read_excision_file("2743_BC_1st_2nd_3rd.csv") %>%
+    read_excision_file("./qPCR/2743_BC_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "08B02743") %>%
       dplyr::mutate(Measurement = "BC total"),
-   read_excision_file("RMV8_circular_1st_2nd_3rd.csv") %>%
+   read_excision_file("./qPCR/RMV8_circular_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "RMV8") %>%
       dplyr::mutate(Measurement = "BC total"),
-   read_excision_file("RMV8_hybrid_circular_1st_2nd_3rd.csv") %>%
+   read_excision_file("./qPCR/RMV8_hybrid_circular_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "RMV8_hybrid") %>%
       dplyr::mutate(Measurement = "BC total"),
-   read_excision_file("RMV4_BC_1st_2nd_3rd.csv") %>%
+   read_excision_file("./qPCR/RMV4_BC_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "RMV4") %>%
       dplyr::mutate(Measurement = "BC total"),
    
    # Extracellular BC to rpoA ratio
    dplyr::bind_cols(
-     read_excision_file("2743_RMV4_filtered_extra_ratio_with_Time0_v2.csv"),
-     read.csv("2743_RMV4_filtered_extra_ratio_with_Time0_v2.csv") %>%
+     read_excision_file("./qPCR/2743_RMV4_filtered_extra_ratio_with_Time0_v2.csv"),
+     read.csv("./qPCR/2743_RMV4_filtered_extra_ratio_with_Time0_v2.csv") %>%
      dplyr::mutate(phage = dplyr::if_else(grepl("RMV4",mutants),"RMV4","08B02743")) %>%
      dplyr::select(phage)
    ) %>%
    dplyr::mutate(Measurement = "BC extracellular"),
    dplyr::bind_cols(
-     read_excision_file("RMV8_RMV8_hybrid_filtered_extra_ratio_Time0_v2.csv"),
-     read.csv("RMV8_RMV8_hybrid_filtered_extra_ratio_Time0_v2.csv") %>%
+     read_excision_file("./qPCR/RMV8_RMV8_hybrid_filtered_extra_ratio_Time0_v2.csv"),
+     read.csv("./qPCR/RMV8_RMV8_hybrid_filtered_extra_ratio_Time0_v2.csv") %>%
      dplyr::mutate(phage = dplyr::if_else(grepl("_Hybrid",mutants),"RMV8_hybrid","RMV8")) %>%
      dplyr::select(phage)
    ) %>%
@@ -3814,13 +3814,13 @@ phage_excision.df <-
 
 phage_transcription.df <-
   dplyr::bind_rows(
-    read_expression_file("2743_prophage_induction_1st_2nd_3rd.csv") %>%
+    read_expression_file("./qPCR/2743_prophage_induction_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "08B02743"),
-    read_expression_file("RMV4_prophage_induction_1st_2nd_3rd.csv") %>%
+    read_expression_file("./qPCR/RMV4_prophage_induction_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "RMV4"),
-   read_expression_file("RMV8_prophage_induction_1st_2nd_3rd.csv") %>%
+   read_expression_file("./qPCR/RMV8_prophage_induction_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "RMV8"),
-   read_expression_file("RMV8_hybrid_prophage_induction_1st_2nd_3rd.csv") %>%
+   read_expression_file("./qPCR/RMV8_hybrid_prophage_induction_1st_2nd_3rd.csv") %>%
       dplyr::mutate(phage = "RMV8_hybrid")
   ) %>%
   dplyr::filter(gene != "rpoA") %>%
@@ -3911,7 +3911,7 @@ excision_plot <-
 
 
 prophage_excision_summary_plot <-
-  magick::image_ggplot(image_crop(image_trim((image_read_pdf("prophage_excision_summary_figure.pdf")))))
+  magick::image_ggplot(image_crop(image_trim((image_read_pdf("./summary_figure/prophage_excision_summary_figure.pdf")))))
 
 
 (combined_expression_excision_plot <-
@@ -3934,13 +3934,13 @@ prophage_excision_summary_plot <-
 
 rmv8_hyrbid_recA_effect.df <-
   dplyr::bind_rows(
-    read_expression_file("RMV8_recAKO_phage_induction_3replicates.csv") %>% 
+    read_expression_file("./qPCR/RMV8_recAKO_phage_induction_3replicates.csv") %>% 
       dplyr::mutate(RecA = "italic(recA)~'negative'",
                     phage = "phi*'RMV8'"),
-    read_expression_file("04032024_RMV8_4th_replicate.csv") %>%
+    read_expression_file("./qPCR/04032024_RMV8_4th_replicate.csv") %>%
       dplyr::mutate(RecA = "italic(recA)~'negative'",
                     phage = "phi*'RMV8'"),
-    read_expression_file("Hybrid_recAKO_induction_3_replicates.csv") %>% 
+    read_expression_file("./qPCR/Hybrid_recAKO_induction_3_replicates.csv") %>% 
       dplyr::mutate(RecA = "italic(recA)~'negative'",
                     phage = "phi*'RMV8'[italic(immARcat)]")
   ) %>%
@@ -4016,15 +4016,15 @@ rmv8_hyrbid_recA_effect.df %<>%
 
 recA_standardised_wt.df <-
   dplyr::bind_rows(
-    read_expression_file("RMV8_recA_comapred_RMV8_T0_3replicates.csv") %>%
+    read_expression_file("./qPCR/RMV8_recA_comapred_RMV8_T0_3replicates.csv") %>%
       dplyr::mutate(RecA = "italic(recA)~'negative'",
                     base_phage = "RMV8",
                     phage = "phi*'RMV8'~italic(recA)*'::Janus'"),
-    read_expression_file("RMV8_4th_replicate_normliased_to_WT_T0.csv") %>%
+    read_expression_file("./qPCR/RMV8_4th_replicate_normliased_to_WT_T0.csv") %>%
       dplyr::mutate(RecA = "italic(recA)~'negative'",
                     base_phage = "RMV8",
                     phage = "phi*'RMV8'~italic(recA)*'::Janus'"),
-    read_expression_file("RMV8_hybrid_recA_normliased_RMV8hybrid_T0_three_replicates.csv") %>%
+    read_expression_file("./qPCR/RMV8_hybrid_recA_normliased_RMV8hybrid_T0_three_replicates.csv") %>%
       dplyr::mutate(RecA = "italic(recA)~'negative'",
                     base_phage = "RMV8_hybrid",
                     phage = "phi*'RMV8'[italic(immARcat)]~italic(recA)*'::Janus'")
@@ -4093,7 +4093,7 @@ recA_standardised_wt_plot <-
 ``` {r Effect of comEA mutation on gene expression}
 
 comEA_phage_expression.df <-
-  read_expression_file("RMV8_comEAKO_phage_induction_three_replicates.csv") %>%
+  read_expression_file("./qPCR/RMV8_comEAKO_phage_induction_three_replicates.csv") %>%
   dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120")),
                 Condition = factor(Condition, levels = c("No supplement","CSP","Mitomycin C"))) %>%
   dplyr::mutate(Genotype = "atop(phi*'RMV8',italic(comEA)~'::Janus')") %>%
@@ -4157,13 +4157,13 @@ comEA_phage_induction_plot <-
 
 rmv8_comEA.df <-
   dplyr::bind_rows(
-    read_excision_file("comEA_cat_extracellular_BCbyrpoAthree_replicates.csv") %>%
+    read_excision_file("./qPCR/comEA_cat_extracellular_BCbyrpoAthree_replicates.csv") %>%
       dplyr::mutate(Measurement = "BC extracellular") %>%
       dplyr::rename(value = Extracellular_BC),
-    read_excision_file("comEA_mutants_ADbyAB_three_replicates_July.csv") %>%
+    read_excision_file("./qPCR/comEA_mutants_ADbyAB_three_replicates_July.csv") %>%
       dplyr::mutate(Measurement = "AD to AB ratio") %>%
       dplyr::rename(value = ADbyAB),
-    read_excision_file("comEA_mutants_BCbyRpoA_three_replicates_July.csv") %>%
+    read_excision_file("./qPCR/comEA_mutants_BCbyRpoA_three_replicates_July.csv") %>%
       dplyr::mutate(Measurement = "BC total") %>%
       dplyr::rename(value = BCbyrpoA)
   ) %>%
@@ -4231,9 +4231,9 @@ comEA_phage_excision_plot <-
 
 in_situ.df <-
   dplyr::bind_rows(
-    read_excision_file("RMV8_repbyrpoA_1st2nd.csv") %>%
+    read_excision_file("./qPCR/RMV8_repbyrpoA_1st2nd.csv") %>%
       dplyr::mutate(Genotype = "phi*'RMV8'"),
-    read_excision_file("RMV8_intcat_repbyrpoA_1st2nd.csv")  %>%
+    read_excision_file("./qPCR/RMV8_intcat_repbyrpoA_1st2nd.csv")  %>%
       dplyr::mutate(Genotype = "phi*'RMV8'~italic(int)*'::Janus'")
   ) %>%
   dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120")),
@@ -4269,7 +4269,7 @@ in_situ_replication_plot <-
 
 # Test for in situ replication in int mutants after 4 h
 in_situ_int_mutant.df <-
-  read.csv("RMV8_Hybrid_intcat_2hour_4hour_repbyrpoA.csv") %>%
+  read.csv("./growth_curves/RMV8_Hybrid_intcat_2hour_4hour_repbyrpoA.csv") %>%
   dplyr::mutate(Genotype = dplyr::if_else(
                   grepl("hybrid",mutants),
                   "RMV8_hybrid_intcat",
@@ -4338,9 +4338,9 @@ cowplot::plot_grid(
 
 dprA_standardised_wt.df <-
   dplyr::bind_rows(
-    read_expression_file("2743_dprA_competence_transcriptions.csv") %>%
+    read_expression_file("./qPCR/2743_dprA_competence_transcriptions.csv") %>%
       dplyr::mutate(Genotype = "atop(phi*'08B02743',italic(dprA)*'::Janus')"),
-    read_expression_file("2743_dprA_transcription_two_replicates.csv") %>%
+    read_expression_file("./qPCR/2743_dprA_transcription_two_replicates.csv") %>%
       dplyr::mutate(Genotype = "phi*'08B02743'")
   ) %>%
   dplyr::rename(Fold_change = fold_change) %>%
@@ -4359,7 +4359,7 @@ dprA_standardised_wt.df %<>%
     phage_transcription.df %>%
       dplyr::filter(phage == "phi*'08B02743'" & gene %in% c("italic(lyt)","italic(recA)","italic(int)","italic(dprA)","italic(reg)")) %>%
       dplyr::mutate(Genotype = "phi*'08B02743'"),
-    read_expression_file("2743_comEA_foldchange.csv") %>%
+    read_expression_file("./qPCR/2743_comEA_foldchange.csv") %>%
       dplyr::mutate(phage = "phi*'08B02743'",
                     Genotype = "phi*'08B02743'") %>%
       dplyr::mutate(
@@ -4459,7 +4459,7 @@ phage_excision_dprA.df <-
       dplyr::rename(value = ratio),
       
     # Extracellular BC in dprA mutant
-    read_dprA_excision_file("2743_dprA_extracellular_1706.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_dprA_extracellular_1706.csv") %>%
       dplyr::mutate(Measurement = "BC extracellular",
                     Genotype = "atop(phi*'08B02743',italic(dprA)*'::Janus')",
                     phage = "phi*'08B02743'"
@@ -4467,7 +4467,7 @@ phage_excision_dprA.df <-
       dplyr::rename(value = BCbyrpoA),
     
     # ZnCat mutants - extracellular
-    read_dprA_excision_file("2743_dprA_zncat_extracellular_1706.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_dprA_zncat_extracellular_1706.csv") %>%
       dplyr::mutate(Measurement = "BC extracellular",
                     Genotype = "atop(phi*'08B02743'~italic(szaL)*'::'*italic(cat),italic(dprA)*'::Janus')",
                     phage = "phi*'08B02743',italic(szaL)*'::'*italic(cat)"
@@ -4475,7 +4475,7 @@ phage_excision_dprA.df <-
       dplyr::rename(value = BCbyrpoA),
     
     # WT - intracellular
-    read_dprA_excision_file("2743_dprA_intracellular_BC_1706.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_dprA_intracellular_BC_1706.csv") %>%
       dplyr::mutate(Measurement = "BC total",
                     Genotype = "atop(phi*'08B02743',italic(dprA)*'::Janus')",
                     phage = "phi*'08B02743'"
@@ -4483,7 +4483,7 @@ phage_excision_dprA.df <-
       dplyr::rename(value = BCbyrpoA),
     
     # DprA zncat intracellular
-    read_dprA_excision_file("2743_zncat_dprA_BC_intracellular_1706.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_zncat_dprA_BC_intracellular_1706.csv") %>%
       dplyr::mutate(Measurement = "BC total",
                     Genotype = "atop(phi*'08B02743'~italic(szaL)*'::'*italic(cat),italic(dprA)*'::Janus')",
                     phage = "phi*'08B02743'~italic(szaL)*'::'*italic(cat)"
@@ -4491,28 +4491,28 @@ phage_excision_dprA.df <-
       dplyr::rename(value = BCbyrpoA),
     
     # zncat extracellular
-    read_dprA_excision_file("2743_zncat_extracellular_BC.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_zncat_extracellular_BC.csv") %>%
       dplyr::mutate(Measurement = "BC extracellular",
                     Genotype = "atop(phi*'08B02743',italic(szaL)*'::'*italic(cat))",
                     phage = "phi*'08B02743'~italic(szaL)*'::'*italic(cat)"
                     ) %>%
       dplyr::rename(value = BCbyRpoA),
     # zncat total
-    read_dprA_excision_file("2743_zncat_intracellular_BC.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_zncat_intracellular_BC.csv") %>%
       dplyr::mutate(Measurement = "BC total",
                     Genotype = "atop(phi*'08B02743',italic(szaL)*'::'*italic(cat))",
                     phage = "phi*'08B02743'~italic(szaL)*'::'*italic(cat)"
                     ) %>%
       dplyr::rename(value = BCbyRpoA),
     # RecA extracellular replicates
-    read_dprA_excision_file("recA_KO_extracellular_DNA_three.csv") %>%
+    read_dprA_excision_file("./qPCR/recA_KO_extracellular_DNA_three.csv") %>%
       dplyr::mutate(Measurement = "BC extracellular",
                     Genotype = "atop(phi*'08B02743',italic(recA)*'::Janus')",
                     phage = "phi*'08B02743'"
                     ) %>%
       dplyr::rename(value = BCbyRpoA),
     # RecA total replicates
-    read_dprA_excision_file("2743_recA_intracellular_BC_three_replicates.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_recA_intracellular_BC_three_replicates.csv") %>%
       dplyr::mutate(Measurement = "BC total",
                     Genotype = "atop(phi*'08B02743',italic(recA)*'::Janus')",
                     phage = "phi*'08B02743'"
@@ -4520,14 +4520,14 @@ phage_excision_dprA.df <-
       dplyr::rename(value = BCbyRpoA),
     
     # 2743 zncat RecA intracellular replicates
-    read_dprA_excision_file("2743_zncat_recA_intracellular_BC.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_zncat_recA_intracellular_BC.csv") %>%
       dplyr::mutate(Measurement = "BC total",
                     Genotype = "atop(phi*'08B02743'~italic(szaL)*'::'*italic(cat),italic(recA)*'::Janus')",
                     phage = "phi*'08B02743'~italic(szaL)*'::'*italic(cat)"
                     ) %>%
       dplyr::rename(value = BCbyRpoA),
     # 2743 zncat RecA extracellular replicates
-    read_dprA_excision_file("2743_zncat_recA_extracellular_BC.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_zncat_recA_extracellular_BC.csv") %>%
       dplyr::mutate(Measurement = "BC extracellular",
                     Genotype = "atop(phi*'08B02743'~italic(szaL)*'::'*italic(cat),italic(recA)*'::Janus')",
                     phage = "phi*'08B02743'~italic(szaL)*'::'*italic(cat)"
@@ -4535,7 +4535,7 @@ phage_excision_dprA.df <-
       dplyr::rename(value = BCbyRpoA),
     
     # 2743 RecA excision
-    read_dprA_excision_file("2743_recA_ADbyAB_two.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_recA_ADbyAB_two.csv") %>%
       dplyr::mutate(Measurement = "AD to AB ratio",
                     Genotype = "atop(phi*'08B02743',italic(recA)*'::Janus')",
                     phage = "phi*'08B02743'"
@@ -4543,7 +4543,7 @@ phage_excision_dprA.df <-
       dplyr::rename(value = ADbyAB),
     
     # 2743 DprA excision
-    read_dprA_excision_file("2743_dprA_ADbyAB_two_replicates.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_dprA_ADbyAB_two_replicates.csv") %>%
       dplyr::mutate(Measurement = "AD to AB ratio",
                     Genotype = "atop(phi*'08B02743',italic(dprA)*'::Janus')",
                     phage = "phi*'08B02743'",
@@ -4552,7 +4552,7 @@ phage_excision_dprA.df <-
       dplyr::rename(value = ADbyAB),
     
     # 2743 zncat excision
-    read_dprA_excision_file("2743_zncat_ADbyAB_three.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_zncat_ADbyAB_three.csv") %>%
       dplyr::mutate(Measurement = "AD to AB ratio",
                     Genotype = "atop(phi*'08B02743',italic(szaL)*'::'*italic(cat))",
                     phage = "phi*'08B02743'~italic(szaL)*'::'*italic(cat)"
@@ -4561,7 +4561,7 @@ phage_excision_dprA.df <-
     
     ######
     # 2743 zncat dprA excision
-    read_dprA_excision_file("2743_zncat_dprA_two_ADbyAB.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_zncat_dprA_two_ADbyAB.csv") %>%
       dplyr::mutate(Measurement = "AD to AB ratio",
                     Genotype = "atop(phi*'08B02743'~italic(szaL)*'::'*italic(cat),italic(dprA)*'::Janus')",
                     phage = "phi*'08B02743'~italic(szaL)*'::'*italic(cat)"
@@ -4569,7 +4569,7 @@ phage_excision_dprA.df <-
       dplyr::rename(value = ADbyAB),
     
     # 2743 zncat recA excision
-    read_dprA_excision_file("2743_zncat_recA_ADbyAB_two.csv") %>%
+    read_dprA_excision_file("./qPCR/2743_zncat_recA_ADbyAB_two.csv") %>%
       dplyr::mutate(Measurement = "AD to AB ratio",
                     Genotype = "atop(phi*'08B02743'~italic(szaL)*'::'*italic(cat),italic(recA)*'::Janus')",
                     phage = "phi*'08B02743'~italic(szaL)*'::'*italic(cat)"
@@ -4695,40 +4695,40 @@ phage_excision_spaL.df <-
                     Genotype = phage),
     dplyr::bind_rows(
       # Excision
-      read_dprA_excision_file("RMV4_spaL_ADbyAB_three_replicates.csv") %>%
+      read_dprA_excision_file("./qPCR/RMV4_spaL_ADbyAB_three_replicates.csv") %>%
         dplyr::mutate(Measurement = "AD to AB ratio",
                       Genotype = "phi*'RMV4'~italic(spaL)*'::'*italic(cat)",
                       phage = "phi*'RMV4'~italic(spaL)*'::'*italic(cat)"
                       ) %>%
         dplyr::rename(value = ADbyAB),
       # Extracellular
-      read_dprA_excision_file("RMV4_spaL_extracellular_BC_three_replicates.csv") %>%
+      read_dprA_excision_file("./qPCR/RMV4_spaL_extracellular_BC_three_replicates.csv") %>%
         dplyr::mutate(Measurement = "BC extracellular",
                       Genotype = "phi*'RMV4'~italic(spaL)*'::'*italic(cat)",
                       phage = "phi*'RMV4'~italic(spaL)*'::'*italic(cat)"
                       ) %>%
         dplyr::rename(value = BCbyRpoA),
       # Total
-      read_dprA_excision_file("RMV4_spaL_intracellular_BC_three_replicates.csv") %>%
+      read_dprA_excision_file("./qPCR/RMV4_spaL_intracellular_BC_three_replicates.csv") %>%
         dplyr::mutate(Measurement = "BC total",
                       Genotype = "phi*'RMV4'~italic(spaL)*'::'*italic(cat)",
                       phage = "phi*'RMV4'~italic(spaL)*'::'*italic(cat)"
                       ) %>%
         dplyr::rename(value = BCbyRpoA),
       # DprA
-      read_dprA_excision_file("RMV4_dprA_induction_ADbyAB.csv") %>%
+      read_dprA_excision_file("./qPCR/RMV4_dprA_induction_ADbyAB.csv") %>%
       dplyr::mutate(Measurement = "AD to AB ratio",
                     Genotype = "phi*'RMV4'~italic(dprA)*'::Janus'",
                     phage = "phi*'RMV4'~italic(dprA)*'::Janus'"
                     ) %>%
             dplyr::rename(value = ADbyAB),
-      read_dprA_excision_file("RMV4_dprA_intracellular_BCbyRpoA_two_replicates.csv") %>%
+      read_dprA_excision_file("./qPCR/RMV4_dprA_intracellular_BCbyRpoA_two_replicates.csv") %>%
       dplyr::mutate(Measurement = "BC total",
                     Genotype = "phi*'RMV4'~italic(dprA)*'::Janus'",
                     phage = "phi*'RMV4'~italic(dprA)*'::Janus'"
                     ) %>%
             dplyr::rename(value = BCbyRpoA),
-      read_dprA_excision_file("RMV4_dprA_extracellular_BCbyRpoA_two_replicates.csv") %>%
+      read_dprA_excision_file("./qPCR/RMV4_dprA_extracellular_BCbyRpoA_two_replicates.csv") %>%
       dplyr::mutate(Measurement = "BC extracellular",
                     Genotype = "phi*'RMV4'~italic(dprA)*'::Janus'",
                     phage = "phi*'RMV4'~italic(dprA)*'::Janus'"
@@ -4821,7 +4821,7 @@ add_median_range <- function(p, data, group_vars, value_var) {
 ``` {r Kinetics of deletions, fig.height = 8, fig.width = 8}
 
 deletion_kinetics.df <-
-  read.csv("prophage_deletion_over_time.csv") %>%
+  read.csv("./transformation_data/prophage_deletion_over_time.csv") %>%
   dplyr::filter(time < 500) %>%
   dplyr::mutate(time = factor(time)) %>%
   dplyr::mutate(
@@ -4905,7 +4905,7 @@ cowplot::plot_grid(
 iptg_induction.df <-
   dplyr::bind_rows(
     # RMV8
-    get_growth_curve_df(read.csv("RMV8_pLac_recA.csv") %>%
+    get_growth_curve_df(read.csv("./qPCR/RMV8_pLac_recA.csv") %>%
                           dplyr::rename_with(
                             ~ gsub("_\\.",".",gsub("_$","",paste0("RMV8_", gsub("control","",.x), recycle0 = TRUE))),
                             !starts_with("OD600")
@@ -4914,7 +4914,7 @@ iptg_induction.df <-
       dplyr::mutate(Genotype = "'RMV8'") %>%
       dplyr::mutate(phage = "phi*'RMV8'~italic(recA)[italic(lacI)]"),
     # RMV8 hybrid
-    get_growth_curve_df(read.csv("MMC_IPTG_RMV8_hybrid_plac_recA.csv") %>%
+    get_growth_curve_df(read.csv("./qPCR/MMC_IPTG_RMV8_hybrid_plac_recA.csv") %>%
                           dplyr::rename_with(
                             ~ gsub("_\\.",".",gsub("_$","",paste0("RMV8_hybrid_", gsub("control","",.x), recycle0 = TRUE))),
                             !starts_with("OD600")
@@ -4969,7 +4969,7 @@ iptg_growth_plot <-
 ``` {r Effect of IPTG on phage transcription}
 
 iptg_phage_expression_df <-
-  read.csv("IPTG_recA_indcued_RMV8vsHybrid.csv") %>%
+  read.csv("./qPCR/IPTG_recA_indcued_RMV8vsHybrid.csv") %>%
     dplyr::mutate(Time = dplyr::case_when(
             grepl("T0_",mutants) ~ "0",
             grepl("_T0",mutants) ~ "0",
@@ -5046,7 +5046,7 @@ ggplot(iptg_phage_expression_df,
 ``` {r Validation of IPTG}
 
 iptg_validation.df <-
-  read.csv("IPTG_recA_Inudction_final.csv") %>%
+  read.csv("./qPCR/IPTG_recA_Inudction_final.csv") %>%
   dplyr::mutate(Time = as.numeric(gsub("T","",condition))) %>%
   dplyr::mutate(phage = factor(dplyr::if_else(mutants == "RMV8_plac_recA",
                                        "phi*'RMV8'~italic(recA)[italic(lacI)]",
@@ -5091,7 +5091,7 @@ ggplot(iptg_validation.df,
 iptg_half_mmc_induction.df <-
   dplyr::bind_rows(
     # RMV8
-    get_growth_curve_df(read.csv("halfMMC_RMV8.csv") %>%
+    get_growth_curve_df(read.csv("./growth_curves/halfMMC_RMV8.csv") %>%
                           dplyr::rename_with(
                             ~ gsub("_\\.",".",gsub("_$","",paste0("RMV8_", gsub("control","",.x), recycle0 = TRUE))),
                             !starts_with("OD600")
@@ -5100,7 +5100,7 @@ iptg_half_mmc_induction.df <-
       dplyr::mutate(Genotype = "'RMV8'") %>%
       dplyr::mutate(phage = "phi*'RMV8'"),
     # RMV8 pLac mutant 1
-    get_growth_curve_df(read.csv("halfMMC_RMV8_DT3_plac_recA.csv") %>%
+    get_growth_curve_df(read.csv("./growth_curves/halfMMC_RMV8_DT3_plac_recA.csv") %>%
                           dplyr::rename_with(
                             ~ gsub("_\\.",".",gsub("_$","",paste0("RMV8_hybrid_", gsub("control","",.x), recycle0 = TRUE))),
                             !starts_with("OD600")
@@ -5109,7 +5109,7 @@ iptg_half_mmc_induction.df <-
       dplyr::mutate(Genotype = "'RMV8 LacI mutant 1'") %>%
       dplyr::mutate(phage = "phi*'RMV8'"),
     # RMV8 hybrid
-    get_growth_curve_df(read.csv("halfMMC_hybrid.csv") %>%
+    get_growth_curve_df(read.csv("./growth_curves/halfMMC_hybrid.csv") %>%
                           dplyr::rename_with(
                             ~ gsub("_\\.",".",gsub("_$","",paste0("RMV8_hybrid_", gsub("control","",.x), recycle0 = TRUE))),
                             !starts_with("OD600")
@@ -5118,7 +5118,7 @@ iptg_half_mmc_induction.df <-
       dplyr::mutate(Genotype = "'RMV8'") %>%
       dplyr::mutate(phage = "phi*'RMV8 hybrid'"),
     # RMV8 hybrid pLac mutant 1
-    get_growth_curve_df(read.csv("halfMMC_hybrid_DT1_plac_recA.csv") %>%
+    get_growth_curve_df(read.csv("./growth_curves/halfMMC_hybrid_DT1_plac_recA.csv") %>%
                           dplyr::rename_with(
                             ~ gsub("_\\.",".",gsub("_$","",paste0("RMV8_hybrid_", gsub("control","",.x), recycle0 = TRUE))),
                             !starts_with("OD600")
@@ -5190,64 +5190,64 @@ ggplot(iptg_half_mmc_induction_normalised.df %>%
 raw_growth_comparison_induction.df <-
   dplyr::bind_rows(
     # RMV4
-    get_growth_curve_df(read.csv("RMV4_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_metals.csv")) %>%
       dplyr::mutate(Genotype = "'RMV4'") %>%
       dplyr::mutate(phage = "phi*'RMV4'") %>%
       dplyr::mutate(Background = "'Wild type'"),
-    get_growth_curve_df(read.csv("RMV4_prophage_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_prophage_metals.csv")) %>%
       dplyr::mutate(Genotype = "'RMV4'") %>%
       dplyr::mutate(phage = "phi*'RMV4'") %>%
       dplyr::mutate(Background = "'prophage::Janus'") %>%
       dplyr::filter(`Growth condition` != "Mitomycin C"),
     # Re-run of MMC
-    get_growth_curve_df(read.csv("RMV4-prophageKO.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4-prophageKO.csv")) %>%
       dplyr::mutate(Genotype = "'RMV4'") %>%
       dplyr::mutate(phage = "phi*'RMV4'") %>%
       dplyr::mutate(Background = "'prophage::Janus_rerun'"),
-    get_growth_curve_df(read.csv("RMV4_recAKO_metals_2nd.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_recAKO_metals_2nd.csv")) %>%
       dplyr::mutate(phage = "phi*'RMV4'",
                     Genotype = "'RMV4'",
                     Background = "italic(recA)*'::Janus'"),
     # RMV8
-    get_growth_curve_df(read.csv("RMV8_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_metals.csv")) %>%
       dplyr::mutate(Genotype = "'RMV8'") %>%
       dplyr::mutate(phage = "phi*'RMV8'") %>%
       dplyr::mutate(Background = "'Wild type'"),
-    get_growth_curve_df(read.csv("RMV8_recAKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_recAKO_metals.csv")) %>%
       dplyr::mutate(Genotype = "'RMV8'") %>%
       dplyr::mutate(phage = "phi*'RMV8'") %>%
       dplyr::mutate(Background = "italic(recA)*'::Janus'"),
-    get_growth_curve_df(read.csv("RMV8_prophageKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_prophageKO_metals.csv")) %>%
       dplyr::mutate(Genotype = "'RMV8'") %>%
       dplyr::mutate(phage = "phi*'RMV8'") %>%
       dplyr::mutate(Background = "'prophage::Janus'"),
     # 2743
-    get_growth_curve_df(read.csv("2743_metals_1st.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_metals_1st.csv")) %>%
       dplyr::mutate(Genotype = "'08B02743'") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::mutate(Background = "'Wild type'"),
-    get_growth_curve_df(read.csv("2743_recA_metals_test.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_recA_metals_test.csv")) %>%
       dplyr::mutate(Genotype = "'08B02743'") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::mutate(Background = "italic(recA)*'::Janus'"),
-    get_growth_curve_df(read.csv("2743_prophageKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_prophageKO_metals.csv")) %>%
       dplyr::mutate(Genotype = "'08B02743'") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::mutate(Background = "'prophage::Janus'"),
     # RMV8 hybrid
-    get_growth_curve_df(read.csv("RMV8_hybrid_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_hybrid_metals.csv")) %>%
       dplyr::mutate(Genotype = "'RMV8_Znregcat'") %>%
       dplyr::mutate(phage = "phi*'RMV8'[italic(immARcat)]") %>%
       dplyr::mutate(Background = "'Wild type'"),
-    get_growth_curve_df(read.csv("RMV8_hybrid_recAKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_hybrid_recAKO_metals.csv")) %>%
       dplyr::mutate(Genotype = "'RMV8_Znregcat'") %>%
       dplyr::mutate(phage = "phi*'RMV8'[italic(immARcat)]") %>%
       dplyr::mutate(Background = "italic(recA)*'::Janus'"),
-    get_growth_curve_df(read.csv("29022024_2743_sc1.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/29022024_2743_sc1.csv")) %>%
       dplyr::mutate(Background = "'Wild type'") %>%
       dplyr::mutate(phage = "phi*'08B02743_MMC_repeat'") %>%
       dplyr::mutate(Genotype = "'08B02743'"),
-    get_growth_curve_df(read.csv("29022024_2743_R1_RecA.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/29022024_2743_R1_RecA.csv")) %>%
       dplyr::mutate(Background = "italic(recA)*'::Janus'") %>%
       dplyr::mutate(phage = "phi*'08B02743_MMC_repeat'") %>%
       dplyr::mutate(Genotype = "'08B02743'")
@@ -5287,46 +5287,46 @@ growth_comparison_induction.df <-
 stimuli_mutants_raw_growth.df <-
   dplyr::bind_rows(
     # immA KO
-    get_growth_curve_df(read.csv("2743_immAKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_immAKO_metals.csv")) %>%
       dplyr::mutate(Background = "italic(immA)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::mutate(Genotype = "'08B02743'"),
     # rep KO
-    get_growth_curve_df(read.csv("2743_repKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_repKO_metals.csv")) %>%
       dplyr::mutate(Background = "italic(rep)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::mutate(Genotype = "'08B02743'"),
-    get_growth_curve_df(read.csv("RMV8_repKO_growth_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_repKO_growth_metals.csv")) %>%
       dplyr::mutate(Background = "italic(rep)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'RMV8'") %>%
       dplyr::mutate(Genotype = "'RMV8'"),
-    get_growth_curve_df(read.csv("RMV4_repKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_repKO_metals.csv")) %>%
       dplyr::mutate(Background = "italic(rep)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'RMV4'") %>%
       dplyr::mutate(Genotype = "'RMV4'"),
     # int KO
-    get_growth_curve_df(read.csv("2743_intKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_intKO_metals.csv")) %>%
       dplyr::mutate(Background = "italic(int)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::mutate(Genotype = "'08B02743'"),
-    get_growth_curve_df(read.csv("RMV8_intKO_growth_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_intKO_growth_metals.csv")) %>%
       dplyr::mutate(Background = "italic(int)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'RMV8'") %>%
       dplyr::mutate(Genotype = "'RMV8'"),
-    get_growth_curve_df(read.csv("RMV4_intcat_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_intcat_metals.csv")) %>%
       dplyr::mutate(Background = "italic(int)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'RMV4'") %>%
       dplyr::mutate(Genotype = "'RMV4'"),
     # lyt KO
-    get_growth_curve_df(read.csv("2743_lytAKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_lytAKO_metals.csv")) %>%
       dplyr::mutate(Background = "italic(lyt)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::mutate(Genotype = "'08B02743'"),
-    get_growth_curve_df(read.csv("RMV8_lytAKO_growth_2_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV8_lytAKO_growth_2_metals.csv")) %>%
       dplyr::mutate(Background = "italic(lyt)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'RMV8'") %>%
       dplyr::mutate(Genotype = "'RMV8'"),
-    get_growth_curve_df(read.csv("RMV4_lytKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_lytKO_metals.csv")) %>%
       dplyr::mutate(Background = "italic(lyt)*'::'*italic(cat)") %>%
       dplyr::mutate(phage = "phi*'RMV4'") %>%
       dplyr::mutate(Genotype = "'RMV4'")
@@ -5551,13 +5551,13 @@ Loss of szaL results in an increased sensitivity to MMC, which is RecA-dependent
 
 immA_df <-
   dplyr::bind_rows(
-      get_growth_curve_df(read.csv("2743_immA_2nd_repeat_022024.csv")) %>%
+      get_growth_curve_df(read.csv("./growth_curves/2743_immA_2nd_repeat_022024.csv")) %>%
                  dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(immA)*"::"*italic(cat)~""',
                           Background = "italic(recA)^'+'~italic(dprA)^'+'"),
-      get_growth_curve_df(read.csv("2743_immA_dprA_022024.csv")) %>%
+      get_growth_curve_df(read.csv("./growth_curves/2743_immA_dprA_022024.csv")) %>%
             dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(dprA)*"::Janus"~italic(immA)*"::"*italic(cat)~""',
                           Background = "italic(recA)^'+'~italic(dprA)^'-'"),
-      get_growth_curve_df(read.csv("2743_immA_recA_metals_growth.csv")) %>%
+      get_growth_curve_df(read.csv("./growth_curves/2743_immA_recA_metals_growth.csv")) %>%
             dplyr::mutate(Genotype = '""~phi*"08B02743"~italic(recA)*"::Janus"~italic(immA)*"::"*italic(cat)~""',
                           Background = "italic(recA)^'-'~italic(dprA)^'+'")
     ) %>%
@@ -5593,21 +5593,21 @@ zn_cat_janus_growth.df <-
       dplyr::mutate(Background = dplyr::if_else(Background == "'Wild type'",
                                                 "italic(recA)^'+'~italic(dprA)^'+'",
                                                 "italic(recA)^'-'~italic(dprA)^'+'")),
-    get_growth_curve_df(read.csv("2743_zncat_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_zncat_metals.csv")) %>%
       dplyr::mutate(Genotype = "phi*'08B02743 szaL::cat'") %>%
       dplyr::mutate(Background = "italic(recA)^'+'~italic(dprA)^'+'") %>%
       dplyr::mutate(phage = "atop(phi*'08B02743',italic(szaL)*'::'*italic(cat))"),
-    get_growth_curve_df(read.csv("2743_zncat_recAKO_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/2743_zncat_recAKO_metals.csv")) %>%
       dplyr::mutate(Genotype = "'08B02743 szaL::cat'") %>%
       dplyr::mutate(phage = "atop(phi*'08B02743',italic(szaL)*'::'*italic(cat))") %>%
       dplyr::mutate(Background = "italic(recA)^'-'~italic(dprA)^'+'"),
     
-    get_growth_curve_df(read.csv("04032024_2743_dprA_1st.csv") %>% dplyr::select(!dplyr::contains('_twice'))) %>%
+    get_growth_curve_df(read.csv("./growth_curves/04032024_2743_dprA_1st.csv") %>% dplyr::select(!dplyr::contains('_twice'))) %>%
       dplyr::mutate(Genotype = "'08B02743'") %>%
       dplyr::mutate(phage = "phi*'08B02743'") %>%
       dplyr::mutate(Background = "italic(recA)^'+'~italic(dprA)^'-'"),
     
-    get_growth_curve_df(read.csv("04032024_2743_dprA_zncat_2nd.csv") %>% dplyr::select(!dplyr::contains('_twice'))) %>%
+    get_growth_curve_df(read.csv("./growth_curves/04032024_2743_dprA_zncat_2nd.csv") %>% dplyr::select(!dplyr::contains('_twice'))) %>%
       dplyr::mutate(Genotype = "'08B02743 szaL::cat'") %>%
       dplyr::mutate(phage = "atop(phi*'08B02743',italic(szaL)*'::'*italic(cat))") %>%
       dplyr::mutate(Background = "italic(recA)^'+'~italic(dprA)^'-'")
@@ -5677,12 +5677,12 @@ g <- guide_legend(nrow = 1,
 ``` {r 2743 szaL gene expression comparison}
 
 szaL_expression_comparison_df <-
-  read_expression_file("2743vs2743zncat_lytA_rep_T120_August.csv") %>%
+  read_expression_file("./qPCR/2743vs2743zncat_lytA_rep_T120_August.csv") %>%
       dplyr::rename(Fold_change = fold_change_MMC) %>%
   dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120")),
                 Condition = factor(Condition, levels = c("No supplement","CSP","Mitomycin C"))) %>%
   dplyr::mutate(Genotype = dplyr::if_else(
-                      grepl("_zncat_",read.csv("2743vs2743zncat_lytA_rep_T120_August.csv",header=TRUE) %>%
+                      grepl("_zncat_",read.csv("./qPCR/2743vs2743zncat_lytA_rep_T120_August.csv",header=TRUE) %>%
                       dplyr::select(mutants) %>%
                       dplyr::pull()),
                       "phi*'08B02743'",
@@ -5743,10 +5743,10 @@ szaL_expression_comparison_df <-
 
 szaL_effect_on_com_df <-
   dplyr::bind_rows(
-    read_dprA_excision_file("RMV8_comX_transcriptions.csv"),
-    read_dprA_excision_file("2743vs2743zncat_comX.csv"),
-    read_dprA_excision_file("RMV8vsRMV8hybrid_recA_transcriptions.csv"),
-    read_dprA_excision_file("2743vs_2743zncat_recA_transcirptions.csv")
+    read_dprA_excision_file("./qPCR/RMV8_comX_transcriptions.csv"),
+    read_dprA_excision_file("./qPCR/2743vs2743zncat_comX.csv"),
+    read_dprA_excision_file("./qPCR/RMV8vsRMV8hybrid_recA_transcriptions.csv"),
+    read_dprA_excision_file("./qPCR/2743vs_2743zncat_recA_transcirptions.csv")
   ) %>%
   dplyr::mutate(
     Genotype = 
@@ -5819,22 +5819,22 @@ spaL_growth.df <-
                                                 "italic(recA)^'+'~italic(dprA)^'+'",
                                                 "italic(recA)^'-'~italic(dprA)^'+'")
                     ),
-    get_growth_curve_df(read.csv("RMV4_spaL_repeat_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_spaL_repeat_metals.csv")) %>%
       dplyr::mutate(Genotype = "phi*'RMV4 spaL::cat'") %>%
       dplyr::mutate(Background = "italic(recA)^'+'~italic(dprA)^'+'") %>%
       dplyr::mutate(phage = 'phi*"RMV4"~italic(spaL)*"::"*italic(cat)'),
-    get_growth_curve_df(read.csv("RMV4_spaL_recA_repeat.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_spaL_recA_repeat.csv")) %>%
       dplyr::mutate(Genotype = "'RMV4 spaL::cat'") %>%
       dplyr::mutate(phage = 'phi*"RMV4"~italic(spaL)*"::"*italic(cat)') %>%
       dplyr::mutate(Background = "italic(recA)^'-'~italic(dprA)^'+'"),
     
     #get_growth_curve_df(read.csv("RMV4_metals_dprAKO.csv")) %>%
-    get_growth_curve_df(read.csv("RMV4_1st_dprA_repeat_July_2024.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_1st_dprA_repeat_July_2024.csv")) %>%
       dplyr::mutate(Genotype = "'RMV4'") %>%
       dplyr::mutate(phage = "phi*'RMV4'") %>%
       dplyr::mutate(Background = "italic(recA)^'+'~italic(dprA)^'-'"),
     
-    get_growth_curve_df(read.csv("RMV4_spaL_dprA_metals.csv")) %>%
+    get_growth_curve_df(read.csv("./growth_curves/RMV4_spaL_dprA_metals.csv")) %>%
       dplyr::mutate(Genotype = "'RMV4 spaL::cat'") %>%
       dplyr::mutate(phage = 'phi*"RMV4"~italic(spaL)*"::"*italic(cat)') %>%
       dplyr::mutate(Background = "italic(recA)^'+'~italic(dprA)^'-'")
@@ -5934,7 +5934,7 @@ RMV4_expression_df <-
   dplyr::bind_rows(
     phage_transcription.df %>%
       dplyr::filter(phage == "phi*'RMV4'" & gene != 'italic(reg)'),
-    read_expression_file("RMV4_spaL_transcriptions_All.csv") %>%
+    read_expression_file("./qPCR/RMV4_spaL_transcriptions_All.csv") %>%
         dplyr::mutate(phage = "RMV4 spaL") %>%
         dplyr::filter(gene != "rpoA") %>%
         dplyr::mutate(gene = dplyr::case_when(
@@ -6028,21 +6028,21 @@ rates_of_activation.df <-
     dplyr::bind_rows(
       # RMV8 and RMV8 hybrid
       get_growth_curve_df(
-        read.csv("20min_MMC_treatment.csv") %>%
+        read.csv("./growth_curves/20min_MMC_treatment.csv") %>%
                             rename_with(~stringr::str_replace(., "_1MMC", "_5ng_µl_MMC")) %>%
                             rename_with(~stringr::str_replace(., "_2MMC", "_10ng_µl_MMC"))
       ) %>%
         dplyr::mutate(Time = Time + 1/3,
                       Exposure = "20 min"),
       get_growth_curve_df(
-        read.csv("60min_MMC_treatment.csv") %>%
+        read.csv("./growth_curves/60min_MMC_treatment.csv") %>%
                             rename_with(~stringr::str_replace(., "_1MMC", "_5ng_µl_MMC")) %>%
                             rename_with(~stringr::str_replace(., "_2MMC", "_10ng_µl_MMC"))
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "60 min"),
       get_growth_curve_df(
-        read.csv("2hr_MMC_treatment.csv") %>%
+        read.csv("./growth_curves/2hr_MMC_treatment.csv") %>%
                             rename_with(~stringr::str_replace(., "_1MMC", "_5ng_µl_MMC")) %>%
                             rename_with(~stringr::str_replace(., "_2MMC", "_10ng_µl_MMC"))
       ) %>%
@@ -6050,61 +6050,61 @@ rates_of_activation.df <-
                       Exposure = "120 min"),
       # 2743
       get_growth_curve_df(
-        read.csv("2743_20min_MMC_treatment.csv")
+        read.csv("./growth_curves/2743_20min_MMC_treatment.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1/3,
                       Exposure = "20 min") %>%
         dplyr::mutate(Genotype = "08B02743"),
       get_growth_curve_df(
-        read.csv("2743_60min_MMC_treatment.csv")
+        read.csv("./growth_curves/2743_60min_MMC_treatment.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "60 min") %>%
         dplyr::mutate(Genotype = "08B02743"),
       get_growth_curve_df(
-        read.csv("2743_120min_MMC_treatment.csv")
+        read.csv("./growth_curves/2743_120min_MMC_treatment.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "120 min") %>%
         dplyr::mutate(Genotype = "08B02743"),
       # RMV4
       get_growth_curve_df(
-        read.csv("RMV4_20min_MMC_treatment.csv")
+        read.csv("./growth_curves/RMV4_20min_MMC_treatment.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1/3,
                       Exposure = "20 min") %>%
         dplyr::mutate(Genotype = "RMV4"),
       get_growth_curve_df(
-        read.csv("RMV4_60min_MMC_treatment.csv")
+        read.csv("./growth_curves/RMV4_60min_MMC_treatment.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "60 min") %>%
         dplyr::mutate(Genotype = "RMV4"),
       get_growth_curve_df(
-        read.csv("RMV4_120min_MMC_treatment.csv")
+        read.csv("./growth_curves/RMV4_120min_MMC_treatment.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "120 min") %>%
         dplyr::mutate(Genotype = "RMV4"),
       # High concentration, continuous exposure
       get_growth_curve_df(
-        read.csv("2743_high_MMC.csv")
+        read.csv("./growth_curves/2743_high_MMC.csv")
       ) %>%
         dplyr::mutate(Exposure = "Continuous") %>%
         dplyr::mutate(Genotype = "08B02743"),
       # High concentration, continuous exposure
       get_growth_curve_df(
-        read.csv("RMV4_high_MMC.csv")
+        read.csv("./growth_curves/RMV4_high_MMC.csv")
       ) %>%
         dplyr::mutate(Exposure = "Continuous") %>%
         dplyr::mutate(Genotype = "RMV4"),
       get_growth_curve_df(
-        read.csv("RMV8_high_MMC.csv")
+        read.csv("./growth_curves/RMV8_high_MMC.csv")
       ) %>%
         dplyr::mutate(Exposure = "Continuous") %>%
         dplyr::mutate(Genotype = "RMV8"),
       get_growth_curve_df(
-        read.csv("RMV8_hybrid_high_MMC.csv")
+        read.csv("./growth_curves/RMV8_hybrid_high_MMC.csv")
       ) %>%
         dplyr::mutate(Exposure = "Continuous") %>%
         dplyr::mutate(Genotype = "RMV8_Znregcat")
@@ -6280,14 +6280,14 @@ operator_mmc_pulse.df <-
     dplyr::bind_rows(
       # RMV4
       get_growth_curve_df(
-        read.csv("RMV4_noncoding_KO_20min_MMC_treatment.csv") %>%
+        read.csv("./growth_curves/RMV4_noncoding_KO_20min_MMC_treatment.csv") %>%
                             rename_with(~stringr::str_replace(., "_(\\d)MMC", "_MMC_replicate_\\1"))
       ) %>%
         dplyr::mutate(Time = Time + 1/3,
                       Exposure = "'20 min'") %>%
         dplyr::mutate(phage = "phi*'RMV4 operator mutant'"),
       get_growth_curve_df(
-        read.csv("RMV4_noncoding_KO_60min_MMC_treatment.csv") %>%
+        read.csv("./growth_curves/RMV4_noncoding_KO_60min_MMC_treatment.csv") %>%
                             rename_with(~stringr::str_replace(., "_(\\d)MMC", "_MMC_replicate_\\1"))
       ) %>%
         dplyr::mutate(Time = Time + 1,
@@ -6353,38 +6353,38 @@ RMV4_rates_of_activation.df <-
     dplyr::bind_rows(
       # RMV4
       get_growth_curve_df(
-        read.csv("19032024_RMV4_spaL_2_20min.csv")
+        read.csv("./growth_curves/19032024_RMV4_spaL_2_20min.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1/3,
                       Exposure = "20 min") %>%
         dplyr::mutate(Genotype = "RMV4_spaL"),
       get_growth_curve_df(
-        read.csv("19032024_RMV4_spaL_2_60min.csv")
+        read.csv("./growth_curves/19032024_RMV4_spaL_2_60min.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "60 min") %>%
         dplyr::mutate(Genotype = "RMV4_spaL"),
       get_growth_curve_df(
-        read.csv("19032024_RMV4_spaL_2_120min.csv")
+        read.csv("./growth_curves/19032024_RMV4_spaL_2_120min.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "120 min") %>%
         dplyr::mutate(Genotype = "RMV4_spaL"),
       
       get_growth_curve_df(
-        read.csv("19032024_RMV4_proKO_20min.csv")
+        read.csv("./growth_curves/19032024_RMV4_proKO_20min.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1/3,
                       Exposure = "20 min") %>%
         dplyr::mutate(Genotype = "RMV4_prophage_KO"),
       get_growth_curve_df(
-        read.csv("19032024_RMV4_proKO_2_60min.csv")
+        read.csv("./growth_curves/19032024_RMV4_proKO_2_60min.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "60 min") %>%
         dplyr::mutate(Genotype = "RMV4_prophage_KO"),
       get_growth_curve_df(
-        read.csv("19032024_RMV4_proKO_120min.csv")
+        read.csv("./growth_curves/19032024_RMV4_proKO_120min.csv")
       ) %>%
         dplyr::mutate(Time = Time + 1,
                       Exposure = "120 min") %>%
@@ -6504,14 +6504,14 @@ g <- guide_legend(nrow = 1,
 # Input parameters
 # Files
 annotation_file_names<-list(
-  "phiRMV8.embl",
-  "phiARI0460-2.embl",
-  "phiRMV4.embl"
+  "./annotations/phiRMV8.embl",
+  "./annotations/phiARI0460-2.embl",
+  "./annotations/phiRMV4.embl"
 )
 
 comparison_file_names<-list(
-  "phiRMV8.dna.phiARI0460-2.dna.crunch",
-  "phiARI0460-2.dna.phiRMV4.dna.crunch"
+  "./annotations/phiRMV8.dna.phiARI0460-2.dna.crunch",
+  "./annotations/phiARI0460-2.dna.phiRMV4.dna.crunch"
 )
 
 # Names
@@ -6737,18 +6737,18 @@ seq_id_legend <-
 # Input parameters
 # Files
 annotation_file_names<-list(
-  "RMV8_lysogenic.embl",
-  "trimmed_RMV8_immARcat_lysogeny.embl",
-  "2743_lysogenic.embl",
-  "RMV4_lysogenic.embl"
+  "./annotations/RMV8_lysogenic.embl",
+  "./annotations/trimmed_RMV8_immARcat_lysogeny.embl",
+  "./annotations/2743_lysogenic.embl",
+  "./annotations/RMV4_lysogenic.embl"
 )
 
 comparison_file_names<-list(
-  "RMV8_lysogenic.dna.trimmed_RMV8_immARcat_lysogeny.dna.crunch",
-  "trimmed_RMV8_immARcat_lysogeny.dna.2743_lysogenic.dna.crunch",
-  "2743_lysogenic.dna.RMV4_lysogenic.dna.crunch"
+  "./annotations/RMV8_lysogenic.dna.trimmed_RMV8_immARcat_lysogeny.dna.crunch",
+  "./annotations/trimmed_RMV8_immARcat_lysogeny.dna.2743_lysogenic.dna.crunch",
+  "./annotations/2743_lysogenic.dna.RMV4_lysogenic.dna.crunch"
 )
-output_fn<-"lysogeny_comparison.pdf"
+output_fn<-"./annotations/lysogeny_comparison.pdf"
 # Names
 names<-c("phiRMV8","phiRMV8_immARcat","phiARI460-2","phiRMV4")
 seq_labels<-c(expression(phi*'RMV8'),
@@ -7578,10 +7578,10 @@ for (comparison in comparison_file_names) {
 ``` {r Assemble CIPHR figure}
 
 ciphr_gel_image <-
-  magick::image_ggplot(image_crop(image_trim((image_read_pdf("CIPHR_gel_image.pdf")))))
+  magick::image_ggplot(image_crop(image_trim((image_read_pdf("./gel_images/CIPHR_gel_image.pdf")))))
 
 scRNA_pcr_df <-
-  read.csv("R6x_modified_scRNA.csv") %>%
+  read.csv("./qPCR/R6x_modified_scRNA.csv") %>%
   dplyr::group_by(gene,mutants) %>%
   mutate(`Biological replicate` = as.character((row_number()-1)%/%3+1)) %>%
   dplyr::ungroup() %>%
@@ -7723,7 +7723,7 @@ cowplot::plot_grid(
   )
 )
 
-ggsave("prophage_transformation_Figure_1.png",
+ggsave("./figures/prophage_transformation_Figure_1.pdf",
        figure_1,
        dpi = 600,
        height = 11,
@@ -7771,7 +7771,7 @@ ggsave("prophage_transformation_Figure_1.png",
   )
 )
 
-ggsave("prophage_transformation_Figure_2.png",
+ggsave("./figures/prophage_transformation_Figure_2.pdf",
        figure_2,
        dpi = 600,
        height = 11,
@@ -7786,7 +7786,7 @@ ggsave("prophage_transformation_Figure_2.png",
 (figure_3 <-
   combined_expression_excision_plot)
 
-ggsave("prophage_transformation_Figure_3.png",
+ggsave("./figures/prophage_transformation_Figure_3.pdf",
        figure_3,
        dpi = 600,
        height = 11,
@@ -7868,7 +7868,7 @@ combined_legend_obj <-
   )
 )
 
-ggsave("prophage_transformation_Figure_4.png",
+ggsave("./figures/prophage_transformation_Figure_4.pdf",
        figure_4,
        dpi = 600,
        height = 11,
@@ -7915,7 +7915,7 @@ ggsave("prophage_transformation_Figure_4.png",
   )
 )
 
-ggsave("prophage_transformation_Figure_5.png",
+ggsave("./figures/prophage_transformation_Figure_5.pdf",
        figure_5,
        dpi = 600,
        height = 11,
@@ -7928,7 +7928,7 @@ ggsave("prophage_transformation_Figure_5.png",
 ``` {r Figure 6, fig.height = 8, fig.width = 8}
 
 prophage_summary_plot <-
-  magick::image_ggplot(image_crop(image_trim((image_read_pdf("prophage_transformation_summary_figure.pdf")))))
+  magick::image_ggplot(image_crop(image_trim((image_read_pdf("./summary_figure/prophage_transformation_summary_figure.pdf")))))
 
 (figure_6 <-
   cowplot::plot_grid(
@@ -7943,7 +7943,7 @@ prophage_summary_plot <-
   )
 )
 
-ggsave("prophage_transformation_Figure_6.png",
+ggsave("./figures/prophage_transformation_Figure_6.pdf",
        figure_6,
        dpi = 600,
        height = 6,
