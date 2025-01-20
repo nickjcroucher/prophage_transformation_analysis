@@ -198,9 +198,10 @@ mutant_labels <- c(
   "RMV8_hybrid_plac_recA" = ""~phi*'RMV8'[italic(immARcat)]~italic(recA)[italic(lacI)]~"",
   # R6
   "R6" = "R6",
-  "R6_dutKO_kanpheS" = "R6"~~italic(scr)*'::Janus',
-  "R6_restored" = "R6"~~italic(scr)[italic(attB)]~'restored',
-  "R6_mod_RNA" = "R6"~~italic(scr)[italic(attL)],
+  "R6_recA" = "R6"~italic(recA)*'::Janus',
+  "R6_dutKO_kanpheS" = "R6"~italic(scr)*'::Janus',
+  "R6_restored" = "R6"~italic(scr)[italic(attB)]~'restored',
+  "R6_mod_RNA" = "R6"~italic(scr)[italic(attL)],
   # 11930 genotypes
   "11930_delta" = "11930"~Delta*italic(ivr),
   "11930_scRNA_Janus" = "11930"~Delta*italic(ivr)~"[CIPhR"~italic(scr)*"]::Janus",
@@ -263,6 +264,7 @@ mutant_palette <- c(
   "R6_dutKO_kanpheS" = "darkorange",
   "R6_restored" = "goldenrod4",
   "R6_mod_RNA" = "brown",
+  "R6_recA" = "brown2",
   # 11930 genotypes
   "11930_delta" = "purple",
   "11930_scRNA_Janus" = "violet",
@@ -424,6 +426,7 @@ get_growth_curve_df <- function(df, threshold = 24) {
                         grepl("R6x_modified",Genotype) ~ "R6_mod_RNA",
                         grepl("scRNA_restored_repeat",Genotype) ~ "R6_restored",
                         grepl("R6x_complemented",Genotype) ~ "R6_restored",
+                        grepl("R6recA",Genotype) ~ "R6_recA",
                         grepl("R6x",Genotype) ~ "R6",
                         TRUE ~ Genotype
                       )
@@ -7675,6 +7678,126 @@ cowplot::plot_grid(
 
 ```
 
+# 11930 circularisation
+
+``` {r Circularisation of CIPhR in 11930}
+
+ciphr_excision_df <-
+  read_excision_file("./qPCR/11930_ADbyAB.csv") %>% 
+  dplyr::mutate(Genotype = "11930",
+                Measurement = "italic(attB)~'to'~italic(attL)~'ratio'",
+                `Biological replicate` = as.character(gsub('\\D','',replicate))) %>% 
+  dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120")))
+
+(ciphr_excision_plot <-
+  ggplot(ciphr_excision_df,
+         aes(x = Time,
+             y = ADbyAB,
+             colour = Condition,
+             fill = Condition,
+             group = interaction(Time,Genotype,Condition,Measurement))
+         ) +
+    geom_vline(xintercept = c(seq(from=1.5,to=3.5,by=1)), linetype = 3) +
+    geom_violin(draw_quantiles = c(0.5),
+                colour = "black",
+                alpha = 0.15,
+                scale = "width",
+                position = position_dodge(preserve = 'single')) +
+    geom_point(aes(shape = `Biological replicate`),
+               position = position_jitterdodge(jitter.width = 0.25),
+               size = 0.75) +
+    scale_y_continuous(trans = "log10") +
+    scale_colour_manual(values = condition_palette,
+                      aesthetics = c("fill","colour")) +
+    ylab(expression('DNA molecule ratio')) +
+    xlab("Time (min)") +
+    facet_grid(Measurement~Genotype,
+                 scales = 'free_y',
+                 labeller = label_parsed) +
+    theme(legend.position = "bottom",
+            panel.spacing = unit(0, "lines"),
+          strip.text = element_text(size = 7.5))
+)
+
+```
+
+# 08B02743 recA expression
+
+``` {r RecA expression in 08B02743}
+
+recA_in_2743_df <-
+  read_expression_file("./qPCR/2743_prophage_KO_transcriptions.csv") %>%
+  dplyr::group_by(Condition,gene,Time) %>%
+  mutate(`Biological replicate` = as.character((row_number()-1)%/%3+1)) %>%
+  dplyr::ungroup() %>% 
+  dplyr::mutate(gene = paste0("italic(",gene,")")) %>% 
+  dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120")))
+
+
+(recA_in_2743_plot <-
+   # Expression data
+    ggplot(recA_in_2743_df,
+           aes(x = Time,
+               y = fold_change,
+               colour = Condition,
+               fill = Condition,
+               group = interaction(Time,Condition,gene),
+               )
+           ) +
+      geom_violin(draw_quantiles = c(0.5),
+                  colour = "black",
+                  scale = "width",
+                  alpha = 0.15,
+                  adjust = 1,
+                  position = position_dodge(preserve = 'single')) +
+      geom_point(aes(shape = `Biological replicate`),
+                 position = position_jitterdodge(),
+                 size = 0.75) +
+      geom_vline(xintercept = c(seq(from=1.5,to=3.5,by=1)), linetype = 3) +
+      geom_hline(yintercept = 1, linetype = 2) +
+      scale_y_continuous(trans = "log10") +
+      scale_colour_manual(values = condition_palette,
+                      aesthetics = c("fill","colour")) +
+      ylab(expression('Relative RNA amount ('*2^{-Delta*Delta*'C'[t]}*')')) +
+      xlab("Time (min)") +
+      facet_grid(gene~., scales = 'free_y', labeller = label_parsed) +
+      theme(legend.position = "right",
+            panel.spacing = unit(0, "lines"))
+)
+
+```
+
+# Plot recA mutant growth curve
+
+``` {r Growth curve data for recA mutant}
+
+r6_recA_df <-
+  get_growth_curve_df(read.csv("./growth_curves/R6x_recA_growth.csv")) %>% 
+  dplyr::filter(Genotype != "")
+
+(r6_recA_growth_plot <-
+  ggplot(r6_recA_df,
+           aes(x = Time,
+               y = Median,
+               ymin = Min,
+               ymax = Max,
+               colour = Genotype,
+               fill = Genotype
+            )
+         ) +
+      geom_ribbon(alpha = 0.5, linetype = 0) +
+      geom_line() +
+      ylab(expression(OD[600])) +
+      xlab("Time (h)") +
+      scale_colour_manual(labels = mutant_labels[names(mutant_labels) %in% unique(r6_recA_df$Genotype)],
+                          values = mutant_palette,
+                          aesthetics = c("fill","colour")) +
+      theme_bw() +
+      theme(legend.position = "bottom",
+            legend.text = element_text(size = 8))
+)
+
+```
 
 # Assemble Figure 1
 
