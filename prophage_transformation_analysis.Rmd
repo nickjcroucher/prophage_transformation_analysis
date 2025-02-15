@@ -33,6 +33,8 @@ library(ggtree)
 library(tidyverse)
 library(rlang)
 library(vctrs)
+library(ggh4x)
+library(scales)
 
 # knitr options
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
@@ -212,59 +214,59 @@ mutant_labels <- c(
 mutant_palette <- c(
   # 08B02043
   "08B02743" = "navy",
-  "08B02743_phageJanus" = "purple",
-  "08B02743_intcat" = "mediumblue",
-  "08B02743_repcat" = "royalblue",
-  "08B02743_lytAcat" = "steelblue1",
-  "08B02743_recAJanus" = "midnightblue",
-  "08B02743_Znregcat" = "lightskyblue1",
-  "08B02743_Znregcat_recA" = "lightskyblue2",
-  "08B02743_immAcat" = 'lightskyblue3',
-  "08B02743_immAcat_recAJanus" = 'lightskyblue4',
+  "08B02743_phageJanus" = "lightblue1",
+  "08B02743_intcat" = "blue",
+  "08B02743_repcat" = "mediumpurple",
+  "08B02743_lytAcat" = "mediumorchid",
+  "08B02743_recAJanus" = "royalblue1",
+  "08B02743_Znregcat" = "darkviolet",
+  "08B02743_Znregcat_recA" = "darkslateblue",
+  "08B02743_immAcat" = 'darkorchid4',
+  "08B02743_immAcat_recAJanus" = 'midnightblue',
   # RMV4
-  "RMV4" = 'red',
-  "RMV4_intcat" = 'darkred',
-  "RMV4_lytAcat" = 'tomato',
-  "RMV4_phageJanus" = 'orange',
-  "RMV4_repcat" = 'coral',
-  "RMV4_recAJanus" = 'firebrick4',
-  "RMV4_Znregcat" = 'gold4',
-  "RMV4_Znregcat_recA" = 'gold',
-  "RMV4_spaLJanus" = "tomato",
-  "RMV4_dprAJanus" = "tomato",
+  "RMV4" = 'darkred',
+  "RMV4_intcat" = 'coral3',
+  "RMV4_lytAcat" = 'salmon',
+  "RMV4_phageJanus" = 'tan1',
+  "RMV4_repcat" = 'red',
+  "RMV4_recAJanus" = 'maroon',
+  "RMV4_Znregcat" = 'deeppink',
+  "RMV4_Znregcat_recA" = 'hotpink',
+  "RMV4_spaLJanus" = "firebrick1",
+  "RMV4_dprAJanus" = "firebrick3",
   # RMV8
   "RMV8" = "darkgreen",
-  "RMV8_phageJanus" = "yellowgreen",
-  "RMV8_phageCat" = "yellowgreen",
-  "RMV8 int::Jan" = "yellowgreen",
-  "RMV8_intcat" = "darkolivegreen3",
-  "RMV8_repcat" = "limegreen",
-  "RMV8_lytAcat" = "lawngreen",
-  "RMV8_recAJanus" = "darkolivegreen",
-  "RMV8_phageJanus_recAJanus" = "palegreen",
-  "RMV8_intcat_recAJanus" = "olivedrab1",
-  "RMV8_phage_ermB" = "yellowgreen",
-  "RMV8_intJanus_phage_ermB" = "seagreen3",
-  "RMV8_int_restored" = "green",
+  "RMV8_phageJanus" = "greenyellow",
+  "RMV8_phageCat" = "greenyellow",
+  "RMV8 int::Jan" = "olivedrab4",
+  "RMV8_intcat" = "olivedrab3",
+  "RMV8_repcat" = "seagreen3",
+  "RMV8_lytAcat" = "chartreuse2",
+  "RMV8_recAJanus" = "springgreen3",
+  "RMV8_phageJanus_recAJanus" = "springgreen1",
+  "RMV8_intcat_recAJanus" = "palegreen3",
+  "RMV8_phage_ermB" = "greenyellow",
+  "RMV8_intJanus_phage_ermB" = "mediumseagreen",
+  "RMV8_int_restored" = "darkgreen",
   "RMV8_comEA" = "olivedrab2",
   "RMV8_plac_recA" = "olivedrab3",
   # RMV8 hybrid
-  "RMV8_Znregcat" = "aquamarine",
-  "RMV8_hybrid_phage_ermB" = "lightblue1",
-  "RMV8_Znregcat_recA" = "aquamarine4",
-  "RMV8_Znregcat_phageJanus" = "cyan",
-  "RMV8_hybrid" = "aquamarine",
+  "RMV8_Znregcat" = "aquamarine4",
+  "RMV8_hybrid_phage_ermB" = "paleturquoise1",
+  "RMV8_Znregcat_recA" = "aquamarine",
+  "RMV8_Znregcat_phageJanus" = "paleturquoise1",
+  "RMV8_hybrid" = "aquamarine4",
   "RMV8_hybrid_intcat" = "turquoise",
-  "RMV8_hybrid_recAJanus" = "aquamarine4",
-  "RMV8_hybrid_phage_ermB" = "turquoise4",
-  "RMV8_hybrid_intJanus_phage_ermB" = "turquoise2",
+  "RMV8_hybrid_recAJanus" = "cyan",
+  "RMV8_hybrid_phage_ermB" = "paleturquoise1",
+  "RMV8_hybrid_intJanus_phage_ermB" = "paleturquoise1",
   "RMV8_hybrid_plac_recA" = "turquoise3",
   # R6
   "R6" = "goldenrod1",
   "R6_dutKO_kanpheS" = "darkorange",
   "R6_restored" = "goldenrod4",
   "R6_mod_RNA" = "brown",
-  "R6_recA" = "brown2",
+  "R6_recA" = "chocolate",
   # 11930 genotypes
   "11930_delta" = "purple",
   "11930_scRNA_Janus" = "violet",
@@ -290,11 +292,11 @@ condition_palette <- c(
   "Genomic DNA & IPTG" = "violet",
   "Mitomycin C & IPTG" = "magenta",
   "Mitomycin C & genomic DNA & IPTG" = "yellow",
-  "Calcium chloride" = "green",
+  "Calcium chloride" = "orange",
   "Manganese chloride" = "darkseagreen2",
-  "Citrate" = "slateblue1",
-  "Hydrogen peroxide" = "yellowgreen",
-  "Zinc chloride" = "seagreen2",
+  "Citrate" = "gold",
+  "Hydrogen peroxide" = "palevioletred1",
+  "Zinc chloride" = "plum3",
   "1mM IPTG" = "peachpuff1",
   "3mM IPTG" = "peachpuff2",
   "6mM IPTG" = "peachpuff3"
@@ -1134,9 +1136,10 @@ regulator_palette <- c(
   "ImmAR-like" = "royalblue",
   "ImmA-like" = "royalblue",
   "C1-like" = "navyblue",
+  "PRCI C1-like" = "purple",
   "No identified\nregulator" = "darkgrey",
   "Polylysogenic\nisolate" = "lightgrey",
-  "C1-like\n& ImmAR-like" = "cornflowerblue"
+  "C1-like\n& ImmAR-like" = "turquoise"
 )
 
 ma_phage.df <-
@@ -1151,7 +1154,7 @@ ma_phage.df <-
     dplyr::mutate(Regulator = factor(Regulator,
                                      levels = c("No identified\nregulator","C1-like","ImmA-like")))
 
-phage_reg_by_length_plot <-
+(phage_reg_by_length_plot <-
   ggplot(ma_phage.df,
          aes(x = length,
              fill = Regulator)) +
@@ -1160,6 +1163,7 @@ phage_reg_by_length_plot <-
     ylab("Density") +
     scale_fill_discrete(type = regulator_palette) +
     theme(legend.position = "bottom")
+)
 
 ```
 
@@ -1199,47 +1203,78 @@ grep -h -v ^# *hmm_search.tab > gps_phage_domains.tab
 
 ```
 
+``` {bash Rerun search, eval = FALSE}
+
+# prokka 1.14.6 annotation:
+# prokka --outdir 10050_2#10_out --prefix 10050_2#10 --genus Streptococcus --species pneumoniae --cpus 1 --force --noanno 10050_2#10.contigs_velvet.fa
+
+hmmbuild pneumo_ImmAR.hmm phage_DUF955.aln
+hmmbuild pneumo_C1.hmm phage_peptidaseS24.aln
+hmmpress pneumo_ImmAR.hmm
+hmmpress pneumo_C1.hmm
+
+# HMMER 3.4
+hmmpress C1_type_regulator.hmm
+hmmpress ImmAR_type_regulator.hmm
+hmmpress  NF007271.0.HMM 
+
+# Run HMM search
+hmmsearch -o immAR_search.hmm_search.out --tblout immAR_search.hmm_search.tab --noali -E 1e-2 --domE 1e-2 --cpu 12 ImmAR_type_regulator.hmm GPS.aa
+
+
+```
+
 # Read hits from HMM search
 
 This search identifies any match with an e value < 0.01. However, we still expect a large number of false positives at this threshold, because the database contains so many seqences (42,538,047 proteins). We therefore load the hits and plot their p values to decide on a threshold:
-
+103,947,314
 ``` {r Load and plot HMM results, fig.height = 11, fig.width = 8}
 
 # Write a function to load the HMM hits
 process_hmm_hits<-function(fn) {
-  hmm_colnames<-c("target name","seq_accession","query name","dom_accession","seq_E-value","seq_score","seq_bias","dom_E-value","dom_score","dom_bias","domn_exp","domn_reg","domn_clu","domn_ov","domn_env","domn_dom","domn_rep","domn_inc","description of target")
+  hmm_colnames<-c("target name","seq_accession","query name","dom_accession","seq_E-value","seq_score","seq_bias","dom_E-value","dom_score","dom_bias","domn_exp","domn_reg","domn_clu","domn_ov","domn_env","domn_dom","domn_rep","domn_inc","description of target","final column")
   raw.df<-read.table(file=fn,
-                             comment.char = "",
+                             comment.char = "#",
                              header = FALSE)
 
   colnames(raw.df)<-hmm_colnames
   raw.df %<>%
-    dplyr::mutate(Rank=rank(`seq_E-value`)) %>%
-    dplyr::mutate(Lane.Id = gsub("_([0-9]+)$","",`target name`))
+    dplyr::mutate(Rank=rank(`seq_E-value`))# %>%
+    #dplyr::mutate(Lane.Id = gsub("_([0-9]+)$","",`target name`))
   return(raw.df)
 }
 
-# Load the hits with the function
+# Load the annotation prefixes
+annotation_prefix_df <-
+  read.csv("./sequence_analysis/assembly_prefixes.tab")
+
+# Load the HMM hits
 hmm_hits.df <-
-  process_hmm_hits("./sequence_analysis/gps_phage_domains.tab") %>%
+  dplyr::bind_rows(
+    process_hmm_hits("./sequence_analysis/pneumo_ImmAR.hmm_search.tab"),
+    process_hmm_hits("./sequence_analysis/pneumo_C1.hmm_search.tab")
+  ) %>%
     dplyr::mutate(
       Regulator = dplyr::case_when(
         `query name` == "phage_DUF955" ~ "ImmAR-like",
         `query name` == "phage_peptidaseS24" ~ "C1-like"
       )
-    )
+    ) %>% 
+  tidyr::separate(`target name`,into = c("Prefix","Index"),sep="_",remove = FALSE)
+
 
 # Specify thresholds
 threshold.df<-data.frame(
-  "query name" = c("phage_DUF955","phage_peptidaseS24"),
+  "query name" = c("ImmAR-like","C1-like"),
   "threshold" = c(1e-30,1e-30)
 )
 
 hmm_hits.df %<>%
-  dplyr::left_join(threshold.df, by=c("query name"="query.name"))
+  dplyr::left_join(threshold.df, by=c("Regulator"="query.name")) %>% 
+  dplyr::left_join(annotation_prefix_df, by = "Prefix")
 
 # Plot the E values
-phage_hmm_plot <-
+(phage_hmm_plot <-
   ggplot(hmm_hits.df, aes(x=Rank,
                           y=`seq_E-value`,
                           colour = Regulator)) +
@@ -1251,15 +1286,8 @@ phage_hmm_plot <-
     theme(legend.position = "none") +
     geom_hline(aes(yintercept=threshold), linetype = 3) +
     scale_colour_manual(values = regulator_palette)
-
-cowplot::plot_grid(
-  plotlist = list(
-    phage_reg_by_length_plot,
-    phage_hmm_plot
-  ),
-  nrow = 2,
-  labels = "AUTO"
 )
+
 
 ```
 
@@ -1270,7 +1298,7 @@ cowplot::plot_grid(
 # Apply threshold
 filtered.hmm_hits.df<-
   hmm_hits.df %>%
-    dplyr::filter(`seq_E-value` < threshold)
+    dplyr::filter(`seq_E-value` < threshold & Regulator != "hipB")
 
 lysogeny_comparison.df <-
   tibble(
@@ -1298,13 +1326,14 @@ lysogeny_comparison.df %>%
 
 ``` {r Congruence between analyses}
 
-congruence.df <-
-  unidentified_att_sites.df %>%
+make_congruence_df <- function(df1,df2) {
+  
+  df1 %>%
     dplyr::left_join(
-      filtered.hmm_hits.df %>%
-        dplyr::select(Lane.Id,`query name`,`target name`) %>%
+      df2 %>%
+        dplyr::select(Lane.Id,Regulator,`target name`) %>%
         tidyr::pivot_wider(id_cols = c(Lane.Id),
-                           names_from = `query name`,
+                           names_from = Regulator,
                            values_from = `target name`,
                            values_fn = function(x) sum(!is.na(x)),
                            values_fill = 0
@@ -1312,11 +1341,7 @@ congruence.df <-
         dplyr::mutate(Lane.Id = gsub("#","_",Lane.Id)),
       by = c("genome"="Lane.Id")
     ) %>%
-    dplyr::mutate(
-      phage_DUF955 = dplyr::if_else(is.na(phage_DUF955),0,phage_DUF955),
-      phage_peptidaseS24 = dplyr::if_else(is.na(phage_peptidaseS24),0,phage_peptidaseS24)
-    ) %>%
-    dplyr::mutate(Regulator = dplyr::if_else(phage_DUF955 == 0 & phage_peptidaseS24 == 0, "No regulator", "Regulator")) %>%
+    dplyr::mutate(Regulator = dplyr::if_else(`ImmAR-like` == 0 & `C1-like` == 0, "No regulator", "Regulator")) %>%
     dplyr::mutate(Summary = dplyr::case_when(
                       Regulator == "Regulator" & Disrupted_sites > 0 & Lysogenic == "Lysogenic" ~ "'Consensus on lysogeny'",
                       Regulator == "No regulator" & Disrupted_sites == 0 & Lysogenic == "Non-lysogenic" ~ "'Consensus on non-lysogeny'",
@@ -1332,7 +1357,12 @@ congruence.df <-
                       TRUE ~ "'Other'"
                     )
                   ) %>%
-    dplyr::mutate(Regulator_count = phage_DUF955 + phage_peptidaseS24)
+    dplyr::mutate(Regulator_count = `ImmAR-like` + `C1-like`)
+  
+}
+
+congruence.df <-
+  make_congruence_df(unidentified_att_sites.df,filtered.hmm_hits.df)
 
 phage_analysis_congruence_plot <-
   ggplot(congruence.df,
@@ -1346,24 +1376,29 @@ phage_analysis_congruence_plot <-
 
 ```
 
-
 Here we can see some of these domains now have more hits than there are in the genomes, which is more true positives than expected. Hence we may need to make the cutoffs more specific.
 
 # Tally regulators per isolate
 
 ``` {r Tally phage regulators per isolate}
 
-phage_gene_distribution.df <-
-  filtered.hmm_hits.df %>%
-    dplyr::select(Lane.Id,`query name`) %>%
-    dplyr::group_by(Lane.Id,`query name`) %>%
+make_phage_gene_distribution_df <- function(df) {
+  
+  df %>%
+    dplyr::select(Lane.Id,Regulator) %>%
+    dplyr::group_by(Lane.Id,Regulator) %>%
     dplyr::summarise(count = n()) %>%
     dplyr::ungroup() %>%
-    dplyr::rename(Domain = `query name`) %>%
+    dplyr::rename(Domain = Regulator) %>%
     dplyr::left_join(
       gps.df,
       by = c("Lane.Id")
     )
+  
+}
+
+phage_gene_distribution.df <-
+  make_phage_gene_distribution_df(filtered.hmm_hits.df)
 
 # ggplot(phage_gene_distribution.df,
 #        aes(x = count,
@@ -1373,65 +1408,22 @@ phage_gene_distribution.df <-
 
 ```
 
-# Compare tallies at each site
-
-``` {r Compare phage number estimates, fig.height = 11, fig.width = 8}
-
-phage_count_cor <-cor.test(congruence.df$Disrupted_sites,congruence.df$Regulator_count)$estimate
-
-cor_string = paste0("italic(R)*'='*",signif(phage_count_cor,2))
-
-phage_count_congruence_plot <-
-  ggplot(congruence.df %>%
-           dplyr::group_by(Disrupted_sites,Regulator_count) %>%
-           dplyr::summarise(Frequency = n()) %>%
-           dplyr::ungroup(),
-         aes(x = Disrupted_sites,
-             y = Regulator_count,
-             size = Frequency)) +
-    geom_point() +
-    geom_smooth(data = congruence.df,
-                inherit.aes = FALSE,
-                aes(x = Disrupted_sites,
-                    y = Regulator_count), 
-                method = "lm") +
-    ylab("Number of identified\nphage regulators") +
-    xlab(expression("Number of disrupted"~italic(attB)~"sites")) +
-    annotate("text",
-             x = 1,
-             y = 6.5,
-             label = cor_string,
-             parse = T)
-
-cowplot::plot_grid(
-  plotlist = list(
-    phage_hit_length_plot,
-    phage_count_congruence_plot + theme(legend.position = "right"),
-    phage_analysis_congruence_plot
-  ),
-  nrow = 3,
-  labels = "AUTO",
-  rel_heights = c(0.3,0.3,0.4)
-)
-
-```
-
 # Type of regulator at each insertion site
 
 ``` {r Link regulators and insertion site}
 
-att_sites_domains.df <-
-  unidentified_att_sites.df %>%
-    dplyr::left_join(phage_gene_distribution.df %>%
+combine_phage_data <- function(df1,df2,df3,df4) {
+  
+  df1 %>%
+    dplyr::left_join(df2 %>%
                        dplyr::select(Lane.Id,Domain,count) %>%
                        dplyr::mutate(Lane.Id = gsub("#","_",Lane.Id)) %>%
                        tidyr::pivot_wider(id_cols = c(Lane.Id),names_from = Domain,values_from = count,values_fill = 0),
                      by = c("genome" = "Lane.Id")
                      ) %>%
-    #dplyr::mutate(Domain = dplyr::if_else(is.na(Domain),"None",Domain)) %>%
     dplyr::mutate(
-      Count_ImmR = dplyr::if_else(is.na(phage_DUF955),0,phage_DUF955),
-      Count_cI = dplyr::if_else(is.na(phage_peptidaseS24),0,phage_peptidaseS24)
+      Count_ImmR = dplyr::if_else(is.na(`ImmAR-like`),0,`ImmAR-like`),
+      Count_cI = dplyr::if_else(is.na(`C1-like`),0,`C1-like`)
     ) %>%
     dplyr::mutate(reg_domains = dplyr::case_when(
                       Count_ImmR >= 1 & Count_cI >= 1 ~ "C1-like\n& ImmAR-like",
@@ -1441,7 +1433,7 @@ att_sites_domains.df <-
                     )
                   ) %>%
     dplyr::left_join(
-      phage_insertions.df %>%
+      df3 %>%
         dplyr::filter(status == "Infected") %>%
         dplyr::group_by(genome) %>%
         dplyr::reframe(infected_sites = list(att)) %>%
@@ -1451,17 +1443,20 @@ att_sites_domains.df <-
         dplyr::ungroup(),
       by = c("genome")
     ) %>%
-  dplyr::mutate(infected_site_str=factor(infected_site_str,levels = unique(summarise_by_site.df$att)))
+  dplyr::mutate(infected_site_str=factor(infected_site_str,levels = unique(df4$att)))
+  
+}
 
-phage_summary_per_attB.df <-
-  att_sites_domains.df %>%
+summarise_by_att_site <- function(df1,df2) {
+  
+  df1 %>%
     dplyr::filter(!is.na(infected_site_str)) %>%
     dplyr::group_by(reg_domains,infected_site_str) %>%
     dplyr::summarise(count = n()) %>%
     dplyr::mutate(att = factor(infected_site_str,
-                               levels = levels(summarise_by_site.df$att),ordered = T)) %>%
+                               levels = levels(df2$att),ordered = T)) %>%
     tidyr::pivot_wider(id_cols = att, names_from = reg_domains, values_from = count,values_fill = 0) %>%
-    dplyr::left_join(summarise_by_site.df, by = c("att")) %>%
+    dplyr::left_join(df2, by = c("att")) %>%
     dplyr::mutate(`Polylysogenic\nisolate` = Infections - `C1-like\n& ImmAR-like` - `C1-like` - `ImmAR-like` - `No identified\nregulator`) %>%
     tidyr::pivot_longer(cols = -c(att,Infections), names_to = "Classification", values_to = "count") %>%
     dplyr::mutate(Classification = factor(Classification,
@@ -1472,12 +1467,20 @@ phage_summary_per_attB.df <-
                                                      "C1-like\n& ImmAR-like")
                                           )
                   )
+  
+}
+
+att_sites_domains.df <-
+  combine_phage_data(unidentified_att_sites.df,phage_gene_distribution.df,phage_insertions.df,summarise_by_site.df)
+
+phage_summary_per_attB.df <-
+  summarise_by_att_site(att_sites_domains.df,summarise_by_site.df)
 
 guide_nrow = 2
 g <- guide_legend(nrow = guide_nrow,
                   title.position = NULL)
 
-regulator_by_site_plot <-
+(regulator_by_site_plot <-
   ggplot(phage_summary_per_attB.df,
            aes(x = att,
                y = count,
@@ -1493,10 +1496,217 @@ regulator_by_site_plot <-
       theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
             legend.position = "bottom") +
       guides(fill = g, colour = g)
+)
 
 ```
 
 - The missing regulatory systems at the hup site correspond to difficult-to-assemble transposon-like regulators, e.g. see CP035235
+
+Look for the strains that carry both regulatory systems at one site:
+
+``` {r What monolysogenic isolates have two regulatory systems, fig.width = 8, fig.height = 8}
+
+duplicated_regulators_single_site_df <-
+      att_sites_domains.df %>% 
+        dplyr::filter(Disrupted_sites == 1) %>% 
+        dplyr::filter(Count_ImmR >= 1 & Count_cI >= 1)
+
+ggplot(duplicated_regulators_single_site_df,
+       aes(x = as.factor(Strain))) +
+  geom_bar() +
+  xlab("Strain") +
+  geom_hline(yintercept = 15, colour = "red", linetype = 2) +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 5))
+
+```
+
+Get representatives of:
+
+- GPSC1 - 21999_7#162 (C1: OAAKCFMJ_00834 [PRCI]; ImmAR: OAAKCFMJ_01747 [prophage])
+
+- GPSC5 - 21127_2#106 (C1: AAELAILP_00946 [prophage]; ImmAR: AAELAILP_01390 [unsure])
+- GPSC5 - 21127_2#169 (C1: MGFLCAJG_01208 [prophage]; ImmAR: MGFLCAJG_02189 [unsure])
+
+- GPSC7 - 21053_8#156 (C1: FEDBOMDN_02148 [unsure]; ImmAR: FEDBOMDN_00967)
+- GPSC7 - 22027_1#134 (C1: IKKGJLIM_01535 [PRCI]; ImmAR: IKKGJLIM_00619 [prophage])
+
+- GPSC11 - 22695_3#306 (C1: AKJKAIGB_02125 [prophage]; ImmAR: AKJKAIGB_02076 [prophage])
+- GPSC11 - 22709_8#331 (C1: FMMFLJGD_02156 [prophage]; ImmAR: FMMFLJGD_02144 [prophage])
+
+- GPSC21 - 15995_1#118 (C1: JAFBBCBJ_01565 [PRCI]; ImmAR: JAFBBCBJ_00951 [prophage])
+
+- GPSC23 - 18090_2#169 (C1: HILCKDKP_00999 [prophage]; ImmAR: HILCKDKP_00564 [prophage])
+- GPSC23 - 22841_2#162 (C1: HKGEKPGJ_00419 [prophage]; ImmAR: HKGEKPGJ_01549 [prophage])
+
+- GPSC41 - 13415_8#92 (C1: EGEEHDAB_00533 [PRCI]; ImmAR: EGEEHDAB_00117 [prophage])
+
+- GPSC64 - 22695_3#322 (C1: BNLLFPEJ_00411 [PRCI]; ImmAR: BNLLFPEJ_01867 [prophage])
+
+``` {bash eval=FALSE}
+
+>EGEEHDAB_00533   - 1510048: 1510788  MW: 27741.621
+MRSNSEIIDIIVLEKDKQDLSLSELARRVGLAKSAMSRYLNKTRQFPLNRAQDFANVLGI
+SVEYLLGVENSSPSTSTVEKITLIADQLTPPRQEKALTYLKKQLLEQKNENIVSENIISL
+DDYRESKTLPVIGVVTAGNGITQDDNLNMEKCFYTDEIPDDYDAIAYVVGNSMEPKIKNG
+DYLFIKNTPQVDYNTIGIFQVDGANYVKKLRQGYLESLNPECADIQLDESNDIRTIGEVV
+SIYREN
+>JAFBBCBJ_01565   - 1537904: 1538644  MW: 27848.766
+MSLGNKQIMADNIKRLLSAKGLNPRQLAIALDFKYTTVNDWVNAKTYPRIDKIEMLANFF
+NVSKSDLVENKNAETPTTSPIQSIYDQLTPPRQAKALTYLKKQLLEQKNENIVSENIISL
+DDYRESKTLPVIGVVTAGNGITQDDNLNMEKCFYTDEIPDDYDAIAYVVGNSMEPKIKNG
+DYLFIKNTPQVDYNTIGIFQVDGANYVKKLRQGYLESLNPECADIQLDESNDIRTIGEVV
+SIYREN
+>OAAKCFMJ_00834   - 823260: 824000  MW: 27816.793
+MSLGNKQIMADNIKRLLSAKGLNPRQLAIALDFKYTTVNDWVNAKTYPRIDKIEMLANFF
+NVSKSDLVENKNAETPTTSLIQSIYDQLTPPRQAKALTYLKKQLLEQKNENIVSENIISL
+DDYRESKTLPVIGVVTAGNGITQDDNLNIEKCFYTDEIPDDYDAIAYVVGNSMEPKIKNG
+DYLFIKNTPQVDYNTIGIFQVDGANYVKKLRQGYLESLNPDCADIQLDESNDIRTIGEVV
+GIYREK
+>BNLLFPEJ_00411   - 1734078: 1734815  MW: 27860.736
+MDNLAQHVGEKIKFFRKENGWTQSVLAEKMSTSKQTISKYEKGIIKVNQDTIFKLADIFG
+VSIDSFFPSIIEEIATTSPIQSIYDQLTPPRQEKALTYLKKQLLEQKNENIVSENIISLD
+DYRESKTLPVIGVVTAGNGITQDDNLNMEKCFYTDEIPDDYDAIAYVVGNSMEPKIKNGD
+YLFIKNTPQVDYNTIGIFQVDGANYVKKLRQGYLESLNPECADIQLDEDNDIRTIGEVVS
+IYREK
+>IKKGJLIM_01535   - 611012: 611752  MW: 27906.805
+MSLGNKQIMADNIKRLLSAKGLNPRQLAIALDFKYTTVNDWVNAKTYPRIDKIEMLANFF
+NVSKSDLVENKNAETPTTSPIQSIYDQLTPPRQEKALTYLKKQLLEQKNENIVSENIISL
+DDYRESKTLPVIGVVTAGNGITQDDNLNMEKCFYTDEIPDDYDAIAYVVGNSMEPKIKNG
+DYLFIKNTPQVDYNTIGIFQVDGANYVKKLRQGYLESLNPECADIQLDESNDIRTIGEVV
+SIYREN
+
+mafft PRCI_C1_regulators.aa > PRCI_C1_regulators.aln
+hmmbuild PRCI_C1_regulators.hmm PRCI_C1_regulators.aln
+hmmpress PRCI_C1_regulators.hmm
+
+```
+
+Plot matches to this HMM:
+
+``` {r Plot PRCI HMM matches}
+
+combined_hmm_hits.df <-
+  dplyr::bind_rows(
+    hmm_hits.df,
+    process_hmm_hits("./sequence_analysis/prci_C1.hmm_search.tab") %>% 
+    dplyr::mutate(threshold = 1e-125,
+                  Regulator = "PRCI C1-like")
+  )
+
+combined_hmm_rank_plot <-
+  ggplot(combined_hmm_hits.df,
+         aes(x=Rank,
+             y=`seq_E-value`,
+             colour = Regulator)) +
+      geom_line() +
+      scale_y_log10() +
+      facet_wrap(~Regulator, scales = "free") +
+      ylab("E value of alignment") +
+      xlab("Alignment rank by E value") +
+      theme(legend.position = "none") +
+      geom_hline(aes(yintercept=threshold),
+                 colour = "red",
+                 linetype = 2) +
+      scale_colour_manual(values = regulator_palette)
+
+cowplot::plot_grid(
+  plotlist = list(
+    phage_reg_by_length_plot,
+    combined_hmm_rank_plot
+  ),
+  nrow = 2,
+  labels = "AUTO"
+)
+
+
+```
+
+``` {r Correct regulator count for PRCIs}
+
+updated_filtered_hmm_hits.df <-
+  filtered.hmm_hits.df %>%
+                       dplyr::filter(!(`target name` %in% filtered_prci_ci_hmm_df$`target name`))
+
+updated_congruence.df <-
+  make_congruence_df(unidentified_att_sites.df,updated_filtered_hmm_hits.df)
+
+(updated_phage_analysis_congruence_plot <-
+  ggplot(congruence.df,
+         aes(x = Summary)) +
+    geom_bar() +
+    geom_text(stat='count', aes(label=..count..), vjust=-0.5, size = 4) +
+    ylab("Count") +
+    scale_x_discrete(labels = function(l) parse(text=l)) +
+    scale_y_continuous(expand = c(0,1000)) +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+)
+
+```
+
+``` {r Update att sites with revised regulator data}
+
+updated_phage_gene_distribution.df <-
+  make_phage_gene_distribution_df(updated_filtered_hmm_hits.df)
+
+updated_att_sites_domains.df <-
+  combine_phage_data(unidentified_att_sites.df,updated_phage_gene_distribution.df,phage_insertions.df,summarise_by_site.df)
+
+updated_phage_summary_per_attB.df <-
+  summarise_by_att_site(updated_att_sites_domains.df,summarise_by_site.df)
+
+(updated_regulator_by_site_plot <-
+  ggplot(updated_phage_summary_per_attB.df,
+           aes(x = att,
+               y = count,
+               colour = Classification,
+               fill = Classification)) +
+      geom_col(position = position_stack()) +
+      scale_x_discrete(labels = function(l) parse(text=l)) +
+      scale_colour_manual(values = regulator_palette, aesthetics = c("fill","colour"), name = "") +
+      geom_text(aes(y = Infections, label=Infections), size = 2, colour = "black", vjust=-0.5) +
+      xlab(expression(italic(attB)~"site")) +
+      ylab("Number of inferred prophage insertions") +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
+            legend.position = "bottom") +
+      guides(fill = g, colour = g)
+)
+
+```
+
+# Compare tallies at each site
+
+``` {r Compare phage number estimates, fig.height = 11, fig.width = 8}
+
+phage_count_cor <- cor.test(updated_congruence.df$Disrupted_sites,updated_congruence.df$Regulator_count)$estimate
+
+cor_string = paste0("italic(R)*'='*",signif(phage_count_cor,2))
+
+(phage_count_congruence_plot <-
+  ggplot(updated_congruence.df %>%
+           dplyr::group_by(Disrupted_sites,Regulator_count) %>%
+           dplyr::summarise(Frequency = n()) %>%
+           dplyr::ungroup(),
+         aes(x = Disrupted_sites,
+             y = Regulator_count,
+             size = Frequency)) +
+    geom_point() +
+    geom_smooth(data = updated_congruence.df,
+                inherit.aes = FALSE,
+                aes(x = Disrupted_sites,
+                    y = Regulator_count), 
+                method = "lm") +
+    ylab("Number of identified\nphage regulators") +
+    xlab(expression("Number of disrupted"~italic(attB)~"sites")) +
+    annotate("text",
+             x = 1,
+             y = 6.5,
+             label = cor_string,
+             parse = T)
+)
+
+```
 
 # Fisher's exact test on differences across sites
 
@@ -1504,13 +1714,49 @@ regulator_by_site_plot <-
 
 reg_differences.table <-
   table(
-      att_sites_domains.df %>%
+      updated_att_sites_domains.df %>%
         dplyr::filter(Disrupted_sites == 1) %>%
         dplyr::filter(reg_domains %in% c("ImmAR-like","C1-like")) %>%
         dplyr::select(reg_domains,infected_site_str)
   )
 
 chisq.test(reg_differences.table)
+
+```
+
+``` {r Plot regulator numbers by isolate, fig.width = 8, fig.height = 11}
+
+regulator_comparison_plot <-
+  ggplot(updated_att_sites_domains.df %>% 
+           dplyr::group_by(Count_cI,Count_ImmR) %>% 
+           dplyr::mutate(Count = n()) %>% 
+           dplyr::ungroup(),
+         aes(x = Count_cI,
+             y = Count_ImmR,
+             size = Count)) +
+    geom_point() +
+    ylab("Number of prophage with\nImmAR-like regulators") +
+    xlab("Number of prophage with C1-like regulators") +
+    theme_bw()
+
+cowplot::plot_grid(
+  plotlist = list(
+    phage_hit_length_plot,
+    cowplot::plot_grid(
+      plotlist = list(
+        phage_count_congruence_plot + theme(legend.position = "right"),
+        regulator_comparison_plot + theme(legend.position = "right")
+      ),
+      labels = c("B","D"),
+      nrow = 1
+    ),
+    updated_phage_analysis_congruence_plot
+  ),
+  nrow = 3,
+  labels = c("A","","C"),
+  rel_heights = c(0.3,0.3,0.4)
+)
+
 
 ```
 
@@ -2000,17 +2246,27 @@ phage_mutant_growth.df <-
       dplyr::mutate(phage = "phi*'RMV4'")
   ) %>%
   dplyr::mutate(phage = factor(phage,
-                               levels = c("phi*'RMV8'","phi*'08B02743'","phi*'RMV4'")))
+                               levels = c("phi*'RMV8'","phi*'08B02743'","phi*'RMV4'")),
+                Genotype = factor(Genotype,
+                                  levels = c("RMV8","08B02743", "RMV4",
+                                             "RMV8_intcat", "08B02743_intcat", "RMV4_intcat",
+                                             "RMV8_repcat", "08B02743_repcat", "RMV4_repcat",
+                                             "RMV8_lytAcat", "08B02743_lytAcat", "RMV4_lytAcat",
+                                             "RMV8_phageJanus", "08B02743_phageJanus", "RMV4_phageJanus",
+                                             "RMV8_Znregcat"))
+                )
 
 # guide legend
-guide_nrow = 5
+guide_nrow = 3
 g <- guide_legend(nrow = guide_nrow,
-                  size = 0.75,
+                  size = 0.7,
                   title.position = "left",
-                  title = "Genotype")
+                  legend.spacing.x = 0.0,
+                  legend.spacing.y = 0.0,
+                  title = "")
       
 # plot
-phage_mutant_growth_plot <-
+(phage_mutant_growth_plot <-
   ggplot(phage_mutant_growth.df,
            aes(x = Time,
                y = Median,
@@ -2018,22 +2274,26 @@ phage_mutant_growth_plot <-
                ymax = Max,
                colour = Genotype,
                fill = Genotype)) +
-      geom_ribbon(alpha = 0.5, linetype = 0) +
-      geom_line() +
+      geom_ribbon(alpha = 0.5, linetype = 0, show.legend = TRUE) +
+      geom_line(show.legend = TRUE) +
       ylab(expression(OD[600])) +
       xlab("Time (h)") +
-      scale_colour_manual(labels = mutant_labels[names(mutant_labels) %in% unique(phage_mutant_growth.df$Genotype)],
-                          values = mutant_palette,
+      scale_colour_manual(labels = mutant_labels[match(levels(phage_mutant_growth.df$Genotype),names(mutant_labels))],
+                          values = mutant_palette[match(levels(phage_mutant_growth.df$Genotype),names(mutant_palette))],
+                          drop = FALSE,
                           aesthetics = c("fill","colour")) +
       theme_bw() +
       theme(legend.position = "bottom",
+            legend.key.size = unit(0.75, 'lines'),
             legend.text = element_text(size = 8),
             strip.background = element_blank(),
+            axis.title = element_text(size = 9),
             panel.spacing = unit(0, "lines")) +
       guides(colour = g, fill = g) +
       facet_wrap(phage~.,
                  scales = 'free_x',
                  labeller = label_parsed)
+)
 
 ```
 
@@ -2249,6 +2509,7 @@ plot_phage_transformation_data <- function(df,var,lab,min_val = 0.1,log_p_increm
       geom_point(position = position_jitter(width = 0.25)) +
       geom_hline(yintercept = 1, linetype = 3) +
       scale_y_continuous(trans = "log10",
+                         labels = label_number(),
                          limits = c(min_val,max(df[[var]],
                                                 10**(test.df$y.position),
                                                 na.rm = TRUE)
@@ -2259,7 +2520,8 @@ plot_phage_transformation_data <- function(df,var,lab,min_val = 0.1,log_p_increm
       scale_x_discrete(labels = naming_vec) +
       ylab(lab) +
       xlab("Genotype") +
-      facet_grid(~phage,
+      facet_grid2(~phage,
+                  strip = strip_vanilla(clip = "off"),
                  scales = 'free_x',
                  space = 'free_x',
                  labeller = label_parsed) +
@@ -2289,8 +2551,14 @@ plot_phage_transformation_data <- function(df,var,lab,min_val = 0.1,log_p_increm
   
 }
 
-deletion_plot <-
-  plot_phage_transformation_data(deletions.df,"Deletion_ratio","Ratio of prophage\ndeletions to point mutations",log_p_increment=0.25)
+(deletion_plot <-
+  plot_phage_transformation_data(deletions.df,"Deletion_ratio","Ratio of prophage\ndeletions to base subustitutions",log_p_increment=0.25) +
+  theme(legend.position = "none",
+      strip.text = element_text(size = 8),
+      axis.title = element_text(size = 9),
+      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 7)
+  )
+)
 
 ```
 
@@ -2390,7 +2658,7 @@ int_mutant_control_deletions_plot <-
                 alpha = 0.15,
                 position = position_dodge(preserve = 'single')) +
     geom_point(position = position_jitter(width = 0.1)) +
-    ylab("Ratio of prophage\ndeletions to point mutations") +
+    ylab("Ratio of prophage\ndeletions to base substitutions") +
     scale_y_continuous(trans = "log10") +
     scale_x_discrete(labels = function(l) parse(text=levels(control_deletions.df$Genotype))) +
     scale_colour_manual(values = mutant_palette[unique(control_deletions.df$Genotype_colour)],
@@ -2583,19 +2851,19 @@ cowplot::plot_grid(
     plot_phage_transformation_data(pv_rms_in_rmv.df %>% 
                                      dplyr::filter(grepl("08B02743",phage)),
                                    "Ratio",
-                                   "Ratio of prophage\ndeletions to point mutations",
+                                   "Ratio of prophage\ndeletions to base substitutions",
                                    log_p_increment=0.25,
                                    min_val = 0.04),
     plot_phage_transformation_data(pv_rms_in_rmv.df %>% 
                                      dplyr::filter(grepl("RMV8",phage)),
                                    "Ratio",
-                                   "Ratio of prophage\ndeletions to point mutations",
+                                   "Ratio of prophage\ndeletions to base substitutions",
                                    log_p_increment=0.25,
                                    min_val = 0.04),
     plot_phage_transformation_data(pv_rms_in_rmv.df %>% 
                                      dplyr::filter(grepl("RMV4",phage)),
                                    "Ratio",
-                                   "Ratio of prophage\ndeletions to point mutations",
+                                   "Ratio of prophage\ndeletions to base substitutions",
                                    log_p_increment=0.25,
                                    min_val = 0.04)
   ),
@@ -2619,17 +2887,48 @@ cowplot::plot_grid(
 ``` {r Prophage insertion, fig.width = 6}
 
 insertion.df <-
-  read.csv("./transformation_data/RMV8_prophage_insertion_RAW_DATA.csv") %>%
-  dplyr::filter(Recipient != "") %>%
-  dplyr::filter(Volume.of.transformants.on.Rif == 5)
+  read.csv("./transformation_data/RMV8_prophage_insertion_RAW_DATA_final.csv") %>%
+  dplyr::filter(Recipient != "") %>% 
+  dplyr::mutate(Recipient == "phi*'RMV8'*'::'*italic(ermB))") %>% 
+  dplyr::mutate(Donor = "phi*'RMV8'")
 
-ggplot(insertion.df,
-       aes(x = Number.of.colonies.on.Rif.plate,
-           y = Number.of.colonies.on.Kan.Chl.plate)) +
-  geom_point() +
-  xlab(expression('Number of rifampicin-resistant colonies in 5'~mu*'L')) +
-  ylab(expression('Number of kanamycin- and chloramphenicol-resistant colonies in 400'~mu*'L')) +
-  theme_bw()
+# (prophage_insertion_plot <-
+#   ggplot(insertion.df,
+#          aes(x = Number.of.colonies.on.Rif.plate/Volume.of.transformants.on.Rif,
+#              y = Number.of.colonies.on.Kan.Chl.plate/(Volume.of.transformants.on.Kan.Chl))) +
+#     geom_point() +
+#     #xlab(expression(atop('Rifampicin-resistant','transformants ('*mu*'l'^{-1}*')'))) +
+#     #ylab(expression(atop('Kanamycin- and chloramphenicol-','resistant transformants ('*mu*'l'^{-1}*')'))) +
+#     xlab(expression(atop('Rifampicin-resistant','colonies ('*mu*'l'^{-1}*')'))) +
+#     ylab(expression('Prophage insertion mutants ('*mu*'l'^{-1}*')')) +
+#     theme_bw() +
+#     theme(axis.title = element_text(size = 9))
+# )
+
+(prophage_insertion_ratio_plot <-
+  ggplot(insertion.df,
+         aes(x = Recipient,
+             y = (Number.of.colonies.on.Kan.Chl.plate/Volume.of.transformants.on.Kan.Chl)/(Number.of.colonies.on.Rif.plate/Volume.of.transformants.on.Rif))
+             ) +
+    geom_violin(draw_quantiles = c(0.5),
+                colour = "black",
+                scale = "width",
+                alpha = 0.15,
+                fill = as.character(mutant_palette["RMV8"]),
+                position = position_dodge(preserve = 'single')) +
+    geom_point(position = position_jitter(), colour = as.character(mutant_palette["RMV8"])) +
+    scale_x_discrete(labels = expression(phi*'RMV8'*'::'*italic(ermB))) +
+    xlab("") +
+    ylab("Ratio of prophage\ninsertions to base substitutions") +
+    facet_wrap(~Donor, labeller = label_parsed) +
+    theme_bw() +
+    theme(legend.position = "none",
+        strip.background = element_blank(),
+      strip.text = element_text(size = 8),
+      axis.title = element_text(size = 9),
+      axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 7)
+  )
+)
 
 ```
 
@@ -2867,7 +3166,7 @@ phage_mutant_labels <- mutant_labels[phage_mutant_label_order]
     geom_point(aes(shape = `Biological replicate`),
                position = position_jitter(width = 0.25),
                size = 0.75) +
-    scale_y_continuous(trans = "log10") +
+    scale_y_continuous(trans = "log10", labels = label_number()) +
     scale_colour_manual(labels = phage_mutant_labels,
                           values = mutant_palette,
                           aesthetics = c("fill","colour")) +
@@ -2876,12 +3175,13 @@ phage_mutant_labels <- mutant_labels[phage_mutant_label_order]
                      expand = c(0,1)) +
     ylab(expression(italic(attB)~"to"~italic(attL)~"ratio")) +
     xlab("") +
-    facet_grid(.~phage,
+    facet_grid2(.~phage,
+                strip = strip_vanilla(clip = "off"),
               scales = "free_x",
               space = "free_x",
               labeller = label_parsed) +
     theme(legend.position = "none",
-          strip.text = element_text(size = 7),
+          strip.text = element_text(size = 7.5),
           axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 7),
           panel.spacing = unit(0, "lines"))
 )
@@ -3440,7 +3740,7 @@ ggplot(partial_deletions.df,
               alpha = 0.15,
               position = position_dodge(preserve = 'single')) +
   geom_point(position = position_jitter(width = 0.15)) +
-  ylab("Ratio of prophage deletions to point mutations") +
+  ylab("Ratio of prophage deletions to base substitutions") +
   scale_y_continuous(trans = "log10") +
   scale_colour_manual(labels = mutant_labels[mutant_labels %in% unique(partial_deletions.df$Genotype)],
                         values = mutant_palette,
@@ -3465,7 +3765,7 @@ ggplot(partial_deletions.df,
 
 # Effect of *comEA* on RMV8
 
-``` {r Growth of RMV8 comEA mutant}
+``` {r Growth of RMV8 comEA mutant, fig.width = 8, fig.height = 8}
 
 guide_nrow = 2
 g <- guide_legend(nrow = guide_nrow,
@@ -3489,28 +3789,56 @@ rmv8_comEA_growth.df <-
 
 # Growth curve plots over time
 (rmv8_comEA_growth_plot <-
-  ggplot(rmv8_comEA_growth.df,
-           aes(x = Time,
-               y = Adjusted_Median,
-               ymin = Adjusted_Min,
-               ymax = Adjusted_Max,
-               colour = `Growth condition`,
-               fill = `Growth condition`)
-         ) +
-      geom_ribbon(alpha = 0.5, linetype = 0) +
-      geom_line() +
-      geom_hline(yintercept = 0, linetype = 3) +
-      ylab(expression("Effect on growth ("*Delta*OD[600]*")")) +
-      xlab("Time (h)") +
-      theme_bw() +
-      theme(legend.position = "bottom",
-            legend.text = element_text(size = 8),
-            strip.background = element_blank()) +
-      scale_colour_manual(values = condition_palette,
-                      aesthetics = c("fill","colour")) +
-      guides(colour = g, fill = g) +
-      facet_wrap(~Genotype,
-               label = label_parsed)
+  cowplot::plot_grid(
+    plotlist = list(
+      ggplot(rmv8_comEA_growth.df,
+             aes(x = Time,
+                 y = Median,
+                 ymin = Min,
+                 ymax = Max,
+                 colour = `Growth condition`,
+                 fill = `Growth condition`)
+           ) +
+        geom_ribbon(alpha = 0.5, linetype = 0) +
+        geom_line() +
+        ylab(expression(OD[600])) +
+        xlab("Time (h)") +
+        theme_bw() +
+        theme(legend.position = "bottom",
+              legend.text = element_text(size = 8),
+              strip.background = element_blank()) +
+        scale_colour_manual(values = condition_palette,
+                        aesthetics = c("fill","colour")) +
+        guides(colour = g, fill = g) +
+        facet_wrap(~Genotype,
+                 label = label_parsed),
+      ggplot(rmv8_comEA_growth.df,
+             aes(x = Time,
+                 y = Adjusted_Median,
+                 ymin = Adjusted_Min,
+                 ymax = Adjusted_Max,
+                 colour = `Growth condition`,
+                 fill = `Growth condition`)
+           ) +
+        geom_ribbon(alpha = 0.5, linetype = 0) +
+        geom_line() +
+        geom_hline(yintercept = 0, linetype = 3) +
+        ylab(expression("Effect on growth ("*Delta*OD[600]*")")) +
+        xlab("Time (h)") +
+        theme_bw() +
+        theme(legend.position = "none",
+              legend.text = element_text(size = 8),
+              strip.background = element_blank()) +
+        scale_colour_manual(values = condition_palette,
+                        aesthetics = c("fill","colour")) +
+        guides(colour = g, fill = g) +
+        facet_wrap(~Genotype,
+                 label = label_parsed)
+    ),
+    labels = "AUTO",
+    nrow = 2,
+    rel_heights = c(1,0.8)
+  )
 )
 
 ```
@@ -3518,10 +3846,6 @@ rmv8_comEA_growth.df <-
 # dprA mutant metal sensitivity
 
 ``` {r Comparison of all dprA, fig.height = 11, fig.width = 8}
-
-guide_nrow = 2
-g <- guide_legend(nrow = guide_nrow,
-                    title = NULL)
 
 competence_mutant_growth.df <-
   dplyr::bind_rows(
@@ -3551,33 +3875,7 @@ competence_mutant_growth.df <-
     dplyr::ungroup() %>%
     dplyr::mutate(Adjusted_Median = Median - Control,
                   Adjusted_Min = Min - Control,
-                  Adjusted_Max = Max - Control) %>%
-    dplyr::filter(`Growth condition` != "No supplement") 
-
-# Growth curve plots over time
-mutant_conditions_growth_plot <-
-  ggplot(competence_mutant_growth.df,
-           aes(x = Time,
-               y = Adjusted_Median,
-               ymin = Adjusted_Min,
-               ymax = Adjusted_Max,
-               colour = `Growth condition`,
-               fill = `Growth condition`)
-         ) +
-      geom_ribbon(alpha = 0.5, linetype = 0) +
-      geom_line() +
-      geom_hline(yintercept = 0, linetype = 3) +
-      ylab(expression("Effect on growth ("*Delta*OD[600]*")")) +
-      xlab("Time (h)") +
-      theme_bw() +
-      theme(legend.position = "bottom",
-            legend.text = element_text(size = 8),
-            strip.background = element_blank()) +
-      scale_colour_manual(values = condition_palette,
-                      aesthetics = c("fill","colour")) +
-      guides(colour = g, fill = g) +
-      facet_wrap(~Genotype,
-               label = label_parsed)
+                  Adjusted_Max = Max - Control)
 
 dprA_comparison.df <-
   dplyr::bind_rows(
@@ -3596,36 +3894,10 @@ dprA_comparison.df <-
     dplyr::mutate(Adjusted_Median = Median - Control,
                   Adjusted_Min = Min - Control,
                   Adjusted_Max = Max - Control) %>%
-    dplyr::filter(`Growth condition` != "No supplement") %>%
     dplyr::mutate(
       Genotype = factor(Genotype,
                         levels = c('""~phi*"RMV8"~italic(dprA)*"::Janus"~""','""~phi*"08B02743"~italic(dprA)*"::Janus"~""','""~phi*"RMV4"~italic(dprA)*"::Janus"~""'))
     )
-
-# Growth curve plots over time
-dprA_comparison_growth_plot <-
-  ggplot(dprA_comparison.df,
-           aes(x = Time,
-               y = Adjusted_Median,
-               ymin = Adjusted_Min,
-               ymax = Adjusted_Max,
-               colour = `Growth condition`,
-               fill = `Growth condition`)
-         ) +
-      geom_ribbon(alpha = 0.5, linetype = 0) +
-      geom_line() +
-      geom_hline(yintercept = 0, linetype = 3) +
-      ylab(expression("Effect on growth ("*Delta*OD[600]*")")) +
-      xlab("Time (h)") +
-      theme_bw() +
-      theme(legend.position = "bottom",
-            legend.text = element_text(size = 8),
-            strip.background = element_blank()) +
-      scale_colour_manual(values = condition_palette,
-                      aesthetics = c("fill","colour")) +
-      guides(colour = g, fill = g) +
-      facet_wrap(~Genotype,
-               label = label_parsed)
 
 dprA_double_mutants.df <-
   dplyr::bind_rows(
@@ -3646,7 +3918,6 @@ dprA_double_mutants.df <-
     dplyr::mutate(Adjusted_Median = Median - Control,
                   Adjusted_Min = Min - Control,
                   Adjusted_Max = Max - Control) %>%
-    dplyr::filter(`Growth condition` != "No supplement") %>%
     dplyr::mutate(Genotype = factor(Genotype,
                                     levels = c('""~phi*"08B02743"~italic(dprA)*"::Janus"~""',
                                               '""~phi*"08B02743"~italic(szaL)*"::"*italic(cat)~italic(dprA)*"::Janus"~""',
@@ -3655,9 +3926,75 @@ dprA_double_mutants.df <-
                                     )
                   )
 
+plot_absolute_faceted_growth <- function(df) {
+  
+  guide_nrow = 2
+  g <- guide_legend(nrow = guide_nrow,
+                      title = NULL)
+  
+  ggplot(df,
+           aes(x = Time,
+               y = Median,
+               ymin = Min,
+               ymax = Max,
+               colour = `Growth condition`,
+               fill = `Growth condition`)
+         ) +
+      geom_ribbon(alpha = 0.5, linetype = 0) +
+      geom_line() +
+      ylab(expression(OD[600])) +
+      xlab("Time (h)") +
+      theme_bw() +
+      theme(legend.position = "bottom",
+            legend.text = element_text(size = 8),
+            strip.background = element_blank()) +
+      scale_colour_manual(values = condition_palette,
+                      aesthetics = c("fill","colour")) +
+      guides(colour = g, fill = g) +
+      facet_wrap(~Genotype,
+               label = label_parsed)
+  
+}
+
 # Growth curve plots over time
-dprA_double_mutant_comparison_growth_plot <-
-  ggplot(dprA_double_mutants.df,
+abs_mutant_conditions_growth_plot <-
+  plot_absolute_faceted_growth(competence_mutant_growth.df)
+
+# Growth curve plots over time
+abs_dprA_comparison_growth_plot <-
+  plot_absolute_faceted_growth(dprA_comparison.df)
+
+# Growth curve plots over time
+abs_dprA_double_mutant_comparison_growth_plot <-
+  plot_absolute_faceted_growth(dprA_double_mutants.df)
+
+(abs_dprA_comparison_plot <-
+  cowplot::plot_grid(
+    plotlist = list(
+      abs_mutant_conditions_growth_plot + theme(legend.position = "none"),
+      abs_dprA_comparison_growth_plot + theme(legend.position = "none"),
+      abs_dprA_double_mutant_comparison_growth_plot + theme(legend.position = "none"),
+      cowplot::get_plot_component(abs_mutant_conditions_growth_plot, 'guide-box-bottom', return_all = TRUE)
+    ),
+    nrow = 4,
+    ncol = 1,
+    labels = c("A","B","C",""),
+    rel_heights = c(2,1,1,0.5)
+  )
+)
+
+```
+
+``` {r Plot the relative effects on dprA mutant growth, fig.height = 11, fig.width = 8}
+
+plot_relative_faceted_growth <- function(df) {
+  
+  guide_nrow = 2
+  g <- guide_legend(nrow = guide_nrow,
+                      title = NULL)
+  
+  ggplot(df %>%
+    dplyr::filter(`Growth condition` != "No supplement") ,
            aes(x = Time,
                y = Adjusted_Median,
                ymin = Adjusted_Min,
@@ -3679,6 +4016,20 @@ dprA_double_mutant_comparison_growth_plot <-
       guides(colour = g, fill = g) +
       facet_wrap(~Genotype,
                label = label_parsed)
+  
+}
+
+# Growth curve plots over time
+mutant_conditions_growth_plot <-
+  plot_relative_faceted_growth(competence_mutant_growth.df)
+
+# Growth curve plots over time
+dprA_comparison_growth_plot <-
+  plot_relative_faceted_growth(dprA_comparison.df)
+
+# Growth curve plots over time
+dprA_double_mutant_comparison_growth_plot <-
+  plot_relative_faceted_growth(dprA_double_mutants.df)
 
 (dprA_comparison_plot <-
   cowplot::plot_grid(
@@ -3873,7 +4224,7 @@ expression_plot <-
       geom_point(aes(shape = `Biological replicate`),
                  position = position_jitterdodge(),
                  size = 0.75) +
-      scale_y_continuous(trans = "log10") +
+      scale_y_continuous(trans = "log10", expand = expansion(mult = 0.125), labels = label_number()) +
       scale_colour_manual(values = condition_palette,
                       aesthetics = c("fill","colour")) +
       ylab(expression('Relative RNA amount ('*2^{-Delta*Delta*'C'[t]}*')')) +
@@ -3902,7 +4253,7 @@ excision_plot <-
       geom_point(aes(shape = `Biological replicate`),
                  position = position_jitterdodge(),
                  size = 0.75) +
-      scale_y_continuous(trans = "log10") +
+      scale_y_continuous(trans = "log10", expand = expansion(mult = 0.125), labels = label_number()) +
       scale_colour_manual(values = condition_palette,
                       aesthetics = c("fill","colour")) +
       ylab(expression('DNA molecule ratio')) +
@@ -4059,7 +4410,7 @@ recA_standardised_wt.df <-
   dplyr::mutate(phage = factor(phage,
                                levels = c("phi*'RMV8'~italic(recA)*'::Janus'","phi*'RMV8'[italic(immARcat)]~italic(recA)*'::Janus'")))
 
-recA_standardised_wt_plot <-
+(recA_standardised_wt_plot <-
     ggplot(recA_standardised_wt.df,
            aes(x = Time,
                y = Fold_change,
@@ -4077,17 +4428,24 @@ recA_standardised_wt_plot <-
                  position = position_jitterdodge(),
                  size = 0.5) +
       geom_vline(xintercept = c(seq(from=1.5,to=3.5,by=1)), linetype = 3) +
-      scale_y_continuous(trans = "log10") +
+      scale_y_continuous(trans = "log10", expand = expansion(mult = 0.125), labels = label_number()) +
       scale_colour_manual(values = condition_palette,
                       aesthetics = c("fill","colour")) +
       ylab(expression('Relative RNA amount ('*2^{-Delta*Delta*'C'[t]}*')')) +
       xlab("Time (min)") +
       geom_hline(yintercept = 1, linetype = 2) +
-      theme(legend.position = "right",
+      theme(legend.position = "bottom",
+            legend.margin = margin(0.1,0,0,0, unit="lines"),
+            legend.direction='horizontal',
+            legend.justification = "centre",
             panel.spacing = unit(0, "lines")) +
+      guides(shape = guide_legend(title.position = "top", override.aes = list(size = 1),order = 1),
+             fill = guide_legend(title.position = "top", override.aes = list(alpha = 0.5), order = 2),
+             colour = guide_legend(title.position = "top", override.aes = list(alpha = 1),order = 2)) +
       facet_grid(gene~phage,
                  scales = 'free_y',
                  labeller = label_parsed)
+)
 
 ```
 
@@ -4384,11 +4742,32 @@ dprA_standardised_wt.df %<>%
                                              "atop(phi*'08B02743',italic(dprA)*'::Janus')")))
 
 
+recA_in_2743_df <-
+  read_expression_file("./qPCR/2743_prophage_KO_transcriptions.csv") %>%
+  dplyr::group_by(Condition,gene,Time) %>%
+  mutate(`Biological replicate` = as.character((row_number()-1)%/%3+1)) %>%
+  dplyr::ungroup() %>% 
+  dplyr::mutate(gene = paste0("italic(",gene,")")) %>% 
+  dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120"))) %>% 
+  dplyr::rename(Fold_change = fold_change) %>% 
+  dplyr::mutate(Genotype = "phi*'08B02743::Janus'")
+
+dprA_standardised_wt.df %<>%
+  dplyr::bind_rows(
+    dprA_standardised_wt.df,
+    recA_in_2743_df
+  ) %>% 
+  dplyr::mutate(
+    gene = factor(gene,
+                  levels = c("italic(comEA)","italic(recA)","italic(dprA)","italic(int)","italic(reg)","italic(lyt)")
+                  )
+  )
+
 (dprA_standardised_wt_plot <-
     ggplot(dprA_standardised_wt.df %>%
              dplyr::filter(
                gene %in% c("italic(recA)","italic(comEA)","italic(dprA)") &
-                 Condition %in% c("No supplement","CSP","Mitomycin C")
+                 Condition %in% c("No supplement","CSP")
              ),
            aes(x = Time,
                y = Fold_change,
@@ -4415,7 +4794,8 @@ dprA_standardised_wt.df %<>%
             panel.spacing = unit(0, "lines")) +
       facet_grid(gene~Genotype,
                  scales = 'free_y',
-                 labeller = label_parsed))
+                 labeller = label_parsed)
+)
 
 ```
 
@@ -4620,7 +5000,7 @@ phage_excision_dprA.df <-
     geom_point(aes(shape = `Biological replicate`),
                position = position_jitterdodge(jitter.width = 0.25),
                size = 0.75) +
-    scale_y_continuous(trans = "log10") +
+    scale_y_continuous(trans = "log10", expand = expansion(mult = 0.125), labels = label_number()) +
     scale_colour_manual(values = condition_palette,
                       aesthetics = c("fill","colour")) +
     ylab(expression('DNA molecule ratio')) +
@@ -4804,7 +5184,7 @@ add_median_range <- function(p, data, group_vars, value_var) {
                 position = position_jitterdodge(jitter.width = 0.25),
                size = 0.75) +
     #add_median_range() +
-    scale_y_continuous(trans = "log10") +
+    scale_y_continuous(trans = "log10", expand = expansion(mult = 0.15), labels = label_number()) +
     scale_colour_manual(values = condition_palette,
                       aesthetics = c("fill","colour")) +
     ylab(expression('DNA molecule ratio')) +
@@ -4937,10 +5317,13 @@ iptg_induction.df <-
 guide_nrow = 1
 g <- guide_legend(nrow = guide_nrow,
                     title = NULL)
+g_col <- guide_legend(ncol = 1,
+                    title = NULL)
 
 # plot
-iptg_growth_plot <-
-  ggplot(iptg_induction.df,
+(iptg_growth_plot <-
+  ggplot(iptg_induction.df %>%
+           dplyr::mutate(MMC = factor(MMC, levels = c("No mitomycin C","Mitomycin C"))),
            aes(x = Time,
                y = Median,
                ymin = Min,
@@ -4957,13 +5340,19 @@ iptg_growth_plot <-
                       aesthetics = c("fill","colour")) +
       theme_bw() +
       theme(legend.position = "bottom",
+            legend.margin = margin(0.1,0,0,0, unit="lines"),
+            legend.direction='horizontal',
+            legend.justification = "left",
             legend.text = element_text(size = 8),
             strip.background = element_blank(),
             panel.spacing = unit(0, "lines")) +
-      guides(colour = g, fill = g, linetype = g) +
+      guides(linetype = guide_legend(title.position = "top", override.aes = list(size = 1),order = 1),
+             colour = "none",
+             fill = "none") +
       facet_grid(phage~.,
                  scales = 'free_x',
                  labeller = label_parsed)
+)
 
 ```
 
@@ -5089,7 +5478,7 @@ ggplot(iptg_validation.df,
 
 # Effect of RecA induction by IPTG with half MMC
 
-``` {r Replot growth curves with half MMC}
+``` {r Replot growth curves with half MMC, fig.width = 8, fig.height = 11}
 
 iptg_half_mmc_induction.df <-
   dplyr::bind_rows(
@@ -5140,7 +5529,13 @@ iptg_half_mmc_induction.df <-
                       phage == "phi*'RMV8 hybrid'" & Genotype == "'RMV8 LacI mutant 1'" ~ "RMV8_hybrid_plac_recA",
                       phage == "phi*'RMV8 hybrid'" & Genotype == "'RMV8 LacI mutant 2'" ~ "RMV8_hybrid_plac_recA",
                     )
-                  )
+                  ) %>%
+    dplyr::mutate(MMC = factor(dplyr::if_else(MMC == "Mitomycin C","'IPTG & Mitomycin C'","'IPTG'"),
+                  levels = c("'IPTG'","'IPTG & Mitomycin C'"))) %>%
+    dplyr::mutate(phage = factor(dplyr::if_else(phage=="phi*'RMV8'","phi*'RMV8'","phi*'RMV8'[italic(immARcat)]"),
+                                 levels = c("phi*'RMV8'","phi*'08B02743'","phi*'RMV8'[italic(immARcat)]"))) %>%
+    dplyr::mutate(recA = factor(recA, levels = c("italic(recA)[native]","italic(recA)[italic(lacI)]"))) %>% 
+    dplyr::mutate(IPTG = factor(IPTG, levels = c("No IPTG","1mM IPTG","3mM IPTG","6mM IPTG")))
 
 iptg_half_mmc_induction_normalised.df <-
   iptg_half_mmc_induction.df %>%
@@ -5151,38 +5546,66 @@ iptg_half_mmc_induction_normalised.df <-
     dplyr::mutate(IPTG_Median = Median - no_IPTG,
                   IPTG_Min = Min - no_IPTG,
                   IPTG_Max = Max - no_IPTG) %>%
-    dplyr::filter(IPTG != "No IPTG") %>%
-    dplyr::mutate(MMC = factor(dplyr::if_else(MMC == "Mitomycin C","'IPTG & Mitomycin C'","'IPTG'"),
-                  levels = c("'IPTG'","'IPTG & Mitomycin C'"))) %>%
-    dplyr::mutate(phage = factor(dplyr::if_else(phage=="phi*'RMV8'","phi*'RMV8'","phi*'RMV8'[italic(immARcat)]"),
-                                 levels = c("phi*'RMV8'","phi*'08B02743'","phi*'RMV8'[italic(immARcat)]"))) %>%
-    dplyr::mutate(recA = factor(recA, levels = c("italic(recA)[native]","italic(recA)[italic(lacI)]")))
+    dplyr::filter(IPTG != "No IPTG")
 
-# plot
-ggplot(iptg_half_mmc_induction_normalised.df %>%
-         dplyr::mutate(IPTG = paste0("'",IPTG,"'")),
-         aes(x = Time,
-             y = IPTG_Median,
-             ymin = IPTG_Min,
-             ymax = IPTG_Max,
-             colour = Genotype,
-             fill = Genotype)) +
-    geom_ribbon(alpha = 0.5, linetype = 0) +
-    geom_line() +
-    ylab(expression("Effect on growth ("*Delta*OD[600]*")")) +
-    xlab("Time (h)") +
-    geom_hline(yintercept = 0, linetype = 3) +
-    scale_colour_manual(labels = mutant_labels[names(mutant_labels) %in% unique(iptg_half_mmc_induction_normalised.df$Genotype)],
-                        values = mutant_palette,
-                        aesthetics = c("fill","colour")) +
-    theme_bw() +
-    theme(legend.position = "none",
-          legend.text = element_text(size = 8),
-          strip.background = element_blank(),
-            panel.spacing = unit(0, "lines")) +
-    guides(colour = g, fill = g) +
-    facet_grid(IPTG~phage+recA,
-               labeller = label_parsed)
+cowplot::plot_grid(
+  plotlist = list(
+    # plot absolute growth
+    ggplot(iptg_half_mmc_induction.df %>%
+             dplyr::mutate(IPTG = factor(paste0("'",IPTG,"'"),
+                                         levels = paste0("'",levels(iptg_half_mmc_induction.df$IPTG),"'"))),
+             aes(x = Time,
+                 y = Median,
+                 ymin = Min,
+                 ymax = Max,
+                 colour = Genotype,
+                 fill = Genotype)) +
+        geom_ribbon(alpha = 0.5, linetype = 0) +
+        geom_line() +
+        ylab(expression(OD[600])) +
+        xlab("Time (h)") +
+        scale_colour_manual(labels = mutant_labels[names(mutant_labels) %in% unique(iptg_half_mmc_induction_normalised.df$Genotype)],
+                            values = mutant_palette,
+                            aesthetics = c("fill","colour")) +
+        theme_bw() +
+        theme(legend.position = "none",
+              legend.text = element_text(size = 8),
+              strip.background = element_blank(),
+                panel.spacing = unit(0, "lines")) +
+        guides(colour = g, fill = g) +
+        facet_grid(IPTG~phage+recA,
+                   labeller = label_parsed),
+    # plot
+    ggplot(iptg_half_mmc_induction_normalised.df %>%
+             dplyr::mutate(IPTG = paste0("'",IPTG,"'")),
+             aes(x = Time,
+                 y = IPTG_Median,
+                 ymin = IPTG_Min,
+                 ymax = IPTG_Max,
+                 colour = Genotype,
+                 fill = Genotype)) +
+        geom_ribbon(alpha = 0.5, linetype = 0) +
+        geom_line() +
+        ylab(expression("Effect on growth ("*Delta*OD[600]*")")) +
+        xlab("Time (h)") +
+        geom_hline(yintercept = 0, linetype = 3) +
+        scale_colour_manual(labels = mutant_labels[names(mutant_labels) %in% unique(iptg_half_mmc_induction_normalised.df$Genotype)],
+                            values = mutant_palette,
+                            aesthetics = c("fill","colour")) +
+        theme_bw() +
+        theme(legend.position = "none",
+              legend.text = element_text(size = 8),
+              strip.background = element_blank(),
+                panel.spacing = unit(0, "lines")) +
+        guides(colour = g, fill = g) +
+        facet_grid(IPTG~phage+recA,
+                   labeller = label_parsed)
+  ),
+  nrow = 2,
+  labels = "AUTO"
+)
+
+
 
 ```
 
@@ -5370,8 +5793,37 @@ stimuli_mutants_induction.df <-
 g <- guide_legend(nrow = 2,
                     title = NULL)
 
+(absolute_stimuli_mutants_induction_plot <-
+  ggplot(stimuli_mutants_induction.df,
+           aes(x = Time,
+               y = Median,
+               ymin = Min,
+               ymax = Max,
+               colour = `Growth condition`,
+               fill = `Growth condition`)) +
+      geom_ribbon(alpha = 0.5, linetype = 0) +
+      geom_line() +
+      ylab(expression('Growth ('*'OD'[600]*')')) +
+      scale_colour_manual(values = condition_palette,
+                        aesthetics = c("fill","colour")) +
+      xlab("Time (h)") +
+      theme_bw() +
+      theme(legend.position = "bottom",
+            legend.text = element_text(size = 8),
+            strip.background = element_blank(),
+              panel.spacing = unit(0, "lines")) +
+      guides(colour = g, fill = g) +
+      facet_grid(Background~phage,
+                 scales = 'free_x',
+                   labeller = label_parsed)
+)
+
+```
+
+``` {r Relative growth curves with different stimuli, fig.width = 8, fig.height = 11}
+
 # plot
-stimuli_mutants_induction_plot <-
+(stimuli_mutants_induction_plot <-
   ggplot(stimuli_mutants_induction.df,
            aes(x = Time,
                y = Adjusted_growth_median,
@@ -5395,8 +5847,7 @@ stimuli_mutants_induction_plot <-
       facet_grid(Background~phage,
                  scales = 'free_x',
                    labeller = label_parsed)
-
-stimuli_mutants_induction_plot
+)
 
 ```
 
@@ -5467,7 +5918,7 @@ effect_of_mmc_compared_to_wt_plot <-
                  scales = 'free_x',
                    labeller = label_parsed)
 
-effect_of_mmc_plot <-
+(effect_of_mmc_plot <-
   ggplot(recA_activation.df,
            aes(x = Time,
                y = Adjusted_growth_median,
@@ -5486,14 +5937,21 @@ effect_of_mmc_plot <-
       theme_bw() +
       theme(legend.position = "top",
             legend.text = element_text(size = 8),
+            axis.title = element_text(size = 9),
+            strip.text = element_text(size = 8),
             strip.background = element_blank(),
               panel.spacing = unit(0, "lines")) +
       guides(colour = g, fill = g) +
       facet_grid(.~Background,
                  scales = 'free_x',
                    labeller = label_parsed)
+)
 
-recA_activation_plot <-
+```
+
+``` {r Now add he recA activation plot}
+
+(recA_activation_plot <-
   cowplot::plot_grid(
     plotlist = list(
       effect_of_mmc_plot + theme(legend.position = "none"),
@@ -5509,12 +5967,16 @@ recA_activation_plot <-
       ),
     nrow = 2
     )
+)
 
 ```
 
 We need the raw data plot as well:
 
 ``` {r Raw MMC effect plot}
+
+g <- guide_legend(ncol = 1,
+                    title = NULL)
 
 (raw_effect_of_mmc_plot <-
   ggplot(raw_recA_growth_df %>%
@@ -5528,7 +5990,7 @@ We need the raw data plot as well:
                fill = Genotype)) +
       geom_ribbon(alpha = 0.5, linetype = 0) +
       geom_line() +
-      ylab(expression(atop('Effect of mitomycin C','on growth ('*Delta*'OD'[600]*')'))) +
+      ylab(expression('OD'[600])) +
       scale_colour_manual(values = mutant_palette,
                           labels = mutant_labels[names(mutant_labels) %in% unique(recA_activation.df$Genotype)],
                         aesthetics = c("fill","colour")) +
@@ -5884,6 +6346,7 @@ g <- guide_legend(nrow = 2,
                group = interaction(`Growth condition`,Background))) +
       geom_ribbon(alpha = 0.5, linetype = 0) +
       geom_line() +
+      scale_y_continuous(expand = expansion(mult = 0.1)) +
       ylab(expression('Effect on growth ('*Delta*'OD'[600]*')')) +
       xlab("Time (h)") +
       scale_colour_manual(values = condition_palette,
@@ -5931,7 +6394,6 @@ g <- guide_legend(nrow = 2,
 # RMV4 transcriptional activation
 
 ``` {r Transcriptional activation of RMV4 spaL mutant, fig.height=10}
-
 
 RMV4_expression_df <-
   dplyr::bind_rows(
@@ -6191,11 +6653,46 @@ g <- guide_legend(nrow = 1,
 
 # Pulse effect by regulator
 
-``` {r MMC pulse effects}
+``` {r MMC pulse effects, fig.width = 8, fig.height = 10}
 
 # plot
 (continuous_mmc_growth_plot <-
-  ggplot(mmc_continuous.df %>%
+  cowplot::plot_grid(
+    plotlist = list(
+      # Absolute
+      ggplot(mmc_continuous.df %>%
+          dplyr::rowwise() %>% 
+          dplyr::mutate(Genotype = as.character(mutant_labels[Genotype])) %>% 
+          dplyr::ungroup() %>% 
+          dplyr::mutate(Genotype = factor(Genotype, levels = c("\"\" ~ phi * \"RMV8\" ~ \"\"",
+                                                               "\"\" ~ phi * \"08B02743\" ~ \"\"",
+                                                               "\"\" ~ phi * \"RMV4\" ~ \"\"", 
+                                                               "\"\" ~ phi * \"RMV8\"[italic(immARcat)] ~ \"\""
+                        ))),
+           aes(x = Time,
+               y = Median,
+               ymin = Min,
+               ymax = Max,
+               colour = MMC,
+               fill = MMC)) +
+      geom_line() +
+      geom_ribbon(alpha = 0.5, linetype = 0) +
+      ylab(expression(OD[600])) +
+      xlab("Time (h)") +
+      scale_colour_manual(values = condition_palette,
+                        aesthetics = c("fill","colour")) +
+      theme_bw() +
+      theme(legend.position = "bottom",
+            legend.text = element_text(size = 8),
+            strip.background = element_blank(),
+            panel.spacing = unit(0, "lines")) +
+      guides(colour = g, fill = g) +
+      facet_wrap(.~Genotype,
+                 scales = 'free_x',
+                 nrow = 2,
+                 labeller = label_parsed),
+      # Relative
+      ggplot(mmc_continuous.df %>%
            dplyr::filter(`Growth condition` != "No supplement") %>%
            dplyr::mutate(MMC = factor(paste0("'",MMC,"'"),
                                       levels = c("'Low mitomycin C'","'High mitomycin C'"))) %>%
@@ -6224,6 +6721,11 @@ g <- guide_legend(nrow = 1,
       facet_grid(.~MMC,
                  scales = 'free_x',
                  labeller = label_parsed)
+    ),
+    nrow = 2,
+    labels = "AUTO",
+    rel_heights = c(2,1.25)
+  )
 )
 
 ```
@@ -6234,9 +6736,9 @@ g <- guide_legend(nrow = 1,
 
 time_palette <-
   c(
-    "20 min" = "steelblue1",
-    "60 min" = "steelblue2",
-    "120 min" = "steelblue3",
+    "20 min" = "cyan3",
+    "60 min" = "steelblue1",
+    "120 min" = "steelblue4",
     "Continuous" = as.character(condition_palette[names(condition_palette)=="MMC"])
   )
 
@@ -6244,7 +6746,7 @@ g <- guide_legend(nrow = 1,
                     title = NULL)
 
 # plot
-mmc_pulse_by_time_growth_plot <-
+(mmc_pulse_by_time_growth_plot <-
   ggplot(mmc_pulse.df %>%
            dplyr::filter(`Growth condition` != "No supplement") %>%
            dplyr::mutate(Exposure = factor(gsub("'","",Exposure),
@@ -6257,6 +6759,7 @@ mmc_pulse_by_time_growth_plot <-
                fill = Exposure)) +
       geom_ribbon(alpha = 0.5, linetype = 0) +
       geom_line() +
+      scale_y_continuous(expand = expansion(mult = 0.1)) +
       ylab(expression('Effect on growth ('*Delta*'OD'[600]*')')) +
       xlab("Time (h)") +
       scale_colour_manual(values = time_palette,
@@ -6271,6 +6774,7 @@ mmc_pulse_by_time_growth_plot <-
                  scales = 'free_x',
                  labeller = label_parsed) +
    geom_hline(yintercept = 0, linetype = 3)
+)
 
 ```
 
@@ -6715,8 +7219,8 @@ seq_pal <- sequence_legend.df$reds
 names(seq_pal) <- sequence_legend.df$ID
 
 guide_nrow = 1
-g <- guide_legend(direction = "horizontal",
-                  ncol = 3,
+seq_id_g <- guide_legend(direction = "horizontal",
+                  nrow = 1,
                   title.position = "top")
 
 seq_id_legend <-
@@ -6727,8 +7231,10 @@ seq_id_legend <-
              fill = `Sequence identity (%)`)) +
     geom_col() +
     scale_colour_manual(values = seq_pal, aesthetics = c("fill","colour")) +
-    guides(colour = g, fill = g) +
-    theme(legend.position = "bottom")
+    guides(colour = seq_id_g, fill = seq_id_g) +
+    theme(legend.position = "bottom",
+          legend.title = element_text(size = 9),
+          legend.text = element_text(size = 9))
 
 ```
 
@@ -6777,10 +7283,10 @@ dna_sequences <- lapply(annotation_file_names,
                         col = "black")
 
 prophage_palette <- list(
-  "phiRMV8" = "lightgreen",
-  "phiRMV8_immARcat" = "magenta",
-  "phiARI460-2" = "cyan",
-  "phiRMV4" = "tomato"
+  "phiRMV8" = as.character(mutant_palette["RMV8"]),
+  "phiRMV8_immARcat" = as.character(mutant_palette["RMV8_hybrid"]),
+  "phiARI460-2" = as.character(mutant_palette["08B02743"]),
+  "phiRMV4" = as.character(mutant_palette["RMV4"])
 )
 
 # Style of CDSs
@@ -7578,7 +8084,7 @@ for (comparison in comparison_file_names) {
 
 ```
 
-``` {r Assemble CIPHR figure}
+``` {r Assemble CIPHR figure, fig.width = 8, fig.height = 10}
 
 ciphr_gel_image <-
   magick::image_ggplot(image_crop(image_trim((image_read_pdf("./gel_images/CIPHR_gel_image.pdf")))))
@@ -7665,23 +8171,6 @@ scRNA_pcr_plot <-
           axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
           legend.position = "none")
 
-cowplot::plot_grid(
-  plotlist = list(
-    ciphr_comparison_plot,
-    ciphr_gel_image,
-    scr_primer_binding_plot,
-    scRNA_pcr_plot
-  ),
-  nrow = 2,
-  labels = "AUTO"
-)
-
-```
-
-# 11930 circularisation
-
-``` {r Circularisation of CIPhR in 11930}
-
 ciphr_excision_df <-
   read_excision_file("./qPCR/11930_ADbyAB.csv") %>% 
   dplyr::mutate(Genotype = "11930",
@@ -7689,7 +8178,7 @@ ciphr_excision_df <-
                 `Biological replicate` = as.character(gsub('\\D','',replicate))) %>% 
   dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120")))
 
-(ciphr_excision_plot <-
+ciphr_excision_plot <-
   ggplot(ciphr_excision_df,
          aes(x = Time,
              y = ADbyAB,
@@ -7711,15 +8200,32 @@ ciphr_excision_df <-
                       aesthetics = c("fill","colour")) +
     ylab(expression('DNA molecule ratio')) +
     xlab("Time (min)") +
-    facet_grid(Measurement~Genotype,
-                 scales = 'free_y',
-                 labeller = label_parsed) +
-    theme(legend.position = "bottom",
+    # facet_grid(Measurement~Genotype,
+    #              scales = 'free_y',
+    #              labeller = label_parsed) +
+    theme(legend.position = "right",
             panel.spacing = unit(0, "lines"),
           strip.text = element_text(size = 7.5))
+
+cowplot::plot_grid(
+  plotlist = list(
+    cowplot::plot_grid(
+      plotlist = list(
+        ciphr_comparison_plot,
+        ciphr_gel_image,
+        scr_primer_binding_plot,
+        scRNA_pcr_plot
+      ),
+      nrow = 2,
+      labels = "AUTO"),
+    ciphr_excision_plot),
+  nrow = 2,
+  labels = c("","E"),
+  rel_heights = c(2,1)
 )
 
 ```
+
 
 # 08B02743 recA expression
 
@@ -7731,14 +8237,15 @@ recA_in_2743_df <-
   mutate(`Biological replicate` = as.character((row_number()-1)%/%3+1)) %>%
   dplyr::ungroup() %>% 
   dplyr::mutate(gene = paste0("italic(",gene,")")) %>% 
-  dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120")))
+  dplyr::mutate(Time = factor(Time, levels = c("0","20","60","120"))) %>% 
+  dplyr::rename(Fold_change = fold_change)
 
 
 (recA_in_2743_plot <-
    # Expression data
     ggplot(recA_in_2743_df,
            aes(x = Time,
-               y = fold_change,
+               y = Fold_change,
                colour = Condition,
                fill = Condition,
                group = interaction(Time,Condition,gene),
@@ -7764,6 +8271,40 @@ recA_in_2743_df <-
       theme(legend.position = "right",
             panel.spacing = unit(0, "lines"))
 )
+
+
+(recA_in_2743_plot <-
+   # Expression data
+    ggplot(dprA_standardised_wt.df,
+           aes(x = Time,
+               y = Fold_change,
+               colour = Condition,
+               fill = Condition,
+               group = interaction(Time,Condition,gene),
+               )
+           ) +
+      geom_violin(draw_quantiles = c(0.5),
+                  colour = "black",
+                  scale = "width",
+                  alpha = 0.15,
+                  adjust = 1,
+                  position = position_dodge(preserve = 'single')) +
+      geom_point(aes(shape = `Biological replicate`),
+                 position = position_jitterdodge(),
+                 size = 0.75) +
+      geom_vline(xintercept = c(seq(from=1.5,to=3.5,by=1)), linetype = 3) +
+      geom_hline(yintercept = 1, linetype = 2) +
+      scale_y_continuous(trans = "log10") +
+      scale_colour_manual(values = condition_palette,
+                      aesthetics = c("fill","colour")) +
+      ylab(expression('Relative RNA amount ('*2^{-Delta*Delta*'C'[t]}*')')) +
+      xlab("Time (min)") +
+      facet_grid(gene~., scales = 'free_y', labeller = label_parsed) +
+      theme(legend.position = "right",
+            panel.spacing = unit(0, "lines"))
+)
+
+
 
 ```
 
@@ -7806,6 +8347,7 @@ r6_recA_df <-
 (figure_1 <-
   cowplot::plot_grid(
     plotlist = list(
+      NULL,
       # upper part
       cowplot::plot_grid(
         plotlist = list(
@@ -7815,12 +8357,12 @@ r6_recA_df <-
               phage_by_isolate_plot,
               three_rna_plot
             ),
-            labels = c("B","C"),
+            labels = c("C","D"),
             nrow = 2,
             rel_widths = c(0.5,0.5)
           )
         ),
-        labels = c("A",""),
+        labels = c("B",""),
         ncol = 2,
         rel_widths = c(0.5,0.5)
       ),
@@ -7832,7 +8374,7 @@ r6_recA_df <-
                     r6_scr_growth_plot + theme(legend.position = "none"),
                     ncrna_transformation_changes_plot + theme(legend.position = "none")
                   ),
-                  labels = c("D","E"),
+                  labels = c("E","F"),
                   ncol = 2,
                   nrow = 1
                 ),
@@ -7842,7 +8384,7 @@ r6_recA_df <-
           nrow = 2
       )
     ),
-    nrow = 2
+    nrow = 3
   )
 )
 
@@ -7870,14 +8412,7 @@ ggsave("./figures/prophage_transformation_Figure_1.pdf",
           labels = c("A","B"),
           rel_widths = c(0.55,0.45)
       ),
-      cowplot::plot_grid(
-        plotlist = list(
-          cowplot::get_plot_component(phage_mutant_growth_plot, 'guide-box-bottom', return_all = TRUE),
-          cowplot::get_plot_component(seq_id_legend, 'guide-box-bottom', return_all = TRUE)
-        ),
-        nrow = 1,
-        rel_widths = c(0.65,0.35)
-      ),
+      cowplot::get_plot_component(seq_id_legend, 'guide-box-bottom', return_all = TRUE),
       cowplot::plot_grid(
         plotlist = list(
           phage_mutant_growth_plot + theme(legend.position = "none"),
@@ -7886,11 +8421,20 @@ ggsave("./figures/prophage_transformation_Figure_1.pdf",
         nrow = 1,
         labels = c("C","D")
       ),
-      deletion_plot + theme(axis.title.x = element_blank())
+      cowplot::get_plot_component(phage_mutant_growth_plot, 'guide-box-bottom', return_all = TRUE),
+      cowplot::plot_grid(
+        plotlist = list(
+          deletion_plot + theme(axis.title.x = element_blank()),
+          prophage_insertion_ratio_plot
+        ),
+        nrow = 1,
+        rel_widths = c(0.8,0.2),
+        labels = c("E","F")
+      )
     ),
-    labels = c("","","","E"),
-    rel_heights = c(0.4,0.15,0.25,0.3),
-    nrow = 4
+    labels = c("","","","",""),
+    rel_heights = c(0.4,0.05,0.25,0.1,0.3),
+    nrow = 5
   )
 )
 
@@ -7950,14 +8494,37 @@ combined_legend_plot <-
   ggplot(combined_legend.df,
          aes(x = x,
              y = y,
+             xmin = x-1,
+             xmax = x+1,
+             ymin = y-1,
+             ymax = y+1,
              shape = `Biological replicate`,
              group = interaction(Condition,IPTG),
-         linetype = IPTG,
-         colour = Condition,
-         fill = Condition)) +
-  geom_line () + geom_point() +
-  scale_colour_manual(values = condition_palette) +
-  guides(colour = g, fill = g, linetype = g, shape = s) +
+             linetype = IPTG,
+             colour = Condition,
+             fill = Condition)) +
+  geom_line () + geom_point() + geom_rect(linetype = 0) +
+  scale_colour_manual(values = condition_palette, aesthetics = c("fill","colour")) +
+  guides(colour = guide_legend(direction = "horizontal",
+                  nrow = 1,
+                  title.position = "top",
+                  order = 2),
+         fill = guide_legend(direction = "horizontal",
+                  override.aes = list(alpha = 0.5),
+                  nrow = 1,
+                  title.position = "top",
+                  order = 2),
+         linetype = guide_legend(direction = "horizontal",
+                                 override.aes = list(fill = "white",
+                                                     colour = "black"),
+                  nrow = 1,
+                  title.position = "top",
+                  order = 3),
+         shape = guide_legend(direction = "horizontal",
+                  nrow = 1,
+                  title.position = "top",
+                  order = 1)
+         ) +
   theme(legend.position = "bottom")
 
 
@@ -7973,21 +8540,21 @@ combined_legend_obj <-
                           iptg_growth_plot + theme(legend.position = "none")
                         ),
                       nrow = 1,
-                      rel_widths = c(0.6,0.4),
+                      rel_widths = c(0.625,0.4),
                       labels = c("B","C")
                     ),
+                    combined_legend_obj,
                     cowplot::plot_grid(
                       plotlist = list(comEA_phage_induction_plot + theme(legend.position = "none"),
                                       comEA_phage_excision_plot + theme(legend.position = "none")
                                       ),
                       labels = c("D","E"),
                       nrow = 1
-                    ),
-                    combined_legend_obj
+                    )
                   ),
     labels = c("A","","",""),
     nrow = 4,
-    rel_heights = c(0.275,0.35,0.375,0.1)
+    rel_heights = c(0.275,0.35,0.1,0.35)
   )
 )
 
