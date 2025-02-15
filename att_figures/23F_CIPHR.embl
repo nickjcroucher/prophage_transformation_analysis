@@ -32,10 +32,11 @@ FT                   100"
 FT                   /product="4.5S signal recognition particle RNA"
 FT                   /primary_name=""
 FT                   /colour=8
-FT   CDS             complement(join(2164..2976,2976..3305))
+FT   CDS             complement(2164..3305)
 FT                   /class="5.1.2"
 FT                   /fasta_file="fasta/Spn23F.tab.seq.02298.out"
 FT                   /product="putative phage integrase (pseudogene)"
+FT                   /gene="int"
 FT                   /status=" ; evidence=ISS; db_xref=saureusMRSA252:SAR1562;
 FT                   date=20070823; method=automatic:top fasta hit"
 FT                   /locus_tag="SPN23F00250"
@@ -59,6 +60,7 @@ FT   CDS             complement(4447..4827)
 FT                   /class="5.1.2"
 FT                   /fasta_file="fasta/Spn23F.tab.seq.02301.out"
 FT                   /product="putative phage protein"
+FT                   /gene="immA"
 FT                   /status=" ; evidence=ISS; db_xref=spyogenes:SpyM50633;
 FT                   date=20070823; method=automatic:top fasta hit"
 FT                   /locus_tag="SPN23F00280"
@@ -149,6 +151,7 @@ FT                   /fasta_file="fasta/Spn23F.tab.seq.02309.out"
 FT                   /note="Appears to be truncated"
 FT                   /product="putative peptidoglycan hydrolytic amidase
 FT                   (pseudogene)"
+FT                   /gene="lyt"
 FT                   /similarity="fasta; with=UniProt:Q8KLP2 (EMBL:AJ490805;);
 FT                   Streptococcus pneumoniae.; lytA; Peptidoglycan hydrolytic
 FT                   amidase.; length=318; id 94.231%; ungapped id 94.231%;
