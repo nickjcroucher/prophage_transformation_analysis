@@ -1054,7 +1054,7 @@ int_ggtree <-
 ``` {bash Generate att site, eval=FALSE}
 
 # Set to 25 bp
-cd /Users/ncrouche/Documents/transformationMGE/prophage_deletion/bioinformatics
+cd att_sites
 python get_central_att_site.py > central_att_sites.fa
 muscle -align central_att_sites.fa -output central_att_sites.aln
 FastTree -nt < central_att_sites.aln > central_att_sites.tree
@@ -1063,7 +1063,7 @@ FastTree -nt < central_att_sites.aln > central_att_sites.tree
 
 ``` {r Plot att site tree}
 
-att_tree <- read.tree("./sequence_analysis/central_att_sites.tree")
+att_tree <- read.tree("./att_sites/central_att_sites.tree")
 
 att_tree <- phytools::midpoint.root(att_tree)
 
@@ -1072,12 +1072,13 @@ att_tree$tip.label[att_tree$tip.label == "italic(attB)[italic(MM1)]"] <- "italic
 att_tree$tip.label[att_tree$tip.label == "italic(attB)[italic(OXC)]"] <- "italic(attB)[OXC]"
 att_tree$tip.label[att_tree$tip.label == "italic(attB)[italic(scRNA)]"] <- "italic(attB)[italic(scr)]"
 
-att_sit_tree <-
+(att_site_tree <-
   ggtree(att_tree, ladderize = TRUE) +
     geom_tiplab(parse = TRUE) +
     geom_treescale() +
     coord_cartesian(clip="off") +
-      ggtree::xlim(0, 3)
+      ggtree::xlim(0, 3.5)
+)
 
 ```
 
@@ -1117,7 +1118,7 @@ att_BOX_dist_plot <-
 cowplot::plot_grid(
   plotlist = list(
     int_ggtree,
-    att_sit_tree,
+    att_site_tree,
     att_BOX_dist_plot
   ),
   labels = "AUTO",
@@ -1584,7 +1585,7 @@ hmmpress PRCI_C1_regulators.hmm
 
 Plot matches to this HMM:
 
-``` {r Plot PRCI HMM matches}
+``` {r Plot PRCI HMM matches, fig.height = 8, fig.width = 8}
 
 combined_hmm_hits.df <-
   dplyr::bind_rows(
