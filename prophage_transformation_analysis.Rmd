@@ -35,6 +35,7 @@ library(rlang)
 library(vctrs)
 library(ggh4x)
 library(scales)
+library(fitdistrplus)
 
 # knitr options
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
@@ -753,7 +754,8 @@ att_sites.df <-
                     1465604,
                     438893,
                     986969,
-                    1713565
+                    1713565,
+                    1019764
                  ),
     name = c("attB[ccrB]", # L
                 "attB[hlpA]", # L
@@ -770,7 +772,8 @@ att_sites.df <-
                 "attB[relA]", # R
                 "attB[pyrG]", # L
                 "attB[yjbK]", # L
-                "attB[ply]" # R
+                "attB[ply]", # R
+                "attB[eno]" # R
                 ),
     assembly = c("21999_7#175",
                     "22841_2#133",
@@ -787,7 +790,8 @@ att_sites.df <-
                     "18090_2#20",
                     "21127_1#110",
                     "17175_6#28",
-                    "22841_1#183"
+                    "22841_1#183",
+                    "10050_2#45"
                     ),
     accession = c("ERS1813719",
                     "ERS1699606",
@@ -804,7 +808,8 @@ att_sites.df <-
                     "ERS740678",
                     "ERS1299787",
                     "ERS708124",
-                    "ERS1699476"
+                    "ERS1699476",
+                    "SAMEA2059239"
                     ),
     description = c("Disrupts ccrB within PPI-1",
                        "Downstream of hlpA",
@@ -821,7 +826,8 @@ att_sites.df <-
                        "In BOX element upstream of relA",
                        "Within RUP element downstream of pyrG",
                        "Disrupts promoter of yjbK",
-                       "Downstream of ply"
+                       "Downstream of ply",
+                       "Downstream of eno"
                     )
   )
 
@@ -835,13 +841,13 @@ att_sites.df <-
 
 We now look at the distribution of MGE insertion sites:
 
-``` {r Prophage insertion sites, fig.width = 18, fig.height = 8}
+``` {r Prophage insertion sites, fig.width = 8, fig.height = 8}
 
 gps.df <-
   read.csv("./sequence_analysis/gps_info.csv")
 
 phage_insertions.df <-
-  read.csv(file = "./sequence_analysis/Spn_att.csv") %>%
+  read.csv(file = "./att_sites/Spn_att.csv") %>%
     dplyr::mutate(att = paste0(gsub("att_","italic(attB)[italic(",att),")]")) %>%
     dplyr::mutate(att = dplyr::case_when(
                       att == "italic(attB)[italic(OXC)]" ~ "italic(attB)[OXC]",
@@ -852,73 +858,27 @@ phage_insertions.df <-
                   ) %>%
     dplyr::filter(att != "italic(attB)[italic(licR)]")
 
-summarise_by_site.df <-
-  phage_insertions.df %>%
+summarise_by_site <- function(df) {
+  
+    df %>%
          dplyr::filter(status == "Infected") %>%
          dplyr::group_by(att) %>%
          dplyr::summarise(Infections = n_distinct(genome)) %>%
          dplyr::ungroup() %>%
          dplyr::arrange(desc(Infections)) %>%
          dplyr::mutate(att=factor(att,levels = unique(att),ordered = T))
+  
+}
 
-phage_by_site_plot <-
-  ggplot(summarise_by_site.df,
-         aes(x = att,
-             y = Infections)) +
-    geom_col(fill = "blue") +
-    geom_text(aes(label=Infections), vjust=-0.5) +
-    scale_x_discrete(labels = function(l) parse(text=l)) +
-    xlab(expression(italic(attB)~'site')) +
-    ylab('Number of infected sites') +
-    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+summarise_by_site.df <-
+  summarise_by_site(phage_insertions.df)
 
-```
+ciphr_distribution_df <-
+  read.csv("./att_sites/Spn_CIPhR.csv")
 
-# Quantify transformation inhibition
-
-``` {r Transformation inhibition by insertion}
-
-transformation_inhibition_sites <- c("italic(attB)[italic(ssbB)]","italic(attB)[italic(comYC)]","italic(attB)[OXC]","italic(attB)[italic(yjbK)]","italic(attB)[italic(scr)]")
-
-transformation_inhibition.df <-
+site_and_lysogeny_df <-
   phage_insertions.df %>%
-    # dplyr::filter(status == "Infected") %>%
-    # dplyr::mutate(Inhibition = dplyr::if_else(att %in% transformation_inhibition_sites & status == "Infected", "Inhibition", NA_character_)) %>%
-    dplyr::group_by(genome) %>%
-    dplyr::mutate(Inhibition = dplyr::case_when(
-        any(att %in% transformation_inhibition_sites & status == "Infected") ~ 'atop("Inhibition of transformation","by prophage insertion")',
-        any(status == "Infected") ~ 'atop("No inhibition of transformation","by prophage insertion")',
-        TRUE ~ '"Non-lysogenic"'
-      )
-    ) %>%
-    # tidyr::fill(Inhibition,.direction = "updown") %>%
-    # dplyr::mutate(Inhibition = dplyr::if_else(is.na(Inhibition),"No inhibition",Inhibition)) %>%
-    dplyr::ungroup() %>%
-    dplyr::group_by(Inhibition) %>%
-    dplyr::summarise(Isolate_count = n_distinct(genome)) %>%
-    dplyr::ungroup()
-
-ggplot(transformation_inhibition.df %>%
-         dplyr::select(Inhibition,Isolate_count),
-       aes(x = Inhibition,
-           y = Isolate_count)) +
-  geom_col(colour="blue", fill = "blue") +
-  scale_x_discrete(labels = function(l) parse(text=l)) +
-  ylab("Isolate count") +
-  xlab(expression("Classification of isolate by"~italic(attB)~"status")) +
-  geom_text(aes(label=Isolate_count), vjust=-0.5)
-
-```
-
-# Test whether there are any unidentified insertion sites
-
-``` {r Identify new insertion sites}
-
-unidentified_att_sites.df <-
-  phage_insertions.df %>%
-    dplyr::group_by(genome) %>%
-    dplyr::summarise(Disrupted_sites = sum(status == "Infected")) %>%
-    dplyr::ungroup() %>%
+    dplyr::filter(status == "Infected") %>% 
     dplyr::left_join(
       gps.df %>%
         dplyr::mutate(Lane.Id = gsub("#","_",Lane.Id)) %>%
@@ -931,61 +891,79 @@ unidentified_att_sites.df <-
         dplyr::summarise(Lysogenic = dplyr::if_else(max(Length) > phage_blast_threshold,"Lysogenic","Non-lysogenic")) %>%
         dplyr::ungroup(),
       by = c("genome"="Database")
+    ) %>% 
+    dplyr::left_join(ciphr_distribution_df, by = "genome") %>% 
+    dplyr::mutate(
+      Lysogenic =
+        dplyr::case_when(
+          Lysogenic == "Lysogenic" & CIPhR == "No" ~ "Lysogenic",
+          Lysogenic == "Non-lysogenic" & CIPhR == "No" ~ "Non-lysogenic",
+          Lysogenic == "Lysogenic" & CIPhR == "CIPhR" ~ "Lysogenic & CIPhR positive",
+          Lysogenic == "Non-lysogenic" & CIPhR == "CIPhR" ~ "CIPhR positive",
+          is.na(CIPhR) ~ Lysogenic
+        )
     )
+
+
+att_count <-
+  site_and_lysogeny_df %>% 
+    dplyr::group_by(att) %>% 
+    dplyr::reframe(Count = n()) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::arrange(desc(Count)) %>% 
+    dplyr::distinct() %>% 
+    dplyr::select(att) %>% 
+    dplyr::pull()
+
+(phage_by_site_plot <-
+  ggplot(site_and_lysogeny_df %>% 
+           dplyr::mutate(att = factor(att,levels = att_count)),
+         aes(x = att,
+             fill = Lysogenic)) +
+    geom_bar() +
+    scale_x_discrete(labels = function(l) parse(text=l)) +
+    scale_fill_manual(values = c("Lysogenic" = "blue",
+                                 "Non-lysogenic" = "cornflowerblue",
+                                 "Lysogenic & CIPhR positive" = "turquoise",
+                                 "CIPhR positive" = "cyan"
+                                 )
+                      ) +
+    xlab(expression(italic(attB)~'site')) +
+    ylab('Number of infected sites') +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5),
+          legend.position = "bottom")
+)
 
 ```
 
-# Number of phage per isolate
+# Test whether there are any unidentified insertion sites
 
-``` {r Plot number of phage infections per GPSC}
+``` {r Identify new insertion sites}
 
-phage_by_gpsc.df <-
-  unidentified_att_sites.df %>%
-    dplyr::select(Disrupted_sites,Strain) %>%
-    dplyr::rowwise() %>%
-    dplyr::mutate(rn = runif(1)) %>%
+analyse_att_sites <- function(df1,df2,df3) {
+  
+  df1 %>%
+    dplyr::group_by(genome) %>%
+    dplyr::summarise(Disrupted_sites = sum(status == "Infected")) %>%
     dplyr::ungroup() %>%
-    dplyr::group_by(Strain) %>%
-    dplyr::slice_max(n = 1, order_by = rn) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(-rn)
+    dplyr::left_join(
+      df2 %>%
+        dplyr::mutate(Lane.Id = gsub("#","_",Lane.Id)) %>%
+        dplyr::select(Lane.Id,Strain,Serotype),
+      by = c("genome"="Lane.Id")
+    ) %>%
+    dplyr::left_join(
+      df3 %>%
+        dplyr::group_by(Database) %>%
+        dplyr::summarise(Lysogenic = dplyr::if_else(max(Length) > phage_blast_threshold,"Lysogenic","Non-lysogenic")) %>%
+        dplyr::ungroup(),
+      by = c("genome"="Database")
+    )
+  
+}
 
-max_insertions <- max(unidentified_att_sites.df$Disrupted_sites)
-
-library(fitdistrplus)
-fitted_poisson.out <-
-  fitdist(data = phage_by_gpsc.df$Disrupted_sites,
-          distr = "pois",
-          method = "mme")
-
-estimate_lambda <- paste0("lambda~'='~",signif(fitted_poisson.out$estimate,3))
-
-poisson_phage_by_gpsc.df <-
-  tibble(
-    x = 0:max_insertions,
-    y = dpois(x=0:max_insertions,fitted_poisson.out$estimate)
-  )
-
-phage_by_isolate_plot <-
-  ggplot(phage_by_gpsc.df %>%
-           dplyr::group_by(Disrupted_sites) %>%
-           dplyr::summarise(Frequency = n()/nrow(phage_by_gpsc.df)) %>%
-           dplyr::ungroup(),
-         aes(x = Disrupted_sites,
-             y = Frequency)
-         ) +
-    geom_col(colour = "blue", fill = "blue") +
-    geom_line(data = poisson_phage_by_gpsc.df,
-              aes(x = x,
-                  y = y),
-              inherit.aes = FALSE,
-              linetype = 3,
-              colour =  "red") +
-    geom_text(x = 4, y = 0.35, label = estimate_lambda, parse = T) +
-    xlab(expression(atop("Disrupted"~italic(attB),"sites per isolate"))) +
-    #xlim(c(NA,12)) +
-    theme_bw() +
-    theme(legend.position = "none")
+unidentified_att_sites.df <-
+  analyse_att_sites(phage_insertions.df,gps.df,phage_hit_lengths.df)
 
 ```
 
@@ -993,6 +971,7 @@ phage_by_isolate_plot <-
 
 ``` {bash Make integrase phylogeny, eval=FALSE}
 
+cd ./sequence_analysis
 muscle -align int_sequences.aa -output int_sequences.aln
 FastTree int_sequences.aln > int_sequences.tree
 
@@ -1017,7 +996,7 @@ int_groupings <-
       "OXC" = c("italic(attB)[OXC]","italic(attB)[italic(ccnB)]","italic(attB)[italic(ply)]","italic(attB)[italic(relA)]"),
       "MM1" = c("italic(attB)[MM1]","italic(attB)[italic(ydiL)]","italic(attB)[italic(cbpG)]"),
       "scRNA" = c("italic(attB)[italic(scr)]","italic(attB)[italic(pyrG)]"),
-      "hlpA" = c("italic(attB)[italic(hlpA)]"),
+      "hlpA" = c("italic(attB)[italic(hlpA)]","italic(attB)[italic(eno)]"),
       "yjbK" = c("italic(attB)[italic(yjbK)]","italic(attB)[italic(tgt)]")
     )
 
@@ -1172,52 +1151,18 @@ ma_phage.df <-
 
 Each set of streptococcal proteins was then aligned with MAFFT (v7.305b), and hidden Markov model representations of the alignments were generated using HMMer3:
 
-```{bash, eval = FALSE}
-
-# Load HMMer
-hmmer/3.2.1=hfc679d8_0-c1
-
-# Also search for manually identified phage regulatory sequences
-python get_phage_regulatory_sequences.py # in ~/Documents/phage_biology/regulatory_cogs
-mafft phage_DUF955.faa > phage_DUF955.aln
-hmmbuild phage_DUF955.hmm phage_DUF955.aln
-hmmpress phage_DUF955.hmm
-
-# Per genome analysis 
-module load hmmer/3.2.1=hfc679d8_0-c1
-module load agat/1.2.0--pl5321hdfd78af_0
-f=`cat $1`;
-PREFIX=${f%.velvet.gff};
-perl -e 'open(my $gff, "<", $ARGV[0]) or die; my $print = 0; while (my $line = readline($gff)) {if ($print == 1) {print $line;} elsif ($line eq "##FASTA\n") {$print = 1;}}' ${PREFIX}.velvet.gff > ${PREFIX}.velvet.fa;
-agat_sp_extract_sequences.pl -g ${PREFIX}.velvet.gff -f ${PREFIX}.velvet.fa -t cds -p --keep_attributes --type cds --table 11 --clean_final_stop -o ${PREFIX}.out &> /dev/null;
-rm ${PREFIX}.velvet.fa;
-perl -lane 'if ($_ =~ /^>/) {my @d = split(/\|/);print ">".$d[$#d]} else {print $_;}' ${PREFIX}.out > ${PREFIX}.aa;
-rm ${PREFIX}.out;
-hmmsearch -o DUF955_${PREFIX}.hmm_search.out --tblout DUF955_${PREFIX}.hmm_search.tab --noali -E 1e-2 --domE 1e-2 --cpu 1 phage_DUF955.hmm ${PREFIX}.aa;
-hmmsearch -o peptidaseS24_${PREFIX}.hmm_search.out --tblout peptidaseS24_${PREFIX}.hmm_search.tab --noali -E 1e-2 --domE 1e-2 --cpu 1 phage_peptidaseS24.hmm ${PREFIX}.aa;
-
-# Run analysis
-bsub -q small -J  phage_annotation[1-20047] -o phage_search.%I.o -e phage_search.%I.e -M 2000 -R 'select[mem>2000] rusage[mem=2000]' ./get_gps_proteins.sh annotation.\${LSB_JOBINDEX}
-
-# Combine results
-grep -h -v ^# *hmm_search.tab > gps_phage_domains.tab
-
-```
-
 ``` {bash Rerun search, eval = FALSE}
 
 # prokka 1.14.6 annotation:
 # prokka --outdir 10050_2#10_out --prefix 10050_2#10 --genus Streptococcus --species pneumoniae --cpus 1 --force --noanno 10050_2#10.contigs_velvet.fa
 
+# HMMER 3.4
 hmmbuild pneumo_ImmAR.hmm phage_DUF955.aln
 hmmbuild pneumo_C1.hmm phage_peptidaseS24.aln
+hmmbuild PRCI_C1_regulators.hmm PRCI_C1_regulators.aln
 hmmpress pneumo_ImmAR.hmm
 hmmpress pneumo_C1.hmm
-
-# HMMER 3.4
-hmmpress C1_type_regulator.hmm
-hmmpress ImmAR_type_regulator.hmm
-hmmpress  NF007271.0.HMM 
+hmmpress PRCI_C1_regulators.hmm
 
 # Run HMM search
 hmmsearch -o immAR_search.hmm_search.out --tblout immAR_search.hmm_search.tab --noali -E 1e-2 --domE 1e-2 --cpu 12 ImmAR_type_regulator.hmm GPS.aa
@@ -1228,7 +1173,7 @@ hmmsearch -o immAR_search.hmm_search.out --tblout immAR_search.hmm_search.tab --
 # Read hits from HMM search
 
 This search identifies any match with an e value < 0.01. However, we still expect a large number of false positives at this threshold, because the database contains so many seqences (42,538,047 proteins). We therefore load the hits and plot their p values to decide on a threshold:
-103,947,314
+
 ``` {r Load and plot HMM results, fig.height = 11, fig.width = 8}
 
 # Write a function to load the HMM hits
@@ -1587,12 +1532,15 @@ Plot matches to this HMM:
 
 ``` {r Plot PRCI HMM matches, fig.height = 8, fig.width = 8}
 
+prci_ci_hmm_df <-
+  process_hmm_hits("./sequence_analysis/prci_C1.hmm_search.tab") %>% 
+      dplyr::mutate(threshold = 1e-125,
+                    Regulator = "PRCI C1-like")
+
 combined_hmm_hits.df <-
   dplyr::bind_rows(
     hmm_hits.df,
-    process_hmm_hits("./sequence_analysis/prci_C1.hmm_search.tab") %>% 
-    dplyr::mutate(threshold = 1e-125,
-                  Regulator = "PRCI C1-like")
+    prci_ci_hmm_df
   )
 
 combined_hmm_rank_plot <-
@@ -1627,13 +1575,17 @@ cowplot::plot_grid(
 
 updated_filtered_hmm_hits.df <-
   filtered.hmm_hits.df %>%
-                       dplyr::filter(!(`target name` %in% filtered_prci_ci_hmm_df$`target name`))
+      dplyr::filter(!(`target name` %in% prci_ci_hmm_df$`target name`))
+
+updated_unidentified_att_sites.df <-
+  analyse_att_sites(phage_insertions.df %>% dplyr::filter(att != "italic(attB)[italic(eno)]"),
+                    gps.df,phage_hit_lengths.df)
 
 updated_congruence.df <-
-  make_congruence_df(unidentified_att_sites.df,updated_filtered_hmm_hits.df)
+  make_congruence_df(updated_unidentified_att_sites.df,updated_filtered_hmm_hits.df)
 
 (updated_phage_analysis_congruence_plot <-
-  ggplot(congruence.df,
+  ggplot(updated_congruence.df,
          aes(x = Summary)) +
     geom_bar() +
     geom_text(stat='count', aes(label=..count..), vjust=-0.5, size = 4) +
@@ -1647,14 +1599,21 @@ updated_congruence.df <-
 
 ``` {r Update att sites with revised regulator data}
 
+updated_phage_insertions.df <-
+  phage_insertions.df %>%
+    dplyr::filter(att != "italic(attB)[italic(eno)]")
+
+updated_summarise_by_site.df <-
+  summarise_by_site(updated_phage_insertions.df)
+
 updated_phage_gene_distribution.df <-
   make_phage_gene_distribution_df(updated_filtered_hmm_hits.df)
 
 updated_att_sites_domains.df <-
-  combine_phage_data(unidentified_att_sites.df,updated_phage_gene_distribution.df,phage_insertions.df,summarise_by_site.df)
+  combine_phage_data(updated_unidentified_att_sites.df,updated_phage_gene_distribution.df,updated_phage_insertions.df,updated_summarise_by_site.df)
 
 updated_phage_summary_per_attB.df <-
-  summarise_by_att_site(updated_att_sites_domains.df,summarise_by_site.df)
+  summarise_by_att_site(updated_att_sites_domains.df,updated_summarise_by_site.df)
 
 (updated_regulator_by_site_plot <-
   ggplot(updated_phage_summary_per_attB.df,
@@ -1673,6 +1632,117 @@ updated_phage_summary_per_attB.df <-
             legend.position = "bottom") +
       guides(fill = g, colour = g)
 )
+
+```
+
+# Updated lysogeny count
+
+``` {r Update lysogeny count}
+
+updated_lysogeny_comparison.df <-
+  tibble(
+    "Method" = c("Prophage BLAST","att site BLAST","Regulator HMM"),
+    "Count" = c(
+      nrow(phage_hit_lengths.df %>% dplyr::filter(Length > phage_blast_threshold)),
+      nrow(updated_unidentified_att_sites.df %>% dplyr::filter(Disrupted_sites > 0)),
+      nrow(
+        updated_filtered_hmm_hits.df %>%
+          dplyr::group_by(Lane.Id) %>%
+          dplyr::summarise(Count = n()) %>%
+          dplyr::ungroup() %>%
+          dplyr::filter(Count > 0)
+      )
+    )
+  )
+  
+updated_lysogeny_comparison.df %>%
+  kableExtra::kable() %>%
+  kableExtra::kable_styling(latex_options = "scale_down")
+
+```
+
+# Quantify transformation inhibition
+
+``` {r Transformation inhibition by insertion}
+
+transformation_inhibition_sites <- c("italic(attB)[italic(ssbB)]","italic(attB)[italic(comYC)]","italic(attB)[OXC]","italic(attB)[italic(yjbK)]","italic(attB)[italic(scr)]")
+
+transformation_inhibition.df <-
+  updated_phage_insertions.df %>%
+    dplyr::group_by(genome) %>%
+    dplyr::mutate(Inhibition = dplyr::case_when(
+        any(att %in% transformation_inhibition_sites & status == "Infected") ~ 'atop("Inhibition of transformation","by prophage insertion")',
+        any(status == "Infected") ~ 'atop("No inhibition of transformation","by prophage insertion")',
+        TRUE ~ '"Non-lysogenic"'
+      )
+    ) %>%
+    dplyr::ungroup() %>%
+    dplyr::group_by(Inhibition) %>%
+    dplyr::summarise(Isolate_count = n_distinct(genome)) %>%
+    dplyr::ungroup()
+
+ggplot(transformation_inhibition.df %>%
+         dplyr::select(Inhibition,Isolate_count),
+       aes(x = Inhibition,
+           y = Isolate_count)) +
+  geom_col(colour="blue", fill = "blue") +
+  scale_x_discrete(labels = function(l) parse(text=l)) +
+  ylab("Isolate count") +
+  xlab(expression("Classification of isolate by"~italic(attB)~"status")) +
+  geom_text(aes(label=Isolate_count), vjust=-0.5)
+
+```
+
+# Number of phage per isolate
+
+``` {r Plot number of phage infections per GPSC}
+
+phage_by_gpsc.df <-
+  unidentified_att_sites.df %>%
+    dplyr::select(Disrupted_sites,Strain) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(rn = runif(1)) %>%
+    dplyr::ungroup() %>%
+    dplyr::group_by(Strain) %>%
+    dplyr::slice_max(n = 1, order_by = rn) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-rn)
+
+max_insertions <- max(unidentified_att_sites.df$Disrupted_sites)
+
+fitted_poisson.out <-
+  fitdist(data = phage_by_gpsc.df$Disrupted_sites,
+          distr = "pois",
+          method = "mme")
+
+estimate_lambda <- paste0("lambda~'='~",signif(fitted_poisson.out$estimate,3))
+
+poisson_phage_by_gpsc.df <-
+  tibble(
+    x = 0:max_insertions,
+    y = dpois(x=0:max_insertions,fitted_poisson.out$estimate)
+  )
+
+phage_by_isolate_plot <-
+  ggplot(phage_by_gpsc.df %>%
+           dplyr::group_by(Disrupted_sites) %>%
+           dplyr::summarise(Frequency = n()/nrow(phage_by_gpsc.df)) %>%
+           dplyr::ungroup(),
+         aes(x = Disrupted_sites,
+             y = Frequency)
+         ) +
+    geom_col(colour = "blue", fill = "blue") +
+    geom_line(data = poisson_phage_by_gpsc.df,
+              aes(x = x,
+                  y = y),
+              inherit.aes = FALSE,
+              linetype = 3,
+              colour =  "red") +
+    geom_text(x = 4, y = 0.35, label = estimate_lambda, parse = T) +
+    xlab(expression(atop("Disrupted"~italic(attB),"sites per isolate"))) +
+    #xlim(c(NA,12)) +
+    theme_bw() +
+    theme(legend.position = "none")
 
 ```
 
