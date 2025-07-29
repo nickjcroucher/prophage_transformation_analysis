@@ -2379,7 +2379,7 @@ par(old.par)
 ``` {r Updated transformation data}
 
 updated_ciphr_transformation_df <-
-  read.csv("./experimental_data/Transformation_modified_final_June.csv") %>% 
+  read.csv("./transformation_data/Transformation_modified_final_June.csv") %>% 
   dplyr::mutate(mutants = 
                   dplyr::case_when(
                         mutants == "R6x" ~ "R6",
@@ -2467,7 +2467,7 @@ combined_transformation_df <-
       dplyr::mutate(conditions = "Mix") %>% 
       dplyr::mutate(mutants = dplyr::if_else(mutants == "R6_mod_RNA","R6_mod_RNA_combox",mutants)),
     updated_ciphr_transformation_df,
-    read.csv("./experimental_data/Extra_data_R6x_mix_11930_phage.csv") %>% 
+    read.csv("./transformation_data/Extra_data_R6x_mix_11930_phage.csv") %>% 
       dplyr::mutate(mutants =
                       dplyr::case_when(
                         mutants == "R6x" ~ "R6",
@@ -2521,7 +2521,7 @@ combined_transformation_df <-
 transformation_11930_levels <- c("11930_delta","11930_CIPhR_Janus")
 
 transformation_11930_df <-
-  read.csv("./experimental_data/11930_transformation.csv") %>% 
+  read.csv("./transformation_data/11930_transformation.csv") %>% 
     dplyr::mutate(mutants =
                     dplyr::case_when(
                       mutants == "11930" ~ "11930_delta",
@@ -2707,11 +2707,11 @@ r6_scr_growth_plot <-
 scr_locus_levels <- c("R6","R6_scr_Janus","R6_CIPhR","R6_mod_RNA","R6_mod_RNA_combox","R6_restored")
 
 scr_locus_growth_df <-
-  get_growth_curve_df(read.csv("./experimental_data/Modified_comBox_growth_Mix.csv")) %>%
+  get_growth_curve_df(read.csv("./growth_curves/Modified_comBox_growth_Mix.csv")) %>%
   dplyr::mutate(Genotype = factor(Genotype, levels = scr_locus_levels))
   
 extra_growth_dataset_df <-
-  get_growth_curve_df(read.csv("./experimental_data/Growth_R6x_growth.csv")) %>% 
+  get_growth_curve_df(read.csv("./growth_curves/Growth_R6x_growth.csv")) %>% 
     dplyr::filter(Genotype == "R6_mod_RNA") %>% 
             dplyr::mutate(Genotype = "R6_mod_RNA_combox")
 
@@ -8904,9 +8904,9 @@ recA_in_2743_df <-
       dplyr::mutate(Genotype = "phi*'08B02743::Janus'") %>% 
       dplyr::filter(gene %in% c("italic(recA)","italic(comEA)")),
     dplyr::bind_rows(
-      read_expression_file("./experimental_data/dprA_transcriptions_WT_final.csv") %>%
+      read_expression_file("./qPCR/dprA_transcriptions_WT_final.csv") %>%
         dplyr::mutate(Genotype = "phi*'08B02743'"),
-      read_expression_file("./experimental_data/dprA_transcriptions_prophage_final.csv") %>%
+      read_expression_file("./qPCR/dprA_transcriptions_prophage_final.csv") %>%
         dplyr::mutate(Genotype = "phi*'08B02743::Janus'")
     ) %>%
       dplyr::group_by(Condition, gene, Time, Genotype) %>%
@@ -8923,17 +8923,17 @@ recA_in_2743_df <-
 
 new_recA_in_2743_df <-
   dplyr::bind_rows(
-    read_expression_file("./experimental_data/Normalised_recA_WT.csv") %>%
+    read_expression_file("./qPCR/Normalised_recA_WT.csv") %>%
         dplyr::mutate(Genotype = "phi*'08B02743'"),
-    read_expression_file("./experimental_data/Normalised_dprA_2743_WT.csv") %>%
+    read_expression_file("./qPCR/Normalised_dprA_2743_WT.csv") %>%
         dplyr::mutate(Genotype = "phi*'08B02743'"),
-    read_expression_file("./experimental_data/Normalised_comEA_WT.csv") %>%
+    read_expression_file("./qPCR/Normalised_comEA_WT.csv") %>%
         dplyr::mutate(Genotype = "phi*'08B02743'"),
-    read_expression_file("./experimental_data/Normalised_recA_prophage.csv") %>%
+    read_expression_file("./qPCR/Normalised_recA_prophage.csv") %>%
         dplyr::mutate(Genotype = "phi*'08B02743::Janus'"),
-    read_expression_file("./experimental_data/Normalised_dprA_2743_prophage.csv") %>%
+    read_expression_file("./qPCR/Normalised_dprA_2743_prophage.csv") %>%
         dplyr::mutate(Genotype = "phi*'08B02743::Janus'"),
-        read_expression_file("./experimental_data/Normalised_comEA_prophage.csv") %>%
+        read_expression_file("./qPCR/Normalised_comEA_prophage.csv") %>%
         dplyr::mutate(Genotype = "phi*'08B02743::Janus'")
   ) %>% 
   dplyr::filter(gene != "rpoA" & gene != "RpoA") %>% 
@@ -9037,7 +9037,7 @@ new_recA_in_2743_df <-
 tr_2743_levels <- c("08B02743","08B02743_phageJanus")
 
 te_2743_df <-
-  read.csv("./experimental_data/2743_prophage_transformation_efficiency_v3.csv") %>% 
+  read.csv("./transformation_data/2743_prophage_transformation_efficiency_v3.csv") %>% 
     dplyr::mutate(
       mutants =
         dplyr::case_when(
